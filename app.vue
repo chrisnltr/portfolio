@@ -228,34 +228,17 @@
           </h2>
           <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300"
+              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+              @click="toggleProject(0)"
             >
               <div
                 class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
               >
-                <!-- Placeholder for Flutter App Image -->
-                <div
-                  class="w-full h-full bg-background-tertiary flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                >
-                  <div class="text-center">
-                    <svg
-                      class="w-12 h-12 text-accent-400 mx-auto mb-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
-                      ></path>
-                    </svg>
-                    <p class="text-text-secondary text-xs">
-                      Add your Flutter app image here
-                    </p>
-                  </div>
-                </div>
+                <img
+                  src="/images/UnfallApp.png"
+                  alt="Accident App Screenshot"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
                 Accident App
@@ -282,34 +265,17 @@
             </div>
 
             <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300"
+              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+              @click="toggleProject(1)"
             >
               <div
                 class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
               >
-                <!-- Placeholder for Unity Billiard Game Image -->
-                <div
-                  class="w-full h-full bg-background-tertiary flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                >
-                  <div class="text-center">
-                    <svg
-                      class="w-12 h-12 text-accent-400 mx-auto mb-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      ></path>
-                    </svg>
-                    <p class="text-text-secondary text-xs">
-                      Add your Unity game image here
-                    </p>
-                  </div>
-                </div>
+                <img
+                  src="/images/BilliardGame.png"
+                  alt="Billiard Game Screenshot"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
                 Billiard Game
@@ -335,34 +301,17 @@
             </div>
 
             <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300"
+              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+              @click="toggleProject(2)"
             >
               <div
                 class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
               >
-                <!-- Placeholder for Hardware Management Image -->
-                <div
-                  class="w-full h-full bg-background-tertiary flex items-center justify-center group-hover:scale-110 transition-transform duration-300"
-                >
-                  <div class="text-center">
-                    <svg
-                      class="w-12 h-12 text-accent-400 mx-auto mb-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
-                      ></path>
-                    </svg>
-                    <p class="text-text-secondary text-xs">
-                      Add your hardware management image here
-                    </p>
-                  </div>
-                </div>
+                <img
+                  src="/images/HardwareManager.png"
+                  alt="Hardware Management Screenshot"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
                 Hardware Management
@@ -431,6 +380,112 @@
         </footer>
       </section>
     </main>
+
+    <div
+      v-if="selectedProject !== null"
+      class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      @click="closeModal"
+    >
+      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+
+      <div
+        class="relative bg-background-secondary border border-border-primary rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fade-in"
+        @click.stop
+      >
+        <button
+          @click="closeModal"
+          class="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+
+        <div
+          class="aspect-video bg-background-tertiary rounded-lg mb-6 overflow-hidden"
+        >
+          <img
+            :src="projectData[selectedProject]?.image"
+            :alt="projectData[selectedProject]?.title + ' Screenshot'"
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <h2 class="text-3xl font-bold text-text-primary mb-4">
+          {{ projectData[selectedProject]?.title }}
+        </h2>
+
+        <p class="text-text-secondary mb-6 text-lg">
+          {{ projectData[selectedProject]?.description }}
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h3 class="text-xl font-semibold text-text-primary mb-3">
+              Features
+            </h3>
+            <ul class="text-text-secondary space-y-2">
+              <li
+                v-for="feature in projectData[selectedProject]?.features"
+                :key="feature"
+                class="flex items-start"
+              >
+                <span class="text-accent-400 mr-2 mt-1">•</span>
+                <span>{{ feature }}</span>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="text-xl font-semibold text-text-primary mb-3">
+              Technical Details
+            </h3>
+            <ul class="text-text-secondary space-y-2">
+              <li
+                v-for="detail in projectData[selectedProject]?.technicalDetails"
+                :key="detail"
+                class="flex items-start"
+              >
+                <span class="text-accent-400 mr-2 mt-1">•</span>
+                <span>{{ detail }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-xl font-semibold text-text-primary mb-3">
+            Technologies
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <span
+              v-for="tech in projectData[selectedProject]?.technologies"
+              :key="tech"
+              class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
+            >
+              {{ tech }}
+            </span>
+          </div>
+        </div>
+
+        <div class="flex gap-4">
+          <button class="btn-primary px-6 py-3">
+            {{ projectData[selectedProject]?.demoButton }}
+          </button>
+          <button class="btn-secondary px-6 py-3">Source Code</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -441,6 +496,73 @@ const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref(null);
 const isHoveringTarget = ref(false);
 const animateName = ref(false);
+const selectedProject = ref(null);
+
+const projectData = ref([
+  {
+    title: "Accident App",
+    description:
+      "A mobile application built with Flutter for accident reporting and management, featuring intuitive UI design and real-time data synchronization.",
+    image: "/images/UnfallApp.png",
+    features: [
+      "Real-time accident reporting",
+      "GPS location tracking",
+      "Photo documentation",
+      "Offline data synchronization",
+      "Multi-language support",
+    ],
+    technicalDetails: [
+      "State management with Provider",
+      "SQLite local database",
+      "REST API integration",
+      "Push notifications",
+    ],
+    technologies: ["Flutter", "Dart", "Mobile"],
+    demoButton: "View Demo",
+  },
+  {
+    title: "Billiard Game",
+    description:
+      "A 3D billiard game developed in Unity with realistic physics, multiplayer support, and immersive gameplay mechanics.",
+    image: "/images/BilliardGame.png",
+    features: [
+      "Realistic 3D physics simulation",
+      "Multiplayer support (local & online)",
+      "Multiple game modes",
+      "Customizable table designs",
+      "Tournament system",
+    ],
+    technicalDetails: [
+      "Unity 3D engine",
+      "C# scripting",
+      "Photon networking",
+      "Advanced physics calculations",
+    ],
+    technologies: ["Unity", "C#", "3D Game"],
+    demoButton: "Play Demo",
+  },
+  {
+    title: "Hardware Management",
+    description:
+      "A comprehensive hardware management system built with FastAPI, featuring inventory tracking, device monitoring, and automated maintenance scheduling.",
+    image: "/images/HardwareManager.png",
+    features: [
+      "Real-time inventory tracking",
+      "Device health monitoring",
+      "Automated maintenance scheduling",
+      "User role management",
+      "Reporting and analytics",
+    ],
+    technicalDetails: [
+      "FastAPI REST API",
+      "PostgreSQL database",
+      "SQLAlchemy ORM",
+      "Docker containerization",
+    ],
+    technologies: ["FastAPI", "Python", "PostgreSQL"],
+    demoButton: "Live Demo",
+  },
+]);
 
 const updateMousePosition = (e) => {
   mousePosition.value = {
@@ -463,13 +585,11 @@ const checkHover = (e) => {
 const scrollToProjects = () => {
   const projectsSection = document.getElementById("projects");
   if (projectsSection) {
-    // Smooth scroll mit easing animation
     projectsSection.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
 
-    // Zusätzliche Animation für die Projects-Sektion
     setTimeout(() => {
       projectsSection.style.transform = "translateY(20px)";
       projectsSection.style.opacity = "0.8";
@@ -495,6 +615,16 @@ const sendEmail = () => {
   )}&body=${encodeURIComponent(body)}`;
 
   window.open(mailtoLink, "_blank");
+};
+
+const toggleProject = (index) => {
+  selectedProject.value = index;
+  document.body.style.overflow = "hidden";
+};
+
+const closeModal = () => {
+  selectedProject.value = null;
+  document.body.style.overflow = "auto";
 };
 
 let isScrolling = false;
