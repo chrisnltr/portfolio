@@ -412,13 +412,34 @@
         </button>
 
         <div
-          class="aspect-video bg-background-tertiary rounded-lg mb-6 overflow-hidden"
+          class="aspect-video bg-background-tertiary rounded-lg mb-6 overflow-hidden cursor-pointer relative"
+          @click="openImageModal"
+          @mouseenter="showZoomIcon = true"
+          @mouseleave="showZoomIcon = false"
         >
           <img
             :src="projectData[selectedProject]?.image"
             :alt="projectData[selectedProject]?.title + ' Screenshot'"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
           />
+          <div
+            v-if="showZoomIcon"
+            class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
+          >
+            <svg
+              class="w-8 h-8 text-white transition-opacity duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+              ></path>
+            </svg>
+          </div>
         </div>
 
         <h2 class="text-3xl font-bold text-text-primary mb-4">
@@ -477,13 +498,47 @@
             </span>
           </div>
         </div>
+      </div>
+    </div>
 
-        <div class="flex gap-4">
-          <button class="btn-primary px-6 py-3">
-            {{ projectData[selectedProject]?.demoButton }}
-          </button>
-          <button class="btn-secondary px-6 py-3">Source Code</button>
-        </div>
+    <!-- Image Modal -->
+    <div
+      v-if="imageModalOpen"
+      class="fixed inset-0 z-[99999] flex items-center justify-center p-4"
+      @click="closeImageModal"
+    >
+      <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+
+      <div
+        class="relative max-w-[95vw] max-h-[95vh] animate-fade-in"
+        @click.stop
+      >
+        <!-- Close Button -->
+        <button
+          @click="closeImageModal"
+          class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+
+        <!-- Image -->
+        <img
+          :src="projectData[selectedProject]?.image"
+          :alt="projectData[selectedProject]?.title + ' Screenshot'"
+          class="w-full h-full object-contain rounded-lg shadow-2xl"
+        />
       </div>
     </div>
   </div>
@@ -497,6 +552,8 @@ const cursorFollower = ref(null);
 const isHoveringTarget = ref(false);
 const animateName = ref(false);
 const selectedProject = ref(null);
+const imageModalOpen = ref(false);
+const showZoomIcon = ref(false);
 
 const projectData = ref([
   {
@@ -625,6 +682,14 @@ const toggleProject = (index) => {
 const closeModal = () => {
   selectedProject.value = null;
   document.body.style.overflow = "auto";
+};
+
+const openImageModal = () => {
+  imageModalOpen.value = true;
+};
+
+const closeImageModal = () => {
+  imageModalOpen.value = false;
 };
 
 let isScrolling = false;
