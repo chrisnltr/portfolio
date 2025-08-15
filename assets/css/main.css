@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/* Custom CSS Variables for Dark Theme */
+:root {
+  --color-background-primary: #0a0a0a;
+  --color-background-secondary: #111111;
+  --color-background-tertiary: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-border-primary: #2a2a2a;
+  --color-accent-400: #a4cdff;
+  --color-accent-600: #2563eb;
+}
+
+/* Theme configuration for Tailwind CSS v4 */
+@theme {
+  --color-background-primary: #0a0a0a;
+  --color-background-secondary: #111111;
+  --color-background-tertiary: #1a1a1a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #a0a0a0;
+  --color-border-primary: #2a2a2a;
+  --color-accent-400: #a4cdff;
+  --color-accent-600: #2563eb;
+}
+
+/* Base Styles */
+body {
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    sans-serif;
+}
+
+/* Custom Component Classes */
+@layer components {
+  .btn-primary {
+    background-color: var(--color-accent-600);
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    transform: scale(1);
+  }
+
+  .btn-primary:hover {
+    background-color: #1d4ed8;
+    transform: scale(1.05);
+  }
+
+  .btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--color-accent-600);
+    color: var(--color-accent-400);
+    font-weight: 600;
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    transform: scale(1);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--color-accent-600);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .btn-ghost {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--color-background-tertiary);
+  }
+
+  .link {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .link:hover {
+    color: var(--color-accent-400);
+  }
+
+  .card-elevated {
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+  }
+
+  .card-elevated:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  .gradient-text {
+    background: linear-gradient(
+      to right,
+      var(--color-accent-400),
+      var(--color-accent-600)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: all 0.5s ease-in-out;
+  }
+
+  .text-transition {
+    transition: all 0.5s ease-in-out;
+  }
+
+  .text-transition:hover {
+    transform: scale(1.02);
+  }
+}
+
+@layer utilities {
+  .glow {
+    box-shadow: 0 0 20px rgba(96, 165, 250, 0.3);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-600);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+*:focus {
+  outline: 2px solid var(--color-accent-400);
+  outline-offset: 2px;
+}
+
+::selection {
+  background-color: var(--color-accent-600);
+  color: white;
+}
