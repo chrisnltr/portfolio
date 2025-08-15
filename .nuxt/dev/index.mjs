@@ -1020,7 +1020,7 @@ const _a3DCxyIjFVFbiowSOFowXI8UfACZzL42LEQ3i2K4Hd0 = (function(nitro) {
 
 const rootDir = "C:/Users/noltemeier/Repos/vueTest/myPortfolio";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"A modern portfolio website built with Nuxt.js and Tailwind CSS"},{"name":"theme-color","content":"#000000"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"title":"My Portfolio"};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"description","content":"A modern portfolio website built with Nuxt.js and Tailwind CSS"},{"name":"theme-color","content":"#000000"}],"link":[{"rel":"icon","type":"image/png","href":"/images/CN-transparent.png"},{"rel":"apple-touch-icon","type":"image/png","href":"/images/CN-transparent.png"},{"rel":"shortcut icon","type":"image/png","href":"/images/CN-transparent.png"}],"style":[],"script":[],"noscript":[],"title":"Chris Leon Noltemeier"};
 
 const appRootTag = "div";
 
