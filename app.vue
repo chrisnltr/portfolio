@@ -3,6 +3,18 @@
     class="min-h-screen bg-background-primary overflow-y-auto"
     style="scroll-snap-type: y mandatory"
   >
+    <!-- Particle Animation Background -->
+    <div class="particles">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
     <div
       ref="cursorFollower"
       class="fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
@@ -19,18 +31,16 @@
       }"
     ></div>
 
-    <header
-      class="fixed top-0 left-0 right-0 z-50 bg-background-primary/80 backdrop-blur-sm border-b border-border-primary"
-    >
+    <header class="fixed top-0 left-0 right-0 z-50 glass-header">
       <div class="container mx-auto px-4 py-4">
         <nav class="flex items-center justify-between">
           <div class="text-2xl font-bold gradient-text">My Portfolio</div>
           <div class="hidden md:flex items-center space-x-8">
-            <a href="#home" class="link">Home</a>
-            <a href="#about" class="link">About</a>
-            <a href="#experience" class="link">Experience</a>
-            <a href="#projects" class="link">Projects</a>
-            <a href="#contact" class="link">Contact</a>
+            <a href="#home" class="link cursor-glow">Home</a>
+            <a href="#about" class="link cursor-glow">About</a>
+            <a href="#experience" class="link cursor-glow">Experience</a>
+            <a href="#projects" class="link cursor-glow">Projects</a>
+            <a href="#contact" class="link cursor-glow">Contact</a>
           </div>
           <button class="md:hidden btn-ghost">
             <svg
@@ -54,41 +64,56 @@
     <main class="pt-20">
       <section
         id="home"
-        class="min-h-screen flex items-center justify-center"
+        class="min-h-screen flex items-center justify-center animated-bg"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4 text-center -mt-20">
           <div class="animate-fade-in">
-            <h1 class="text-5xl md:text-5xl font-bold gradient-text">
+            <h1
+              class="hero-title gradient-text animate-slide-up"
+              style="
+                font-weight: 600;
+                background-size: 200% 200%;
+                animation: gradientShift 3s ease-in-out infinite;
+              "
+            >
               Hey, I'm
             </h1>
-            <h1 class="text-5xl md:text-7xl font-bold">
+            <h1 class="hero-title" style="font-weight: 600">
               <span
-                class="text-text-primary hover:text-blue-400 transition-all duration-500 ease-out cursor-pointer"
+                class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
+                style="animation-delay: 0.2s"
                 @mouseenter="animateName = true"
                 @mouseleave="animateName = false"
               >
-                <span
-                  :class="[
-                    animateName ? 'animate-bounce' : '',
-                    animateName ? 'gradient-text' : '',
-                  ]"
-                >
+                <span :class="[animateName ? 'animate-bounce' : '']">
                   Chris Leon Noltemeier
                 </span>
               </span>
             </h1>
-            <h1 class="text-5xl md:text-5xl font-bold gradient-text mt-2">
+            <h1
+              class="hero-title gradient-text mt-2 animate-slide-up"
+              style="
+                animation-delay: 0.4s;
+                font-weight: 600;
+                background-size: 200% 200%;
+                animation: gradientShift 3s ease-in-out infinite;
+              "
+            >
               Full-Stack Developer
             </h1>
             <br />
             <p
-              class="text-xl md:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto"
+              class="text-xl md:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up"
+              style="animation-delay: 0.6s"
             >
               I am passionate about learning new technologies and building
               efficient solutions
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div
+              class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
+              style="animation-delay: 0.8s"
+            >
               <button
                 class="btn-primary text-lg px-8 py-3 group relative overflow-hidden"
                 @click="scrollToProjects"
@@ -108,16 +133,18 @@
 
       <section
         id="about"
-        class="h-screen bg-background-secondary flex items-center"
+        class="h-screen modern-section flex items-center"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-6xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">
+            <h2
+              class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+            >
               About Me
             </h2>
             <div class="grid md:grid-cols-2 gap-12 items-center">
-              <div class="space-y-6">
+              <div class="space-y-6 animate-slide-left">
                 <p class="text-lg text-text-secondary leading-relaxed">
                   I’m Chris Leon Noltemeier, a full-stack developer passionate
                   about creating efficient, user-friendly applications that
@@ -139,7 +166,7 @@
                 </p>
               </div>
 
-              <div class="scene">
+              <div class="scene animate-slide-right">
                 <div class="cube">
                   <div class="face front">
                     <div class="tech-content">
@@ -200,12 +227,14 @@
 
       <section
         id="experience"
-        class="h-screen flex items-center"
+        class="h-screen modern-section flex items-center"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto">
-            <h2 class="text-4xl font-bold text-center mb-12 gradient-text">
+            <h2
+              class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+            >
               Experience & Education
             </h2>
             <div class="space-y-8">
@@ -282,11 +311,13 @@
 
       <section
         id="projects"
-        class="h-screen bg-background-secondary flex items-center transition-all duration-800 ease-out"
+        class="h-screen modern-section flex items-center transition-all duration-800 ease-out"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
-          <h2 class="text-4xl font-bold text-center mb-12 gradient-text">
+          <h2
+            class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+          >
             My Projects
           </h2>
           <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -295,12 +326,12 @@
               @click="toggleProject(0)"
             >
               <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
+                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
               >
                 <img
                   src="/images/UnfallApp.png"
                   alt="Accident App Screenshot"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  class="w-full h-full object-cover transition-transform duration-300"
                 />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
@@ -312,18 +343,9 @@
                 synchronization.
               </p>
               <div class="flex gap-2">
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >Flutter</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >Dart</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >Mobile</span
-                >
+                <span class="tech-tag">Flutter</span>
+                <span class="tech-tag">Dart</span>
+                <span class="tech-tag">Mobile</span>
               </div>
             </div>
 
@@ -332,12 +354,12 @@
               @click="toggleProject(1)"
             >
               <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
+                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
               >
                 <img
                   src="/images/BilliardGame.png"
                   alt="Billiard Game Screenshot"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  class="w-full h-full object-cover transition-transform duration-300"
                 />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
@@ -348,18 +370,9 @@
                 multiplayer support, and immersive gameplay mechanics.
               </p>
               <div class="flex gap-2">
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >Unity</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >C#</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >3D Game</span
-                >
+                <span class="tech-tag">Unity</span>
+                <span class="tech-tag">C#</span>
+                <span class="tech-tag">3D Game</span>
               </div>
             </div>
 
@@ -368,12 +381,12 @@
               @click="toggleProject(2)"
             >
               <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden"
+                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
               >
                 <img
                   src="/images/HardwareManager.png"
                   alt="Hardware Management Screenshot"
-                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  class="w-full h-full object-cover transition-transform duration-300"
                 />
               </div>
               <h3 class="text-xl font-bold mb-3 text-text-primary">
@@ -385,18 +398,9 @@
                 maintenance scheduling.
               </p>
               <div class="flex gap-2">
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >FastAPI</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >Python</span
-                >
-                <span
-                  class="px-2 py-1 bg-accent-600/20 text-accent-400 rounded text-xs"
-                  >PostgreSQL</span
-                >
+                <span class="tech-tag">FastAPI</span>
+                <span class="tech-tag">Python</span>
+                <span class="tech-tag">PostgreSQL</span>
               </div>
             </div>
           </div>
@@ -405,12 +409,16 @@
 
       <section
         id="contact"
-        class="h-screen flex flex-col justify-center"
+        class="h-screen modern-section flex flex-col justify-center"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4 flex-1 flex items-center">
           <div class="max-w-2xl mx-auto text-center">
-            <h2 class="text-4xl font-bold mb-12 gradient-text">Get In Touch</h2>
+            <h2
+              class="section-title font-bold mb-12 gradient-text animate-slide-up"
+            >
+              Get In Touch
+            </h2>
             <p class="text-lg text-text-secondary mb-8">
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
@@ -443,6 +451,17 @@
         </footer>
       </section>
     </main>
+
+    <!-- Modern Scroll Indicator -->
+    <div class="scroll-indicator">
+      <div
+        v-for="(section, index) in sections"
+        :key="section"
+        class="scroll-dot"
+        :class="{ active: currentSectionIndex === index }"
+        @click="scrollToSection(index)"
+      ></div>
+    </div>
 
     <div
       v-if="selectedProject !== null"
@@ -732,6 +751,19 @@ const scrollToProjects = () => {
         projectsSection.style.opacity = "1";
       }, 100);
     }, 500);
+  }
+};
+
+const scrollToSection = (index) => {
+  if (index >= 0 && index < sections.length) {
+    currentSectionIndex = index;
+    const targetSection = document.getElementById(sections[index]);
+    if (targetSection) {
+      targetSection.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
   }
 };
 
