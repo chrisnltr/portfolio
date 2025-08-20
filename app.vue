@@ -107,27 +107,6 @@
       </section>
 
       <section
-        id="test"
-        class="h-screen bg-background-secondary flex items-center"
-        style="scroll-snap-align: start"
-      >
-        <div class="container mx-auto px-4">
-          <div class="max-w-6xl mx-auto">
-            <div class="scene">
-              <div class="cube">
-                <div class="face front">Front</div>
-                <div class="face back">Back</div>
-                <div class="face left"></div>
-                <div class="face right"></div>
-                <div class="face top"></div>
-                <div class="face bottom">Bottom</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section
         id="about"
         class="h-screen bg-background-secondary flex items-center"
         style="scroll-snap-align: start"
@@ -160,124 +139,56 @@
                 </p>
               </div>
 
-              <div class="card-elevated p-8">
-                <h3 class="text-2xl font-bold mb-6 text-text-primary">
-                  Technical Skills
-                </h3>
-                <div class="space-y-6">
-                  <div>
-                    <h4 class="text-lg font-semibold text-accent-400 mb-3">
-                      Frontend Development
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Vue.js</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Nuxt.js</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >TypeScript</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >JavaScript</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >HTML/CSS</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Tailwind CSS</span
-                      >
+              <div class="scene">
+                <div class="cube">
+                  <div class="face front">
+                    <div class="tech-content">
+                      <h3>Frontend</h3>
+                      <ul>
+                        <li>Vue.js</li>
+                        <li>Nuxt.js</li>
+                        <li>TypeScript</li>
+                        <li>JavaScript</li>
+                        <li>HTML/CSS</li>
+                        <li>Tailwind CSS</li>
+                      </ul>
                     </div>
                   </div>
-
-                  <div>
-                    <h4 class="text-lg font-semibold text-accent-400 mb-3">
-                      Backend Development
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Python</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >FastAPI</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >REST APIs</span
-                      >
+                  <div class="face back">
+                    <div class="tech-content">
+                      <h3>Backend</h3>
+                      <ul>
+                        <li>Python</li>
+                        <li>FastAPI</li>
+                        <li>REST APIs</li>
+                      </ul>
+                      <br />
+                      <h3>Database</h3>
+                      <ul>
+                        <li>PostgreSQL</li>
+                        <li>SQLite</li>
+                      </ul>
                     </div>
                   </div>
-
-                  <div>
-                    <h4 class="text-lg font-semibold text-accent-400 mb-3">
-                      Database & ORM
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >PostgreSQL</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >SQLite</span
-                      >
-                    </div>
+                  <div class="face left">
+                    <div class="tech-content"></div>
                   </div>
-
-                  <div>
-                    <h4 class="text-lg font-semibold text-accent-400 mb-3">
-                      DevOps & Cloud
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Docker</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >AWS</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Terraform</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >CI/CD</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Git</span
-                      >
-                    </div>
+                  <div class="face right">
+                    <div class="tech-content"></div>
                   </div>
-
-                  <div>
-                    <h4 class="text-lg font-semibold text-accent-400 mb-3">
-                      Other Technologies
-                    </h4>
-                    <div class="flex flex-wrap gap-2">
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Flutter</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >Unity</span
-                      >
-                      <span
-                        class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                        >C#</span
-                      >
+                  <div class="face top">
+                    <div class="tech-content"></div>
+                  </div>
+                  <div class="face bottom">
+                    <div class="tech-content">
+                      <h3>DevOps</h3>
+                      <ul>
+                        <li>Docker</li>
+                        <li>AWS</li>
+                        <li>Terraform</li>
+                        <li>CI/CD</li>
+                        <li>Git</li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -857,7 +768,7 @@ const closeImageModal = () => {
 
 let isScrolling = false;
 let currentSectionIndex = 0;
-const sections = ["home", "test", "about", "experience", "projects", "contact"];
+const sections = ["home", "about", "experience", "projects", "contact"];
 
 const handleWheel = (e) => {
   e.preventDefault();
@@ -905,8 +816,8 @@ onUnmounted(() => {
 
 <style scoped>
 .scene {
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 400px;
   perspective: 1000px;
   margin: 30px auto;
 }
@@ -915,15 +826,43 @@ onUnmounted(() => {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(59, 130, 246, 0.2);
-  border: 2px solid rgba(59, 130, 246, 0.5);
+  background-color: rgba(59, 130, 246, 0.05);
+  border: 2px solid rgba(59, 130, 246, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: bold;
-  color: rgba(59, 130, 246, 0.8);
-  font-size: 14px;
   backdrop-filter: blur(5px);
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.tech-content {
+  text-align: center;
+  color: rgba(59, 130, 246, 0.9);
+  width: 100%;
+}
+
+.tech-content h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: rgba(59, 130, 246, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.tech-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tech-content li {
+  font-size: 20px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  opacity: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .cube {
@@ -935,30 +874,30 @@ onUnmounted(() => {
 }
 
 .cube:hover {
-  transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.5) scaleX(1.5) scaleY(1.5);
+  transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
 }
 
 .front {
-  transform: rotateY(0deg) translateZ(150px);
+  transform: rotateY(0deg) translateZ(200px);
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(150px);
+  transform: rotateY(180deg) translateZ(200px);
 }
 
 .left {
-  transform: rotateY(-90deg) translateZ(150px);
+  transform: rotateY(-90deg) translateZ(200px);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(150px);
+  transform: rotateY(90deg) translateZ(200px);
 }
 
 .top {
-  transform: rotateX(90deg) translateZ(150px);
+  transform: rotateX(90deg) translateZ(200px);
 }
 
 .bottom {
-  transform: rotateX(-90deg) translateZ(150px) rotateZ(180deg);
+  transform: rotateX(-90deg) translateZ(200px) rotateZ(180deg);
 }
 </style>
