@@ -110,6 +110,7 @@
               I am passionate about learning new technologies and building
               efficient solutions
             </p>
+            <!--
             <div
               class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
               style="animation-delay: 0.8s"
@@ -126,7 +127,7 @@
               <button class="btn-secondary text-lg px-8 py-3">
                 Download CV
               </button>
-            </div>
+            </div>-->
           </div>
         </div>
       </section>
@@ -136,7 +137,7 @@
         class="h-screen modern-section flex items-center"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 -mt-10">
           <div class="max-w-6xl mx-auto">
             <h2
               class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
@@ -230,7 +231,7 @@
         class="h-screen modern-section flex items-center"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 -mt-10">
           <div class="max-w-4xl mx-auto">
             <h2
               class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
@@ -314,7 +315,7 @@
         class="h-screen modern-section flex items-center transition-all duration-800 ease-out"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4">
+        <div class="container mx-auto px-4 -mt-10">
           <h2
             class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
           >
@@ -412,7 +413,7 @@
         class="h-screen modern-section flex flex-col justify-center"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 flex-1 flex items-center">
+        <div class="container mx-auto px-4 flex-1 flex items-center -mt-10">
           <div class="max-w-2xl mx-auto text-center">
             <h2
               class="section-title font-bold mb-12 gradient-text animate-slide-up"
@@ -451,17 +452,6 @@
         </footer>
       </section>
     </main>
-
-    <!-- Modern Scroll Indicator -->
-    <div class="scroll-indicator">
-      <div
-        v-for="(section, index) in sections"
-        :key="section"
-        class="scroll-dot"
-        :class="{ active: currentSectionIndex === index }"
-        @click="scrollToSection(index)"
-      ></div>
-    </div>
 
     <div
       v-if="selectedProject !== null"
