@@ -315,93 +315,162 @@
         class="h-screen modern-section flex items-center transition-all duration-800 ease-out"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 -mt-10">
-          <h2
-            class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+        <div class="container mx-auto px-4 -mt-32">
+          <div
+            class="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto h-[700px] items-start"
           >
-            My Projects
-          </h2>
-          <div class="grid md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-              @click="toggleProject(0)"
-            >
-              <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
+            <div class="flex flex-col h-full justify-start">
+              <h2
+                class="section-title font-bold gradient-text animate-slide-up text-center mt-16"
               >
-                <img
-                  src="/images/UnfallApp.png"
-                  alt="Accident App Screenshot"
-                  class="w-full h-full object-cover transition-transform duration-300"
-                />
-              </div>
-              <h3 class="text-xl font-bold mb-3 text-text-primary">
-                Accident App
-              </h3>
-              <p class="text-text-secondary mb-4 text-base">
-                A mobile application built with Flutter for accident reporting
-                and management, featuring intuitive UI design and real-time data
-                synchronization.
-              </p>
-              <div class="flex gap-2">
-                <span class="tech-tag">Flutter</span>
-                <span class="tech-tag">Dart</span>
-                <span class="tech-tag">Mobile</span>
+                My Projects
+              </h2>
+
+              <div class="space-y-3 pr-4 flex-1 flex flex-col justify-center">
+                <div
+                  v-for="(project, index) in projectData"
+                  :key="index"
+                  class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+                  :class="{
+                    'ring-2 ring-accent-400 bg-accent-600/10':
+                      selectedProject === index,
+                  }"
+                  @click="selectProject(index)"
+                >
+                  <div class="flex gap-4 p-4">
+                    <div class="flex-shrink-0">
+                      <div
+                        class="w-24 h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
+                      >
+                        <img
+                          :src="project.image"
+                          :alt="project.title + ' Screenshot'"
+                          class="w-full h-full object-cover transition-transform duration-300"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="flex-1 min-w-0">
+                      <h3
+                        class="text-lg font-bold mb-2 text-text-primary truncate"
+                      >
+                        {{ project.title }}
+                      </h3>
+                      <p class="text-text-secondary mb-3 text-sm line-clamp-2">
+                        {{ project.description }}
+                      </p>
+                      <div class="flex gap-1 flex-wrap">
+                        <span
+                          v-for="tech in project.technologies"
+                          :key="tech"
+                          class="tech-tag text-xs px-2 py-1"
+                        >
+                          {{ tech }}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
             <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-              @click="toggleProject(1)"
+              class="bg-background-secondary border border-border-primary rounded-xl p-6 h-full flex flex-col justify-center"
             >
-              <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
-              >
-                <img
-                  src="/images/BilliardGame.png"
-                  alt="Billiard Game Screenshot"
-                  class="w-full h-full object-cover transition-transform duration-300"
-                />
-              </div>
-              <h3 class="text-xl font-bold mb-3 text-text-primary">
-                Billiard Game
-              </h3>
-              <p class="text-text-secondary mb-4 text-base">
-                A 3D billiard game developed in Unity with realistic physics,
-                multiplayer support, and immersive gameplay mechanics.
-              </p>
-              <div class="flex gap-2">
-                <span class="tech-tag">Unity</span>
-                <span class="tech-tag">C#</span>
-                <span class="tech-tag">3D Game</span>
-              </div>
-            </div>
+              <div class="animate-fade-in flex flex-col justify-center h-full">
+                <div
+                  class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
+                  @click="openImageModal"
+                  @mouseenter="showZoomIcon = true"
+                  @mouseleave="showZoomIcon = false"
+                >
+                  <img
+                    :src="projectData[selectedProject]?.image"
+                    :alt="projectData[selectedProject]?.title + ' Screenshot'"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div
+                    v-if="showZoomIcon"
+                    class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white transition-opacity duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                      ></path>
+                    </svg>
+                  </div>
+                </div>
 
-            <div
-              class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-              @click="toggleProject(2)"
-            >
-              <div
-                class="aspect-video bg-background-tertiary rounded-lg mb-3 flex items-center justify-center overflow-hidden image-hover"
-              >
-                <img
-                  src="/images/HardwareManager.png"
-                  alt="Hardware Management Screenshot"
-                  class="w-full h-full object-cover transition-transform duration-300"
-                />
-              </div>
-              <h3 class="text-xl font-bold mb-3 text-text-primary">
-                Hardware Management
-              </h3>
-              <p class="text-text-secondary mb-4 text-base">
-                A comprehensive hardware management system built with FastAPI,
-                featuring inventory tracking, device monitoring, and automated
-                maintenance scheduling.
-              </p>
-              <div class="flex gap-2">
-                <span class="tech-tag">FastAPI</span>
-                <span class="tech-tag">Python</span>
-                <span class="tech-tag">PostgreSQL</span>
+                <h2
+                  class="text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
+                >
+                  {{ projectData[selectedProject]?.title }}
+                </h2>
+
+                <p
+                  class="text-text-secondary mb-4 text-base flex-shrink-0 line-clamp-2"
+                >
+                  {{ projectData[selectedProject]?.description }}
+                </p>
+
+                <div class="grid grid-cols-2 gap-6 mb-4 flex-1 min-h-0">
+                  <div class="flex-1 min-h-0">
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">
+                      Features
+                    </h3>
+                    <ul class="text-text-secondary space-y-1 text-sm">
+                      <li
+                        v-for="feature in projectData[selectedProject]
+                          ?.features"
+                        :key="feature"
+                        class="flex items-start"
+                      >
+                        <span class="text-accent-400 mr-2 mt-1">•</span>
+                        <span>{{ feature }}</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div class="flex-1 min-h-0">
+                    <h3 class="text-lg font-semibold text-text-primary mb-2">
+                      Technical Details
+                    </h3>
+                    <ul class="text-text-secondary space-y-1 text-sm">
+                      <li
+                        v-for="detail in projectData[selectedProject]
+                          ?.technicalDetails"
+                        :key="detail"
+                        class="flex items-start"
+                      >
+                        <span class="text-accent-400 mr-2 mt-1">•</span>
+                        <span>{{ detail }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="mb-4 flex-shrink-0">
+                  <h3 class="text-lg font-semibold text-text-primary mb-2">
+                    Technologies
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      v-for="tech in projectData[selectedProject]?.technologies"
+                      :key="tech"
+                      class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
+                    >
+                      {{ tech }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -453,126 +522,6 @@
       </section>
     </main>
 
-    <div
-      v-if="selectedProject !== null"
-      class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
-      @click="closeModal"
-    >
-      <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-
-      <div
-        class="relative bg-background-secondary border border-border-primary rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto animate-fade-in"
-        @click.stop
-      >
-        <button
-          @click="closeModal"
-          class="absolute top-4 right-4 text-text-secondary hover:text-text-primary transition-colors"
-        >
-          <svg
-            class="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        </button>
-
-        <div
-          class="aspect-video bg-background-tertiary rounded-lg mb-6 overflow-hidden cursor-pointer relative"
-          @click="openImageModal"
-          @mouseenter="showZoomIcon = true"
-          @mouseleave="showZoomIcon = false"
-        >
-          <img
-            :src="projectData[selectedProject]?.image"
-            :alt="projectData[selectedProject]?.title + ' Screenshot'"
-            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-          />
-          <div
-            v-if="showZoomIcon"
-            class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
-          >
-            <svg
-              class="w-8 h-8 text-white transition-opacity duration-300"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-              ></path>
-            </svg>
-          </div>
-        </div>
-
-        <h2 class="text-3xl font-bold text-text-primary mb-4">
-          {{ projectData[selectedProject]?.title }}
-        </h2>
-
-        <p class="text-text-secondary mb-6 text-lg">
-          {{ projectData[selectedProject]?.description }}
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <h3 class="text-xl font-semibold text-text-primary mb-3">
-              Features
-            </h3>
-            <ul class="text-text-secondary space-y-2">
-              <li
-                v-for="feature in projectData[selectedProject]?.features"
-                :key="feature"
-                class="flex items-start"
-              >
-                <span class="text-accent-400 mr-2 mt-1">•</span>
-                <span>{{ feature }}</span>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 class="text-xl font-semibold text-text-primary mb-3">
-              Technical Details
-            </h3>
-            <ul class="text-text-secondary space-y-2">
-              <li
-                v-for="detail in projectData[selectedProject]?.technicalDetails"
-                :key="detail"
-                class="flex items-start"
-              >
-                <span class="text-accent-400 mr-2 mt-1">•</span>
-                <span>{{ detail }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="mb-6">
-          <h3 class="text-xl font-semibold text-text-primary mb-3">
-            Technologies
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span
-              v-for="tech in projectData[selectedProject]?.technologies"
-              :key="tech"
-              class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-            >
-              {{ tech }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Image Modal -->
     <div
       v-if="imageModalOpen"
@@ -623,7 +572,7 @@ const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref(null);
 const isHoveringTarget = ref(false);
 const animateName = ref(false);
-const selectedProject = ref(null);
+const selectedProject = ref(0); // Default to first project
 const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
 
@@ -770,14 +719,8 @@ const sendEmail = () => {
   window.open(mailtoLink, "_blank");
 };
 
-const toggleProject = (index) => {
+const selectProject = (index) => {
   selectedProject.value = index;
-  document.body.style.overflow = "hidden";
-};
-
-const closeModal = () => {
-  selectedProject.value = null;
-  document.body.style.overflow = "auto";
 };
 
 const openImageModal = () => {
