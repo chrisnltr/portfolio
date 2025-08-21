@@ -321,7 +321,7 @@
           >
             <div class="flex flex-col h-full justify-start">
               <h2
-                class="section-title font-bold gradient-text animate-slide-up text-center mt-16"
+                class="section-title font-bold gradient-text animate-slide-up text-center mt-12 -mb-12"
               >
                 My Projects
               </h2>
