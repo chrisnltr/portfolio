@@ -354,7 +354,7 @@
                          class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
                        >
                         <img
-                          :src="project.image"
+                          :src="project.images[0]"
                           :alt="project.title + ' Screenshot'"
                           class="w-full h-full object-cover transition-transform duration-300"
                         />
@@ -389,36 +389,64 @@
                class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
              >
               <div class="animate-fade-in flex flex-col justify-start h-full">
-                <div
-                  class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
-                  @click="openImageModal"
-                  @mouseenter="showZoomIcon = true"
-                  @mouseleave="showZoomIcon = false"
-                >
-                  <img
-                    :src="projectData[selectedProject]?.image"
-                    :alt="projectData[selectedProject]?.title + ' Screenshot'"
-                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
-                  <div
-                    v-if="showZoomIcon"
-                    class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
-                  >
-                    <svg
-                      class="w-8 h-8 text-white transition-opacity duration-300"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                      ></path>
-                    </svg>
-                  </div>
-                </div>
+                                 <div
+                   class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
+                   @click="openImageModal"
+                   @mouseenter="showZoomIcon = true"
+                   @mouseleave="showZoomIcon = false"
+                 >
+                   <img
+                     :src="projectData[selectedProject]?.images[selectedImageIndex]"
+                     :alt="projectData[selectedProject]?.title + ' Screenshot'"
+                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                   />
+                   
+                                       <!-- Navigation Arrows -->
+                    <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute inset-0 flex items-center justify-between p-2 pointer-events-none">
+                      <button
+                        @click.stop="previousImage"
+                        class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+                        :class="{ 'opacity-50': selectedImageIndex === 0 }"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                      </button>
+                      <button
+                        @click.stop="nextImage"
+                        class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+                        :class="{ 'opacity-50': selectedImageIndex === projectData[selectedProject]?.images.length - 1 }"
+                      >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                      </button>
+                    </div>
+                   
+                   <!-- Image Counter -->
+                   <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
+                     {{ selectedImageIndex + 1 }} / {{ projectData[selectedProject]?.images.length }}
+                   </div>
+                   
+                   <div
+                     v-if="showZoomIcon"
+                     class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
+                   >
+                     <svg
+                       class="w-8 h-8 text-white transition-opacity duration-300"
+                       fill="none"
+                       stroke="currentColor"
+                       viewBox="0 0 24 24"
+                     >
+                       <path
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         stroke-width="2"
+                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                       ></path>
+                     </svg>
+                   </div>
+                 </div>
 
                                  <h2
                    class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
@@ -533,37 +561,64 @@
     >
       <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
 
-      <div
-        class="relative max-w-[95vw] max-h-[95vh] animate-fade-in"
-        @click.stop
-      >
-        <!-- Close Button -->
-        <button
-          @click="closeImageModal"
-          class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
-        >
-          <svg
-            class="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        </button>
+             <div
+         class="relative max-w-[95vw] max-h-[95vh] animate-fade-in"
+         @click.stop
+       >
+         <!-- Close Button -->
+         <button
+           @click="closeImageModal"
+           class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+         >
+           <svg
+             class="w-8 h-8"
+             fill="none"
+             stroke="currentColor"
+             viewBox="0 0 24 24"
+           >
+             <path
+               stroke-linecap="round"
+               stroke-linejoin="round"
+               stroke-width="2"
+               d="M6 18L18 6M6 6l12 12"
+             ></path>
+           </svg>
+         </button>
 
-        <!-- Image -->
-        <img
-          :src="projectData[selectedProject]?.image"
-          :alt="projectData[selectedProject]?.title + ' Screenshot'"
-          class="w-full h-full object-contain rounded-lg shadow-2xl"
-        />
-      </div>
+                   <!-- Navigation Arrows for Modal -->
+          <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
+            <button
+              @click.stop="previousImage"
+              class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+              :class="{ 'opacity-50': selectedImageIndex === 0 }"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+              </svg>
+            </button>
+            <button
+              @click.stop="nextImage"
+              class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+              :class="{ 'opacity-50': selectedImageIndex === projectData[selectedProject]?.images.length - 1 }"
+            >
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+
+         <!-- Image Counter for Modal -->
+         <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none">
+           {{ selectedImageIndex + 1 }} / {{ projectData[selectedProject]?.images.length }}
+         </div>
+
+         <!-- Image -->
+         <img
+           :src="projectData[selectedProject]?.images[selectedImageIndex]"
+           :alt="projectData[selectedProject]?.title + ' Screenshot'"
+           class="w-full h-full object-contain rounded-lg shadow-2xl"
+         />
+       </div>
     </div>
   </div>
 </template>
@@ -576,6 +631,7 @@ const cursorFollower = ref(null);
 const isHoveringTarget = ref(false);
 const animateName = ref(false);
 const selectedProject = ref(0); // Default to first project
+const selectedImageIndex = ref(0); // Default to first image
 const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
 const mobileMenuOpen = ref(false);
@@ -585,7 +641,11 @@ const projectData = ref([
     title: "Accident App",
     description:
       "A mobile application built with Flutter for accident reporting and management, featuring intuitive UI design and real-time data synchronization.",
-    image: "/images/UnfallApp.png",
+    images: [
+      "/images/UnfallApp.png",
+      "/images/UnfallApp.png",
+      "/images/UnfallApp.png",
+    ],
     features: [
       "Real-time accident reporting",
       "GPS location tracking",
@@ -606,7 +666,11 @@ const projectData = ref([
     title: "Billiard Game",
     description:
       "A 3D billiard game developed in Unity with realistic physics, multiplayer support, and immersive gameplay mechanics.",
-    image: "/images/BilliardGame.png",
+    images: [
+      "/images/BilliardGame.png",
+      "/images/BilliardGame.png",
+      "/images/BilliardGame.png",
+    ],
     features: [
       "Realistic 3D physics simulation",
       "Multiplayer support (local & online)",
@@ -627,7 +691,11 @@ const projectData = ref([
     title: "Hardware Management",
     description:
       "A comprehensive hardware management system built with FastAPI, featuring inventory tracking, device monitoring, and automated maintenance scheduling.",
-    image: "/images/HardwareManager.png",
+    images: [
+      "/images/HardwareManager.png",
+      "/images/HardwareManager.png",
+      "/images/HardwareManager.png",
+    ],
     features: [
       "Real-time inventory tracking",
       "Device health monitoring",
@@ -725,6 +793,20 @@ const sendEmail = () => {
 
 const selectProject = (index) => {
   selectedProject.value = index;
+  selectedImageIndex.value = 0;
+};
+
+const nextImage = () => {
+  const currentProject = projectData.value[selectedProject.value];
+  if (currentProject && selectedImageIndex.value < currentProject.images.length - 1) {
+    selectedImageIndex.value++;
+  }
+};
+
+const previousImage = () => {
+  if (selectedImageIndex.value > 0) {
+    selectedImageIndex.value--;
+  }
 };
 
 const openImageModal = () => {
