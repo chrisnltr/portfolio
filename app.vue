@@ -328,7 +328,7 @@
       >
         <div class="container mx-auto px-4">
           <div
-            class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:h-[700px] items-start"
+            class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start"
           >
             <div class="flex flex-col h-full justify-start">
               <h2
@@ -337,7 +337,7 @@
                 My Projects
               </h2>
 
-              <div class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-center">
+              <div class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start">
                 <div
                   v-for="(project, index) in projectData"
                   :key="index"
@@ -386,9 +386,9 @@
             </div>
 
                          <div
-               class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-center"
+               class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
              >
-              <div class="animate-fade-in flex flex-col justify-center h-full">
+              <div class="animate-fade-in flex flex-col justify-start h-full">
                 <div
                   class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
                   @click="openImageModal"
@@ -432,7 +432,7 @@
                    {{ projectData[selectedProject]?.description }}
                  </p>
 
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 flex-1 min-h-0">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 flex-1 min-h-0 overflow-y-auto">
                                      <div class="flex-1 min-h-0">
                      <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
                        Features
