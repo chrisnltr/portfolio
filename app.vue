@@ -510,15 +510,7 @@
           </div>
         </div>
 
-        <footer
-          class="bg-background-primary border-t border-border-primary py-8"
-        >
-          <div class="container mx-auto px-4 text-center">
-            <p class="text-text-secondary">
-              © 2025 My Portfolio. Built with ❤️ using Nuxt.js and Tailwind CSS.
-            </p>
-          </div>
-        </footer>
+
       </section>
     </main>
 
