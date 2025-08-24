@@ -34,7 +34,7 @@
     <header class="fixed top-0 left-0 right-0 z-50 glass-header">
       <div class="container mx-auto px-4 py-4">
         <nav class="flex items-center justify-between">
-          <div class="text-2xl font-bold gradient-text">My Portfolio</div>
+          <div class="text-xl md:text-2xl font-bold gradient-text">My Portfolio</div>
           <div class="hidden md:flex items-center space-x-8">
             <a href="#home" class="link cursor-glow">Home</a>
             <a href="#about" class="link cursor-glow">About</a>
@@ -42,7 +42,7 @@
             <a href="#projects" class="link cursor-glow">Projects</a>
             <a href="#contact" class="link cursor-glow">Contact</a>
           </div>
-          <button class="md:hidden btn-ghost">
+          <button class="md:hidden btn-ghost" @click="toggleMobileMenu">
             <svg
               class="w-6 h-6"
               fill="none"
@@ -58,58 +58,69 @@
             </svg>
           </button>
         </nav>
+        
+        <!-- Mobile Menu -->
+        <div v-if="mobileMenuOpen" class="md:hidden mt-4 pb-4 border-t border-border-primary">
+          <div class="flex flex-col space-y-4 pt-4">
+            <a href="#home" class="link cursor-glow text-lg" @click="closeMobileMenu">Home</a>
+            <a href="#about" class="link cursor-glow text-lg" @click="closeMobileMenu">About</a>
+            <a href="#experience" class="link cursor-glow text-lg" @click="closeMobileMenu">Experience</a>
+            <a href="#projects" class="link cursor-glow text-lg" @click="closeMobileMenu">Projects</a>
+            <a href="#contact" class="link cursor-glow text-lg" @click="closeMobileMenu">Contact</a>
+          </div>
+        </div>
       </div>
     </header>
 
     <main class="pt-20">
-      <section
-        id="home"
-        class="min-h-screen flex items-center justify-center animated-bg"
-        style="scroll-snap-align: start"
-      >
-        <div class="container mx-auto px-4 text-center -mt-20">
-          <div class="animate-fade-in">
-            <h1
-              class="hero-title gradient-text animate-slide-up"
-              style="
-                font-weight: 600;
-                background-size: 200% 200%;
-                animation: gradientShift 3s ease-in-out infinite;
-              "
-            >
-              Hey, I'm
-            </h1>
-            <h1 class="hero-title" style="font-weight: 600">
-              <span
-                class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
-                style="animation-delay: 0.2s"
-                @mouseenter="animateName = true"
-                @mouseleave="animateName = false"
-              >
-                <span :class="[animateName ? 'animate-bounce' : '']">
-                  Chris Leon Noltemeier
-                </span>
-              </span>
-            </h1>
-            <h1
-              class="hero-title gradient-text mt-2 animate-slide-up"
-              style="
-                animation-delay: 0.4s;
-                font-weight: 600;
-                background-size: 200% 200%;
-                animation: gradientShift 3s ease-in-out infinite;
-              "
-            >
-              Full-Stack Developer
-            </h1>
-            <br />
-            <p
-              class="text-xl md:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up"
-              style="animation-delay: 0.6s"
-            >
-              I am passionate about learning new technologies and building
-              efficient solutions
-            </p>
+             <section
+         id="home"
+         class="min-h-screen flex items-center justify-center animated-bg px-4"
+         style="scroll-snap-align: start"
+       >
+         <div class="container mx-auto text-center -mt-20">
+           <div class="animate-fade-in">
+             <h1
+               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
+               style="
+                 font-weight: 600;
+                 background-size: 200% 200%;
+                 animation: gradientShift 3s ease-in-out infinite;
+               "
+             >
+               Hey, I'm
+             </h1>
+             <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold" style="font-weight: 600">
+               <span
+                 class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
+                 style="animation-delay: 0.2s"
+                 @mouseenter="animateName = true"
+                 @mouseleave="animateName = false"
+               >
+                 <span :class="[animateName ? 'animate-bounce' : '']">
+                   Chris Leon Noltemeier
+                 </span>
+               </span>
+             </h1>
+             <h1
+               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text mt-2 animate-slide-up"
+               style="
+                 animation-delay: 0.4s;
+                 font-weight: 600;
+                 background-size: 200% 200%;
+                 animation: gradientShift 3s ease-in-out infinite;
+               "
+             >
+               Full-Stack Developer
+             </h1>
+             <br />
+             <p
+               class="text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up px-4"
+               style="animation-delay: 0.6s"
+             >
+               I am passionate about learning new technologies and building
+               efficient solutions
+             </p>
             <!--
             <div
               class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
@@ -134,18 +145,18 @@
 
       <section
         id="about"
-        class="h-screen modern-section flex items-center"
+        class="min-h-screen modern-section flex items-center py-8"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 -mt-10">
+        <div class="container mx-auto px-4">
           <div class="max-w-6xl mx-auto">
             <h2
-              class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+              class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 gradient-text animate-slide-up"
             >
               About Me
             </h2>
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-              <div class="space-y-6 animate-slide-left">
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+              <div class="space-y-4 md:space-y-6 animate-slide-left order-2 md:order-1">
                 <p class="text-lg text-text-secondary leading-relaxed">
                   I’m Chris Leon Noltemeier, a full-stack developer passionate
                   about creating efficient, user-friendly applications that
@@ -228,20 +239,20 @@
 
       <section
         id="experience"
-        class="h-screen modern-section flex items-center"
+        class="min-h-screen modern-section flex items-center py-8"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 -mt-10">
+        <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto">
             <h2
-              class="section-title font-bold text-center mb-12 gradient-text animate-slide-up"
+              class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 gradient-text animate-slide-up"
             >
               Experience & Education
             </h2>
             <div class="space-y-8">
               <!-- Work Experience -->
-              <div class="card-elevated p-8">
-                <h3 class="text-2xl font-bold mb-6 text-text-primary">
+              <div class="card-elevated p-4 md:p-8">
+                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary">
                   Work Experience
                 </h3>
                 <div class="space-y-6">
@@ -265,8 +276,8 @@
               </div>
 
               <!-- Education -->
-              <div class="card-elevated p-8">
-                <h3 class="text-2xl font-bold mb-6 text-text-primary">
+              <div class="card-elevated p-4 md:p-8">
+                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary">
                   Education
                 </h3>
                 <div class="space-y-6">
@@ -312,21 +323,21 @@
 
       <section
         id="projects"
-        class="h-screen modern-section flex items-center transition-all duration-800 ease-out"
+        class="min-h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 -mt-32">
+        <div class="container mx-auto px-4">
           <div
-            class="grid md:grid-cols-2 gap-8 max-w-7xl mx-auto h-[700px] items-start"
+            class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:h-[700px] items-start"
           >
             <div class="flex flex-col h-full justify-start">
               <h2
-                class="section-title font-bold gradient-text animate-slide-up text-center mt-12 -mb-12"
+                class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8"
               >
                 My Projects
               </h2>
 
-              <div class="space-y-3 pr-4 flex-1 flex flex-col justify-center">
+              <div class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-center">
                 <div
                   v-for="(project, index) in projectData"
                   :key="index"
@@ -337,11 +348,11 @@
                   }"
                   @click="selectProject(index)"
                 >
-                  <div class="flex gap-4 p-4">
-                    <div class="flex-shrink-0">
-                      <div
-                        class="w-24 h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
-                      >
+                                     <div class="flex gap-3 md:gap-4 p-3 md:p-4">
+                     <div class="flex-shrink-0">
+                       <div
+                         class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
+                       >
                         <img
                           :src="project.image"
                           :alt="project.title + ' Screenshot'"
@@ -351,14 +362,14 @@
                     </div>
 
                     <div class="flex-1 min-w-0">
-                      <h3
-                        class="text-lg font-bold mb-2 text-text-primary truncate"
-                      >
-                        {{ project.title }}
-                      </h3>
-                      <p class="text-text-secondary mb-3 text-sm line-clamp-2">
-                        {{ project.description }}
-                      </p>
+                                             <h3
+                         class="text-base md:text-lg font-bold mb-2 text-text-primary truncate"
+                       >
+                         {{ project.title }}
+                       </h3>
+                       <p class="text-text-secondary mb-3 text-xs md:text-sm line-clamp-2">
+                         {{ project.description }}
+                       </p>
                       <div class="flex gap-1 flex-wrap">
                         <span
                           v-for="tech in project.technologies"
@@ -374,9 +385,9 @@
               </div>
             </div>
 
-            <div
-              class="bg-background-secondary border border-border-primary rounded-xl p-6 h-full flex flex-col justify-center"
-            >
+                         <div
+               class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-center"
+             >
               <div class="animate-fade-in flex flex-col justify-center h-full">
                 <div
                   class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
@@ -409,24 +420,24 @@
                   </div>
                 </div>
 
-                <h2
-                  class="text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
-                >
-                  {{ projectData[selectedProject]?.title }}
-                </h2>
+                                 <h2
+                   class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
+                 >
+                   {{ projectData[selectedProject]?.title }}
+                 </h2>
 
-                <p
-                  class="text-text-secondary mb-4 text-base flex-shrink-0 line-clamp-2"
-                >
-                  {{ projectData[selectedProject]?.description }}
-                </p>
+                 <p
+                   class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2"
+                 >
+                   {{ projectData[selectedProject]?.description }}
+                 </p>
 
-                <div class="grid grid-cols-2 gap-6 mb-4 flex-1 min-h-0">
-                  <div class="flex-1 min-h-0">
-                    <h3 class="text-lg font-semibold text-text-primary mb-2">
-                      Features
-                    </h3>
-                    <ul class="text-text-secondary space-y-1 text-sm">
+                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 flex-1 min-h-0">
+                                     <div class="flex-1 min-h-0">
+                     <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
+                       Features
+                     </h3>
+                     <ul class="text-text-secondary space-y-1 text-xs md:text-sm">
                       <li
                         v-for="feature in projectData[selectedProject]
                           ?.features"
@@ -439,11 +450,11 @@
                     </ul>
                   </div>
 
-                  <div class="flex-1 min-h-0">
-                    <h3 class="text-lg font-semibold text-text-primary mb-2">
-                      Technical Details
-                    </h3>
-                    <ul class="text-text-secondary space-y-1 text-sm">
+                                     <div class="flex-1 min-h-0">
+                     <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
+                       Technical Details
+                     </h3>
+                     <ul class="text-text-secondary space-y-1 text-xs md:text-sm">
                       <li
                         v-for="detail in projectData[selectedProject]
                           ?.technicalDetails"
@@ -457,20 +468,20 @@
                   </div>
                 </div>
 
-                <div class="mb-4 flex-shrink-0">
-                  <h3 class="text-lg font-semibold text-text-primary mb-2">
-                    Technologies
-                  </h3>
-                  <div class="flex flex-wrap gap-2">
-                    <span
-                      v-for="tech in projectData[selectedProject]?.technologies"
-                      :key="tech"
-                      class="px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-sm"
-                    >
-                      {{ tech }}
-                    </span>
-                  </div>
-                </div>
+                                 <div class="mb-4 flex-shrink-0">
+                   <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
+                     Technologies
+                   </h3>
+                   <div class="flex flex-wrap gap-1 md:gap-2">
+                     <span
+                       v-for="tech in projectData[selectedProject]?.technologies"
+                       :key="tech"
+                       class="px-2 md:px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-xs md:text-sm"
+                     >
+                       {{ tech }}
+                     </span>
+                   </div>
+                 </div>
               </div>
             </div>
           </div>
@@ -479,23 +490,23 @@
 
       <section
         id="contact"
-        class="h-screen modern-section flex flex-col justify-center"
+        class="min-h-screen modern-section flex flex-col justify-center py-8"
         style="scroll-snap-align: start"
       >
-        <div class="container mx-auto px-4 flex-1 flex items-center -mt-10">
+        <div class="container mx-auto px-4 flex-1 flex items-center">
           <div class="max-w-2xl mx-auto text-center">
             <h2
-              class="section-title font-bold mb-12 gradient-text animate-slide-up"
+              class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 gradient-text animate-slide-up"
             >
               Get In Touch
             </h2>
-            <p class="text-lg text-text-secondary mb-8">
+            <p class="text-base md:text-lg text-text-secondary mb-6 md:mb-8 px-4">
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
             </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
               <button
-                class="btn-primary text-lg px-8 py-3 group relative overflow-hidden"
+                class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
                 @click="sendEmail"
               >
                 <span class="relative z-10">Send Message</span>
@@ -503,7 +514,7 @@
                   class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
                 ></div>
               </button>
-              <button class="btn-secondary text-lg px-8 py-3">
+              <button class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3">
                 View Resume
               </button>
             </div>
@@ -567,6 +578,7 @@ const animateName = ref(false);
 const selectedProject = ref(0); // Default to first project
 const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
+const mobileMenuOpen = ref(false);
 
 const projectData = ref([
   {
@@ -723,6 +735,14 @@ const closeImageModal = () => {
   imageModalOpen.value = false;
 };
 
+const toggleMobileMenu = () => {
+  mobileMenuOpen.value = !mobileMenuOpen.value;
+};
+
+const closeMobileMenu = () => {
+  mobileMenuOpen.value = false;
+};
+
 let isScrolling = false;
 let currentSectionIndex = 0;
 const sections = ["home", "about", "experience", "projects", "contact"];
@@ -773,10 +793,18 @@ onUnmounted(() => {
 
 <style scoped>
 .scene {
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   perspective: 1000px;
-  margin: 30px auto;
+  margin: 20px auto;
+}
+
+@media (min-width: 768px) {
+  .scene {
+    width: 400px;
+    height: 400px;
+    margin: 30px auto;
+  }
 }
 
 .face {
@@ -800,12 +828,19 @@ onUnmounted(() => {
 }
 
 .tech-content h3 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   color: rgba(59, 130, 246, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+@media (min-width: 768px) {
+  .tech-content h3 {
+    font-size: 24px;
+    margin-bottom: 15px;
+  }
 }
 
 .tech-content ul {
@@ -815,11 +850,18 @@ onUnmounted(() => {
 }
 
 .tech-content li {
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: 16px;
+  margin-bottom: 8px;
   font-weight: 600;
   opacity: 1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+  .tech-content li {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
 }
 
 .cube {
@@ -835,26 +877,52 @@ onUnmounted(() => {
 }
 
 .front {
-  transform: rotateY(0deg) translateZ(200px);
+  transform: rotateY(0deg) translateZ(150px);
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(200px);
+  transform: rotateY(180deg) translateZ(150px);
 }
 
 .left {
-  transform: rotateY(-90deg) translateZ(200px);
+  transform: rotateY(-90deg) translateZ(150px);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(200px);
+  transform: rotateY(90deg) translateZ(150px);
 }
 
 .top {
-  transform: rotateX(90deg) translateZ(200px);
+  transform: rotateX(90deg) translateZ(150px);
 }
 
 .bottom {
-  transform: rotateX(-90deg) translateZ(200px) rotateZ(180deg);
+  transform: rotateX(-90deg) translateZ(150px) rotateZ(180deg);
+}
+
+@media (min-width: 768px) {
+  .front {
+    transform: rotateY(0deg) translateZ(200px);
+  }
+
+  .back {
+    transform: rotateY(180deg) translateZ(200px);
+  }
+
+  .left {
+    transform: rotateY(-90deg) translateZ(200px);
+  }
+
+  .right {
+    transform: rotateY(90deg) translateZ(200px);
+  }
+
+  .top {
+    transform: rotateX(90deg) translateZ(200px);
+  }
+
+  .bottom {
+    transform: rotateX(-90deg) translateZ(200px) rotateZ(180deg);
+  }
 }
 </style>
