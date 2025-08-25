@@ -34,7 +34,9 @@
     <header class="fixed top-0 left-0 right-0 z-50 glass-header">
       <div class="container mx-auto px-4 py-4">
         <nav class="flex items-center justify-between">
-          <div class="text-xl md:text-2xl font-bold gradient-text">My Portfolio</div>
+          <div class="text-xl md:text-2xl font-bold gradient-text">
+            My Portfolio
+          </div>
           <div class="hidden md:flex items-center space-x-8">
             <a href="#home" class="link cursor-glow">Home</a>
             <a href="#about" class="link cursor-glow">About</a>
@@ -58,69 +60,100 @@
             </svg>
           </button>
         </nav>
-        
+
         <!-- Mobile Menu -->
-        <div v-if="mobileMenuOpen" class="md:hidden mt-4 pb-4 border-t border-border-primary">
+        <div
+          v-if="mobileMenuOpen"
+          class="md:hidden mt-4 pb-4 border-t border-border-primary"
+        >
           <div class="flex flex-col space-y-4 pt-4">
-            <a href="#home" class="link cursor-glow text-lg" @click="closeMobileMenu">Home</a>
-            <a href="#about" class="link cursor-glow text-lg" @click="closeMobileMenu">About</a>
-            <a href="#experience" class="link cursor-glow text-lg" @click="closeMobileMenu">Experience</a>
-            <a href="#projects" class="link cursor-glow text-lg" @click="closeMobileMenu">Projects</a>
-            <a href="#contact" class="link cursor-glow text-lg" @click="closeMobileMenu">Contact</a>
+            <a
+              href="#home"
+              class="link cursor-glow text-lg"
+              @click="closeMobileMenu"
+              >Home</a
+            >
+            <a
+              href="#about"
+              class="link cursor-glow text-lg"
+              @click="closeMobileMenu"
+              >About</a
+            >
+            <a
+              href="#experience"
+              class="link cursor-glow text-lg"
+              @click="closeMobileMenu"
+              >Experience</a
+            >
+            <a
+              href="#projects"
+              class="link cursor-glow text-lg"
+              @click="closeMobileMenu"
+              >Projects</a
+            >
+            <a
+              href="#contact"
+              class="link cursor-glow text-lg"
+              @click="closeMobileMenu"
+              >Contact</a
+            >
           </div>
         </div>
       </div>
     </header>
 
     <main class="pt-20">
-             <section
-         id="home"
-         class="min-h-screen flex items-center justify-center animated-bg px-4"
-         style="scroll-snap-align: start"
-       >
-         <div class="container mx-auto text-center -mt-20">
-           <div class="animate-fade-in">
-             <h1
-               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
-               style="
-                 font-weight: 600;
-                 background-size: 200% 200%;
-                 animation: gradientShift 3s ease-in-out infinite;
-               "
-             >
-               Hey, I'm
-             </h1>
-             <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold" style="font-weight: 600">
-               <span
-                 class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
-                 style="animation-delay: 0.2s"
-                 @mouseenter="animateName = true"
-                 @mouseleave="animateName = false"
-               >
-                 <span :class="[animateName ? 'animate-bounce' : '']">
-                   Chris Leon Noltemeier
-                 </span>
-               </span>
-             </h1>
-             <h1
-               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text mt-2 animate-slide-up"
-               style="
-                 animation-delay: 0.4s;
-                 font-weight: 600;
-                 background-size: 200% 200%;
-                 animation: gradientShift 3s ease-in-out infinite;
-               "
-             >
-               Full-Stack Developer
-             </h1>
-             <br />
-             <p
-               class="text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up px-4"
-               style="animation-delay: 0.6s"
-             >
-               I am passionate about learning new technologies and building
-               efficient solutions
-             </p>
+      <section
+        id="home"
+        class="min-h-screen flex items-center justify-center animated-bg px-4"
+        style="scroll-snap-align: start"
+      >
+        <div class="container mx-auto text-center -mt-20">
+          <div class="animate-fade-in">
+            <h1
+              class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
+              style="
+                font-weight: 600;
+                background-size: 200% 200%;
+                animation: gradientShift 3s ease-in-out infinite;
+              "
+            >
+              Hey, I'm
+            </h1>
+            <h1
+              class="text-4xl md:text-6xl lg:text-7xl font-bold"
+              style="font-weight: 600"
+            >
+              <span
+                class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
+                style="animation-delay: 0.2s"
+                @mouseenter="animateName = true"
+                @mouseleave="animateName = false"
+              >
+                <span :class="[animateName ? 'animate-bounce' : '']">
+                  Chris Leon Noltemeier
+                </span>
+              </span>
+            </h1>
+            <h1
+              class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text mt-2 animate-slide-up"
+              style="
+                animation-delay: 0.4s;
+                font-weight: 600;
+                background-size: 200% 200%;
+                animation: gradientShift 3s ease-in-out infinite;
+              "
+            >
+              Full-Stack Developer
+            </h1>
+            <br />
+            <p
+              class="text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up px-4"
+              style="animation-delay: 0.6s"
+            >
+              I am passionate about learning new technologies and building
+              efficient solutions
+            </p>
             <!--
             <div
               class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up"
@@ -156,7 +189,9 @@
               About Me
             </h2>
             <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-              <div class="space-y-4 md:space-y-6 animate-slide-left order-2 md:order-1">
+              <div
+                class="space-y-4 md:space-y-6 animate-slide-left order-2 md:order-1"
+              >
                 <p class="text-lg text-text-secondary leading-relaxed">
                   I’m Chris Leon Noltemeier, a full-stack developer passionate
                   about creating efficient, user-friendly applications that
@@ -252,7 +287,9 @@
             <div class="space-y-8">
               <!-- Work Experience -->
               <div class="card-elevated p-4 md:p-8">
-                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary">
+                <h3
+                  class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary"
+                >
                   Work Experience
                 </h3>
                 <div class="space-y-6">
@@ -277,7 +314,9 @@
 
               <!-- Education -->
               <div class="card-elevated p-4 md:p-8">
-                <h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary">
+                <h3
+                  class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary"
+                >
                   Education
                 </h3>
                 <div class="space-y-6">
@@ -337,7 +376,9 @@
                 My Projects
               </h2>
 
-              <div class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start">
+              <div
+                class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
+              >
                 <div
                   v-for="(project, index) in projectData"
                   :key="index"
@@ -348,11 +389,11 @@
                   }"
                   @click="selectProject(index)"
                 >
-                                     <div class="flex gap-3 md:gap-4 p-3 md:p-4">
-                     <div class="flex-shrink-0">
-                       <div
-                         class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
-                       >
+                  <div class="flex gap-3 md:gap-4 p-3 md:p-4">
+                    <div class="flex-shrink-0">
+                      <div
+                        class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
+                      >
                         <img
                           :src="project.images[0]"
                           :alt="project.title + ' Screenshot'"
@@ -362,14 +403,16 @@
                     </div>
 
                     <div class="flex-1 min-w-0">
-                                             <h3
-                         class="text-base md:text-lg font-bold mb-2 text-text-primary truncate"
-                       >
-                         {{ project.title }}
-                       </h3>
-                       <p class="text-text-secondary mb-3 text-xs md:text-sm line-clamp-2">
-                         {{ project.description }}
-                       </p>
+                      <h3
+                        class="text-base md:text-lg font-bold mb-2 text-text-primary truncate"
+                      >
+                        {{ project.title }}
+                      </h3>
+                      <p
+                        class="text-text-secondary mb-3 text-xs md:text-sm line-clamp-2"
+                      >
+                        {{ project.description }}
+                      </p>
                       <div class="flex gap-1 flex-wrap">
                         <span
                           v-for="tech in project.technologies"
@@ -385,131 +428,148 @@
               </div>
             </div>
 
-                         <div
-               class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
-             >
+            <div
+              class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
+            >
               <div class="animate-fade-in flex flex-col justify-start h-full">
-                                 <div
-                   class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
-                   @click="openImageModal"
-                   @mouseenter="showZoomIcon = true"
-                   @mouseleave="showZoomIcon = false"
-                 >
-                   <img
-                     :src="projectData[selectedProject]?.images[selectedImageIndex]"
-                     :alt="projectData[selectedProject]?.title + ' Screenshot'"
-                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                   />
-                   
-                                       <!-- Navigation Arrows -->
-                    <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute inset-0 flex items-center justify-between p-2 pointer-events-none">
-                      <button
-                        @click.stop="previousImage"
-                        class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
-                        :class="{ 'opacity-50': selectedImageIndex === 0 }"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                        </svg>
-                      </button>
-                      <button
-                        @click.stop="nextImage"
-                        class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
-                        :class="{ 'opacity-50': selectedImageIndex === projectData[selectedProject]?.images.length - 1 }"
-                      >
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                        </svg>
-                      </button>
-                    </div>
-                   
-                   <!-- Image Counter -->
-                   <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none">
-                     {{ selectedImageIndex + 1 }} / {{ projectData[selectedProject]?.images.length }}
-                   </div>
-                   
-                   <div
-                     v-if="showZoomIcon"
-                     class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
-                   >
-                     <svg
-                       class="w-8 h-8 text-white transition-opacity duration-300"
-                       fill="none"
-                       stroke="currentColor"
-                       viewBox="0 0 24 24"
-                     >
-                       <path
-                         stroke-linecap="round"
-                         stroke-linejoin="round"
-                         stroke-width="2"
-                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
-                       ></path>
-                     </svg>
-                   </div>
-                 </div>
+                <div
+                  class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0"
+                  @click="openImageModal"
+                  @mouseenter="showZoomIcon = true"
+                  @mouseleave="showZoomIcon = false"
+                >
+                  <img
+                    :src="
+                      projectData[selectedProject]?.images[selectedImageIndex]
+                    "
+                    :alt="projectData[selectedProject]?.title + ' Screenshot'"
+                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
 
-                                 <h2
-                   class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
-                 >
-                   {{ projectData[selectedProject]?.title }}
-                 </h2>
-
-                 <p
-                   class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2"
-                 >
-                   {{ projectData[selectedProject]?.description }}
-                 </p>
-
-                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 flex-1 min-h-0 overflow-y-auto">
-                                     <div class="flex-1 min-h-0">
-                     <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
-                       Features
-                     </h3>
-                     <ul class="text-text-secondary space-y-1 text-xs md:text-sm">
-                      <li
-                        v-for="feature in projectData[selectedProject]
-                          ?.features"
-                        :key="feature"
-                        class="flex items-start"
+                  <!-- Navigation Arrows -->
+                  <div
+                    v-if="projectData[selectedProject]?.images.length > 1"
+                    class="absolute inset-0 flex items-center justify-between p-2 pointer-events-none"
+                  >
+                    <button
+                      @click.stop="previousImage"
+                      class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+                      :class="{ 'opacity-50': selectedImageIndex === 0 }"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                       >
-                        <span class="text-accent-400 mr-2 mt-1">•</span>
-                        <span>{{ feature }}</span>
-                      </li>
-                    </ul>
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15 19l-7-7 7-7"
+                        ></path>
+                      </svg>
+                    </button>
+                    <button
+                      @click.stop="nextImage"
+                      class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+                      :class="{
+                        'opacity-50':
+                          selectedImageIndex ===
+                          projectData[selectedProject]?.images.length - 1,
+                      }"
+                    >
+                      <svg
+                        class="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5l7 7-7 7"
+                        ></path>
+                      </svg>
+                    </button>
                   </div>
 
-                                     <div class="flex-1 min-h-0">
-                     <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
-                       Technical Details
-                     </h3>
-                     <ul class="text-text-secondary space-y-1 text-xs md:text-sm">
-                      <li
-                        v-for="detail in projectData[selectedProject]
-                          ?.technicalDetails"
-                        :key="detail"
-                        class="flex items-start"
-                      >
-                        <span class="text-accent-400 mr-2 mt-1">•</span>
-                        <span>{{ detail }}</span>
-                      </li>
-                    </ul>
+                  <!-- Image Counter -->
+                  <div
+                    v-if="projectData[selectedProject]?.images.length > 1"
+                    class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none"
+                  >
+                    {{ selectedImageIndex + 1 }} /
+                    {{ projectData[selectedProject]?.images.length }}
+                  </div>
+
+                  <div
+                    v-if="showZoomIcon"
+                    class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none"
+                  >
+                    <svg
+                      class="w-8 h-8 text-white transition-opacity duration-300"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                      ></path>
+                    </svg>
                   </div>
                 </div>
 
-                                 <div class="mb-4 flex-shrink-0">
-                   <h3 class="text-base md:text-lg font-semibold text-text-primary mb-2">
-                     Technologies
-                   </h3>
-                   <div class="flex flex-wrap gap-1 md:gap-2">
-                     <span
-                       v-for="tech in projectData[selectedProject]?.technologies"
-                       :key="tech"
-                       class="px-2 md:px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-xs md:text-sm"
-                     >
-                       {{ tech }}
-                     </span>
-                   </div>
-                 </div>
+                <h2
+                  class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0"
+                >
+                  {{ projectData[selectedProject]?.title }}
+                </h2>
+
+                <p
+                  class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2"
+                >
+                  {{ projectData[selectedProject]?.description }}
+                </p>
+
+                <div class="mb-4 flex-1 min-h-0 overflow-y-auto">
+                  <h3
+                    class="text-base md:text-lg font-semibold text-text-primary mb-2"
+                  >
+                    Features
+                  </h3>
+                  <ul class="text-text-secondary space-y-1 text-xs md:text-sm">
+                    <li
+                      v-for="feature in projectData[selectedProject]?.features"
+                      :key="feature"
+                      class="flex items-start"
+                    >
+                      <span class="text-accent-400 mr-2 mt-1">•</span>
+                      <span>{{ feature }}</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="mb-4 flex-shrink-0">
+                  <h3
+                    class="text-base md:text-lg font-semibold text-text-primary mb-2"
+                  >
+                    Technologies
+                  </h3>
+                  <div class="flex flex-wrap gap-1 md:gap-2">
+                    <span
+                      v-for="tech in projectData[selectedProject]?.technologies"
+                      :key="tech"
+                      class="px-2 md:px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-xs md:text-sm"
+                    >
+                      {{ tech }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -528,11 +588,15 @@
             >
               Get In Touch
             </h2>
-            <p class="text-base md:text-lg text-text-secondary mb-6 md:mb-8 px-4">
+            <p
+              class="text-base md:text-lg text-text-secondary mb-6 md:mb-8 px-4"
+            >
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+            <div
+              class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
+            >
               <button
                 class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
                 @click="sendEmail"
@@ -542,14 +606,14 @@
                   class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
                 ></div>
               </button>
-              <button class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3">
+              <button
+                class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3"
+              >
                 View Resume
               </button>
             </div>
           </div>
         </div>
-
-
       </section>
     </main>
 
@@ -561,64 +625,95 @@
     >
       <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
 
-             <div
-         class="relative max-w-[95vw] max-h-[95vh] animate-fade-in"
-         @click.stop
-       >
-         <!-- Close Button -->
-         <button
-           @click="closeImageModal"
-           class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
-         >
-           <svg
-             class="w-8 h-8"
-             fill="none"
-             stroke="currentColor"
-             viewBox="0 0 24 24"
-           >
-             <path
-               stroke-linecap="round"
-               stroke-linejoin="round"
-               stroke-width="2"
-               d="M6 18L18 6M6 6l12 12"
-             ></path>
-           </svg>
-         </button>
+      <div
+        class="relative max-w-[95vw] max-h-[95vh] animate-fade-in"
+        @click.stop
+      >
+        <!-- Close Button -->
+        <button
+          @click="closeImageModal"
+          class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10"
+        >
+          <svg
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
 
-                   <!-- Navigation Arrows for Modal -->
-          <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
-            <button
-              @click.stop="previousImage"
-              class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
-              :class="{ 'opacity-50': selectedImageIndex === 0 }"
+        <!-- Navigation Arrows for Modal -->
+        <div
+          v-if="projectData[selectedProject]?.images.length > 1"
+          class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none"
+        >
+          <button
+            @click.stop="previousImage"
+            class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+            :class="{ 'opacity-50': selectedImageIndex === 0 }"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-              </svg>
-            </button>
-            <button
-              @click.stop="nextImage"
-              class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
-              :class="{ 'opacity-50': selectedImageIndex === projectData[selectedProject]?.images.length - 1 }"
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 19l-7-7 7-7"
+              ></path>
+            </svg>
+          </button>
+          <button
+            @click.stop="nextImage"
+            class="bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"
+            :class="{
+              'opacity-50':
+                selectedImageIndex ===
+                projectData[selectedProject]?.images.length - 1,
+            }"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-              </svg>
-            </button>
-          </div>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </button>
+        </div>
 
-         <!-- Image Counter for Modal -->
-         <div v-if="projectData[selectedProject]?.images.length > 1" class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none">
-           {{ selectedImageIndex + 1 }} / {{ projectData[selectedProject]?.images.length }}
-         </div>
+        <!-- Image Counter for Modal -->
+        <div
+          v-if="projectData[selectedProject]?.images.length > 1"
+          class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none"
+        >
+          {{ selectedImageIndex + 1 }} /
+          {{ projectData[selectedProject]?.images.length }}
+        </div>
 
-         <!-- Image -->
-         <img
-           :src="projectData[selectedProject]?.images[selectedImageIndex]"
-           :alt="projectData[selectedProject]?.title + ' Screenshot'"
-           class="w-full h-full object-contain rounded-lg shadow-2xl"
-         />
-       </div>
+        <!-- Image -->
+        <img
+          :src="projectData[selectedProject]?.images[selectedImageIndex]"
+          :alt="projectData[selectedProject]?.title + ' Screenshot'"
+          class="w-full h-full object-contain rounded-lg shadow-2xl"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -690,27 +785,39 @@ const projectData = ref([
   {
     title: "Hardware Management",
     description:
-      "A comprehensive hardware management system built with FastAPI, featuring inventory tracking, device monitoring, and automated maintenance scheduling.",
+      "Hardware management system with Nuxt 3 and Vue.js, featuring search, filter, Microsoft OAuth, CSV export, history tracking, and responsive UI.",
     images: [
-      "/images/HardwareManager.png",
-      "/images/HardwareManager.png",
-      "/images/HardwareManager.png",
+      "/images/HardwareManager1.png",
+      "/images/HardwareManager2.png",
+      "/images/HardwareManager3.png",
     ],
     features: [
-      "Real-time inventory tracking",
-      "Device health monitoring",
-      "Automated maintenance scheduling",
-      "User role management",
-      "Reporting and analytics",
+      "Hardware Data Sheet Management: Create, edit, delete hardware data sheets",
+      "Advanced Search & Filtering: Multiple search criteria",
+      "User Authentication: Login/logout with password hashing",
+      "Microsoft OAuth Integration: Single Sign-On via Microsoft Azure AD",
+      "CSV Export: Complete export of all hardware data",
+      "Hardware History: Track changes to hardware data sheets",
     ],
     technicalDetails: [
-      "FastAPI REST API",
-      "PostgreSQL database",
-      "SQLAlchemy ORM",
-      "Docker containerization",
+      "Frontend: Nuxt 3, Nuxt UI components, TypeScript, responsive design",
+      "Backend: Nuxt Server API, Drizzle ORM, PostgreSQL, session management",
+      "Infrastructure: Docker, AWS S3, Cypress testing, Terraform IaC",
     ],
-    technologies: ["FastAPI", "Python", "PostgreSQL"],
-    demoButton: "Live Demo",
+    technologies: [
+      "Vue.js",
+      "Nuxt 3",
+      "Nuxt UI",
+      "Tailwind CSS",
+      "TypeScript",
+      "Node.js",
+      "Drizzle ORM",
+      "PostgreSQL",
+      "bcrypt",
+      "Docker",
+      "Terraform",
+      "Cypress",
+    ],
   },
 ]);
 
@@ -798,7 +905,10 @@ const selectProject = (index) => {
 
 const nextImage = () => {
   const currentProject = projectData.value[selectedProject.value];
-  if (currentProject && selectedImageIndex.value < currentProject.images.length - 1) {
+  if (
+    currentProject &&
+    selectedImageIndex.value < currentProject.images.length - 1
+  ) {
     selectedImageIndex.value++;
   }
 };
