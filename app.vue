@@ -764,9 +764,11 @@ const projectData = ref([
     description:
       "Online 3D billiards game built with Unity, featuring real-time 1v1 matches with friends, realistic physics, smooth cue controls, private rooms, and a clean, responsive UI.",
     images: [
-      "/images/BilliardGame.png",
-      "/images/BilliardGame.png",
-      "/images/BilliardGame.png",
+      "/images/BilliardGame1.png",
+      "/images/BilliardGame2.png",
+      "/images/BilliardGame3.png",
+      "/images/BilliardGame4.png",
+      "/images/BilliardGame5.png",
     ],
     features: [
       "Online 1v1 Matches: Challenge friends via invite codes or quick join",
