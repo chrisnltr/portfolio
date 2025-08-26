@@ -733,54 +733,56 @@ const mobileMenuOpen = ref(false);
 
 const projectData = ref([
   {
-    title: "Accident App",
+    title: "Accident Report App",
     description:
-      "A mobile application built with Flutter for accident reporting and management, featuring intuitive UI design and real-time data synchronization.",
+      "Digital accident documentation system built with Flutter, enabling users to create complete insurance-ready accident reports with photos, sketches, and map integration.",
     images: [
-      "/images/UnfallApp.png",
+      "/images/UnfallApp01.png",
       "/images/UnfallApp.png",
       "/images/UnfallApp.png",
     ],
     features: [
-      "Real-time accident reporting",
-      "GPS location tracking",
-      "Photo documentation",
-      "Offline data synchronization",
-      "Multi-language support",
+      "Accident Report Creation: Collect all relevant insurance data in structured forms",
+      "Interactive Accident Sketch: Draw accident scenarios on a Google Maps background",
+      "Photo Upload: Attach accident images directly within the report",
+      "PDF Export: Generate and share a standardized accident report PDF",
+      "Multi-language Support: Automatic translations for international usability",
+      "Offline Support: Record accidents without an internet connection and sync later",
     ],
-    technicalDetails: [
-      "State management with Provider",
-      "SQLite local database",
-      "REST API integration",
-      "Push notifications",
+    technologies: [
+      "Flutter",
+      "Dart",
+      "Google Maps API",
+      "SQLite",
+      "flutter_localizations",
+      "flutter_gen",
     ],
-    technologies: ["Flutter", "Dart", "Mobile"],
     demoButton: "View Demo",
   },
   {
-    title: "Billiard Game",
+    title: "Billiard Battle 3D",
     description:
-      "A 3D billiard game developed in Unity with realistic physics, multiplayer support, and immersive gameplay mechanics.",
+      "Online 3D billiards game built with Unity, featuring real-time 1v1 matches with friends, realistic physics, smooth cue controls, private rooms, and a clean, responsive UI.",
     images: [
       "/images/BilliardGame.png",
       "/images/BilliardGame.png",
       "/images/BilliardGame.png",
     ],
     features: [
-      "Realistic 3D physics simulation",
-      "Multiplayer support (local & online)",
-      "Multiple game modes",
-      "Customizable table designs",
-      "Tournament system",
+      "Online 1v1 Matches: Challenge friends via invite codes or quick join",
+      "Realistic Physics: Accurate ball collisions, spin/English, cushions, and powerful breaks",
+      "Cue Controls & Aiming: Aim line, spin selector, and variable shot power",
+      "Private Rooms: Create and share room codes for frictionless friend matches",
+      "Rules & Timers: Standard pool rules (8-Ball/9-Ball) with optional shot timer and fouls",
+      "Custom Themes: Table/cue customization and AI-generated menu backgrounds",
+      "Cross-Platform Ready: Keyboard/mouse and gamepad support; scalable UI",
     ],
-    technicalDetails: [
-      "Unity 3D engine",
-      "C# scripting",
-      "Photon networking",
-      "Advanced physics calculations",
+    technologies: [
+      "Unity",
+      "C#",
+      "Unity Input System",
+      "Photon Unity Networking",
     ],
-    technologies: ["Unity", "C#", "3D Game"],
-    demoButton: "Play Demo",
   },
   {
     title: "Hardware Management",
@@ -798,11 +800,6 @@ const projectData = ref([
       "Microsoft OAuth Integration: Single Sign-On via Microsoft Azure AD",
       "CSV Export: Complete export of all hardware data",
       "Hardware History: Track changes to hardware data sheets",
-    ],
-    technicalDetails: [
-      "Frontend: Nuxt 3, Nuxt UI components, TypeScript, responsive design",
-      "Backend: Nuxt Server API, Drizzle ORM, PostgreSQL, session management",
-      "Infrastructure: Docker, AWS S3, Cypress testing, Terraform IaC",
     ],
     technologies: [
       "Vue.js",
@@ -822,7 +819,6 @@ const projectData = ref([
 ]);
 
 const updateMousePosition = (e) => {
-  // Smooth cursor following with requestAnimationFrame
   requestAnimationFrame(() => {
     mousePosition.value = {
       x: e.clientX,
