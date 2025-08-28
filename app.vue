@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-background-primary overflow-y-auto"
+    class="h-screen bg-background-primary overflow-hidden"
     style="scroll-snap-type: y mandatory"
   >
     <!-- Particle Animation Background -->
@@ -32,21 +32,21 @@
     ></div>
 
     <header class="fixed top-0 left-0 right-0 z-50 glass-header">
-      <div class="container mx-auto px-4 py-4">
+      <div class="container mx-auto px-6 py-4">
         <nav class="flex items-center justify-between">
-          <div class="text-xl md:text-2xl font-bold gradient-text">
+          <div class="text-2xl md:text-3xl font-bold gradient-text">
             My Portfolio
           </div>
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="#home" class="link cursor-glow">Home</a>
-            <a href="#about" class="link cursor-glow">About</a>
-            <a href="#experience" class="link cursor-glow">Experience</a>
-            <a href="#projects" class="link cursor-glow">Projects</a>
-            <a href="#contact" class="link cursor-glow">Contact</a>
+          <div class="hidden md:flex items-center space-x-10">
+            <a href="#home" class="link cursor-glow text-lg font-medium">Home</a>
+            <a href="#about" class="link cursor-glow text-lg font-medium">About</a>
+            <a href="#experience" class="link cursor-glow text-lg font-medium">Experience</a>
+            <a href="#projects" class="link cursor-glow text-lg font-medium">Projects</a>
+            <a href="#contact" class="link cursor-glow text-lg font-medium">Contact</a>
           </div>
           <button class="md:hidden btn-ghost" @click="toggleMobileMenu">
             <svg
-              class="w-6 h-6"
+              class="w-7 h-7"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -64,36 +64,36 @@
         <!-- Mobile Menu -->
         <div
           v-if="mobileMenuOpen"
-          class="md:hidden mt-4 pb-4 border-t border-border-primary"
+          class="md:hidden mt-6 pb-6 border-t border-border-primary"
         >
-          <div class="flex flex-col space-y-4 pt-4">
+          <div class="flex flex-col space-y-6 pt-6">
             <a
               href="#home"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Home</a
             >
             <a
               href="#about"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >About</a
             >
             <a
               href="#experience"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Experience</a
             >
             <a
               href="#projects"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Projects</a
             >
             <a
               href="#contact"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Contact</a
             >
@@ -102,10 +102,10 @@
       </div>
     </header>
 
-    <main class="pt-20">
+    <main class="pt-24 h-full">
       <section
         id="home"
-        class="min-h-screen flex items-center justify-center animated-bg px-4"
+        class="h-screen flex items-center justify-center animated-bg px-4"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto text-center -mt-20">
@@ -178,7 +178,7 @@
 
       <section
         id="about"
-        class="min-h-screen modern-section flex items-center py-8"
+        class="h-screen modern-section flex items-center py-8"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
@@ -274,7 +274,7 @@
 
       <section
         id="experience"
-        class="min-h-screen modern-section flex items-center py-8"
+        class="h-screen modern-section flex items-center py-8"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
@@ -362,7 +362,7 @@
 
       <section
         id="projects"
-        class="min-h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
+        class="h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4">
@@ -578,7 +578,7 @@
 
       <section
         id="contact"
-        class="min-h-screen modern-section flex flex-col justify-center py-8"
+        class="h-screen modern-section flex flex-col justify-center py-8"
         style="scroll-snap-align: start"
       >
         <div class="container mx-auto px-4 flex-1 flex items-center">
@@ -737,9 +737,9 @@ const projectData = ref([
     description:
       "Digital accident documentation system built with Flutter, enabling users to create complete insurance-ready accident reports with photos, sketches, and map integration.",
     images: [
-      "/images/UnfallApp01.png",
-      "/images/UnfallApp.png",
-      "/images/UnfallApp.png",
+      "/images/UnfallApp1.png",
+      "/images/UnfallApp2.png",
+      "/images/UnfallApp3.png",
     ],
     features: [
       "Accident Report Creation: Collect all relevant insurance data in structured forms",
@@ -747,7 +747,6 @@ const projectData = ref([
       "Photo Upload: Attach accident images directly within the report",
       "PDF Export: Generate and share a standardized accident report PDF",
       "Multi-language Support: Automatic translations for international usability",
-      "Offline Support: Record accidents without an internet connection and sync later",
     ],
     technologies: [
       "Flutter",
@@ -777,13 +776,13 @@ const projectData = ref([
       "Private Rooms: Create and share room codes for frictionless friend matches",
       "Rules & Timers: Standard pool rules (8-Ball/9-Ball) with optional shot timer and fouls",
       "Custom Themes: Table/cue customization and AI-generated menu backgrounds",
-      "Cross-Platform Ready: Keyboard/mouse and gamepad support; scalable UI",
     ],
     technologies: [
       "Unity",
       "C#",
       "Unity Input System",
-      "Photon Unity Networking",
+      "Mirror Networking",
+      "Steamworks",
     ],
   },
   {
@@ -799,7 +798,6 @@ const projectData = ref([
       "Hardware Data Sheet Management: Create, edit, delete hardware data sheets",
       "Advanced Search & Filtering: Multiple search criteria",
       "User Authentication: Login/logout with password hashing",
-      "Microsoft OAuth Integration: Single Sign-On via Microsoft Azure AD",
       "CSV Export: Complete export of all hardware data",
       "Hardware History: Track changes to hardware data sheets",
     ],
