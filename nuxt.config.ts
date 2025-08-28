@@ -3,7 +3,7 @@ import { defineNuxtConfig } from "nuxt/config";
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   // CSS
   css: ["./assets/css/main.css"],
@@ -50,4 +50,9 @@ export default defineNuxtConfig({
   build: {
     // No transpile needed for Tailwind CSS v4
   },
+
+  // Nitro config for Vercel
+  nitro: {
+    preset: 'vercel'
+  }
 });

@@ -2,6 +2,9 @@
   "name": "myPortfolio",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -10,7 +13,6 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.11",
-    "@vercel/speed-insights": "^1.2.0",
     "nuxt": "^3.10.3",
     "vue": "^3.4.21",
     "vue-router": "^4.5.1"
