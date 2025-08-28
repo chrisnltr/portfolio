@@ -50,4 +50,9 @@ export default defineNuxtConfig({
   build: {
     // No transpile needed for Tailwind CSS v4
   },
+
+  // Vercel deployment config
+  nitro: {
+    preset: 'vercel'
+  },
 });
