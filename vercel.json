@@ -1,4 +1,0 @@
-{
-  "buildCommand": "npx nuxt build",
-  "outputDirectory": ".output/public"
-}
