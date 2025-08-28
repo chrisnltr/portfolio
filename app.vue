@@ -103,12 +103,12 @@
     </header>
 
     <main class="pt-24 h-full">
-      <section
-        id="home"
-        class="h-screen flex items-center justify-center animated-bg px-4"
-        style="scroll-snap-align: start"
-      >
-        <div class="container mx-auto text-center -mt-20">
+             <section
+         id="home"
+         class="h-screen flex items-center justify-center animated-bg px-4"
+         style="scroll-snap-align: start"
+       >
+         <div class="container mx-auto text-center">
           <div class="animate-fade-in">
             <h1
               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
@@ -369,12 +369,12 @@
           <div
             class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start"
           >
-            <div class="flex flex-col h-full justify-start">
-              <h2
-                class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8"
-              >
-                My Projects
-              </h2>
+                         <div class="flex flex-col h-full justify-start">
+               <h2
+                 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28"
+               >
+                 My Projects
+               </h2>
 
               <div
                 class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
@@ -429,7 +429,7 @@
             </div>
 
             <div
-              class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
+              class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-8"
             >
               <div class="animate-fade-in flex flex-col justify-start h-full">
                 <div
