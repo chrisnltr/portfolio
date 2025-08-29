@@ -6,12 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   nitro: {
-    preset: "vercel",
-    minify: false,
-    sourceMap: false,
-    experimental: {
-      wasm: false
-    }
+    preset: "vercel"
   },
 
   postcss: {
@@ -48,15 +43,5 @@ export default defineNuxtConfig({
   // Build-Optimierungen
   build: {
     transpile: []
-  },
-
-  // SSR-Konfiguration für Vercel
-  ssr: true,
-
-  // Runtime-Konfiguration
-  runtimeConfig: {
-    public: {
-      // Hier können öffentliche Umgebungsvariablen definiert werden
-    }
   }
 });
