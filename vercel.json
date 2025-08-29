@@ -1,5 +1,10 @@
 {
   "framework": "nuxtjs",
   "installCommand": "npm ci",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "functions": {
+    "app/api/**/*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

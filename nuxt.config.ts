@@ -1,8 +1,8 @@
 import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
+  css: ["./assets/css/main.css"],
   compatibilityDate: "2025-07-15",
-  css: ["~/assets/css/main.css"],
   devtools: { enabled: false },
 
   nitro: {
