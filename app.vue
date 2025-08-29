@@ -369,7 +369,7 @@
           <div
             class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start"
           >
-                         <div class="flex flex-col h-full justify-start">
+            <div class="flex flex-col h-full justify-start">
                <h2
                  class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28"
                >

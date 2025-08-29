@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     preset: "vercel"
   },
 
-
   postcss: {
     plugins: {
       "@tailwindcss/postcss": {},
@@ -36,7 +35,13 @@ export default defineNuxtConfig({
     }
   },
 
+  // Vercel-spezifische Konfiguration
+  experimental: {
+    payloadExtraction: false
+  },
+
+  // Build-Optimierungen
   build: {
-    // keine Transpiles nötig für Tailwind v4
+    transpile: []
   }
 });
