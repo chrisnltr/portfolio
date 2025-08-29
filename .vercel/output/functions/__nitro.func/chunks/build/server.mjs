@@ -1,7 +1,7 @@
-import { hasInjectionContext, getCurrentInstance, createApp, provide, toRef, onErrorCaptured, onServerPrefetch, unref, createVNode, resolveDynamicComponent, shallowReactive, reactive, effectScope, computed, defineComponent, h, isReadonly, isRef, isShallow, isReactive, toRaw, inject, defineAsyncComponent, mergeProps, getCurrentScope, ref, useSSRContext } from 'vue';
-import { h as hasProtocol, i as isScriptProtocol, k as joinURL, w as withQuery, s as sanitizeStatusCode, l as getContext, $ as $fetch, m as createHooks, e as createError$1, n as isEqual, o as stringifyParsedURL, q as stringifyQuery, p as parseQuery, r as toRouteMatcher, v as createRouter, x as defu } from '../_/nitro.mjs';
-import { b as baseURL } from '../routes/renderer.mjs';
-import { ssrRenderSuspense, ssrRenderComponent, ssrRenderVNode, ssrRenderAttrs, ssrRenderClass, ssrRenderStyle, ssrRenderList, ssrRenderAttr, ssrInterpolate } from 'vue/server-renderer';
+import { hasInjectionContext, getCurrentInstance, inject, createApp, provide, toRef, onErrorCaptured, onServerPrefetch, unref, createVNode, resolveDynamicComponent, shallowReactive, reactive, effectScope, computed, defineComponent, h, isReadonly, isRef, isShallow, isReactive, toRaw, defineAsyncComponent, mergeProps, getCurrentScope, useSSRContext } from 'vue';
+import { i as hasProtocol, k as isScriptProtocol, l as joinURL, w as withQuery, s as sanitizeStatusCode, m as getContext, $ as $fetch, n as createHooks, e as createError$1, o as isEqual, q as stringifyParsedURL, r as stringifyQuery, p as parseQuery, v as toRouteMatcher, x as createRouter, y as defu } from '../_/nitro.mjs';
+import { u as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
+import { ssrRenderSuspense, ssrRenderComponent, ssrRenderVNode, ssrRenderAttrs } from 'vue/server-renderer';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -13,7 +13,6 @@ import 'vue-bundle-renderer/runtime';
 import 'unhead/server';
 import 'devalue';
 import 'unhead/utils';
-import 'unhead/plugins';
 
 if (!globalThis.$fetch) {
   globalThis.$fetch = $fetch.create({
@@ -37,10 +36,9 @@ function createNuxtApp(options) {
     _id: options.id || appId || "nuxt-app",
     _scope: effectScope(),
     provide: void 0,
-    globalName: "nuxt",
     versions: {
       get nuxt() {
-        return "3.18.1";
+        return "4.0.3";
       },
       get vue() {
         return nuxtApp.vueApp.version;
@@ -580,6 +578,22 @@ const router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw = /* @__PURE__ */ defin
     };
   }
 });
+function injectHead(nuxtApp) {
+  const nuxt = nuxtApp || useNuxtApp();
+  return nuxt.ssrContext?.head || nuxt.runWithContext(() => {
+    if (hasInjectionContext()) {
+      const head = inject(headSymbol);
+      if (!head) {
+        throw new Error("[nuxt] [unhead] Missing Unhead instance.");
+      }
+      return head;
+    }
+  });
+}
+function useHead(input, options = {}) {
+  const head = injectHead(options.nuxt);
+  return useHead$1(input, { head, ...options });
+}
 function definePayloadReducer(name, reduce) {
   {
     useNuxtApp().ssrContext._payloadReducers[name] = reduce;
@@ -602,14 +616,14 @@ const revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms = /* @__
     }
   }
 });
-const components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4 = /* @__PURE__ */ defineNuxtPlugin({
+const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:global-components"
 });
 const plugins = [
   unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU,
   router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw,
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
-  components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4
+  components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8
 ];
 const _export_sfc = (sfc, props) => {
   const target = sfc.__vccOpts || sfc;
@@ -619,188 +633,45 @@ const _export_sfc = (sfc, props) => {
   return target;
 };
 const _sfc_main$2 = {
-  __name: "app",
+  __name: "NuxtWelcome",
   __ssrInlineRender: true,
+  props: {
+    appName: {
+      type: String,
+      default: "Nuxt"
+    },
+    title: {
+      type: String,
+      default: "Welcome to Nuxt!"
+    }
+  },
   setup(__props) {
-    const mousePosition = ref({ x: 0, y: 0 });
-    ref(null);
-    const isHoveringTarget = ref(false);
-    const animateName = ref(false);
-    const selectedProject = ref(0);
-    const selectedImageIndex = ref(0);
-    const imageModalOpen = ref(false);
-    const showZoomIcon = ref(false);
-    const mobileMenuOpen = ref(false);
-    const projectData = ref([
-      {
-        title: "Accident Report App",
-        description: "Digital accident documentation system built with Flutter, enabling users to create complete insurance-ready accident reports with photos, sketches, and map integration.",
-        images: [
-          "/images/UnfallApp1.png",
-          "/images/UnfallApp2.png",
-          "/images/UnfallApp3.png"
-        ],
-        features: [
-          "Accident Report Creation: Collect all relevant insurance data in structured forms",
-          "Interactive Accident Sketch: Draw accident scenarios on a Google Maps background",
-          "Photo Upload: Attach accident images directly within the report",
-          "PDF Export: Generate and share a standardized accident report PDF",
-          "Multi-language Support: Automatic translations for international usability"
-        ],
-        technologies: [
-          "Flutter",
-          "Dart",
-          "Google Maps API",
-          "SQLite",
-          "flutter_localizations",
-          "flutter_gen"
-        ],
-        demoButton: "View Demo"
-      },
-      {
-        title: "Billiard Battle 3D",
-        description: "Online 3D billiards game built with Unity, featuring real-time 1v1 matches with friends, realistic physics, smooth cue controls, private rooms, and a clean, responsive UI.",
-        images: [
-          "/images/BilliardGame1.png",
-          "/images/BilliardGame2.png",
-          "/images/BilliardGame3.png",
-          "/images/BilliardGame4.png",
-          "/images/BilliardGame5.png"
-        ],
-        features: [
-          "Online 1v1 Matches: Challenge friends via invite codes or quick join",
-          "Realistic Physics: Accurate ball collisions, spin/English, cushions, and powerful breaks",
-          "Cue Controls & Aiming: Aim line, spin selector, and variable shot power",
-          "Private Rooms: Create and share room codes for frictionless friend matches",
-          "Rules & Timers: Standard pool rules (8-Ball/9-Ball) with optional shot timer and fouls",
-          "Custom Themes: Table/cue customization and AI-generated menu backgrounds"
-        ],
-        technologies: [
-          "Unity",
-          "C#",
-          "Unity Input System",
-          "Mirror Networking",
-          "Steamworks"
-        ]
-      },
-      {
-        title: "Hardware Management",
-        description: "Hardware management system with Nuxt 3 and Vue.js, featuring search, filter, Microsoft OAuth, CSV export, history tracking, and responsive UI.",
-        images: [
-          "/images/HardwareManager1.png",
-          "/images/HardwareManager2.png",
-          "/images/HardwareManager3.png"
-        ],
-        features: [
-          "Hardware Data Sheet Management: Create, edit, delete hardware data sheets",
-          "Advanced Search & Filtering: Multiple search criteria",
-          "User Authentication: Login/logout with password hashing",
-          "CSV Export: Complete export of all hardware data",
-          "Hardware History: Track changes to hardware data sheets"
-        ],
-        technologies: [
-          "Vue.js",
-          "Nuxt 3",
-          "Nuxt UI",
-          "Tailwind CSS",
-          "TypeScript",
-          "Node.js",
-          "Drizzle ORM",
-          "PostgreSQL",
-          "bcrypt",
-          "Docker",
-          "Terraform",
-          "Cypress"
-        ]
-      }
-    ]);
+    const props = __props;
+    useHead({
+      title: `${props.title}`,
+      script: [
+        {
+          innerHTML: `!function(){const e=document.createElement("link").relList;if(!(e&&e.supports&&e.supports("modulepreload"))){for(const e of document.querySelectorAll('link[rel="modulepreload"]'))r(e);new MutationObserver(e=>{for(const o of e)if("childList"===o.type)for(const e of o.addedNodes)"LINK"===e.tagName&&"modulepreload"===e.rel&&r(e)}).observe(document,{childList:!0,subtree:!0})}function r(e){if(e.ep)return;e.ep=!0;const r=function(e){const r={};return e.integrity&&(r.integrity=e.integrity),e.referrerPolicy&&(r.referrerPolicy=e.referrerPolicy),"use-credentials"===e.crossOrigin?r.credentials="include":"anonymous"===e.crossOrigin?r.credentials="omit":r.credentials="same-origin",r}(e);fetch(e.href,r)}}();`
+        }
+      ],
+      style: [
+        {
+          innerHTML: `*,:after,:before{border-color:var(--un-default-border-color,#e5e7eb);border-style:solid;border-width:0;box-sizing:border-box}:after,:before{--un-content:""}html{line-height:1.5;-webkit-text-size-adjust:100%;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-moz-tab-size:4;tab-size:4;-webkit-tap-highlight-color:transparent}body{line-height:inherit;margin:0}h1,h2{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}h1,h2,p,ul{margin:0}ul{list-style:none;padding:0}svg{display:block;vertical-align:middle}*,:after,:before{--un-rotate:0;--un-rotate-x:0;--un-rotate-y:0;--un-rotate-z:0;--un-scale-x:1;--un-scale-y:1;--un-scale-z:1;--un-skew-x:0;--un-skew-y:0;--un-translate-x:0;--un-translate-y:0;--un-translate-z:0;--un-pan-x: ;--un-pan-y: ;--un-pinch-zoom: ;--un-scroll-snap-strictness:proximity;--un-ordinal: ;--un-slashed-zero: ;--un-numeric-figure: ;--un-numeric-spacing: ;--un-numeric-fraction: ;--un-border-spacing-x:0;--un-border-spacing-y:0;--un-ring-offset-shadow:0 0 transparent;--un-ring-shadow:0 0 transparent;--un-shadow-inset: ;--un-shadow:0 0 transparent;--un-ring-inset: ;--un-ring-offset-width:0px;--un-ring-offset-color:#fff;--un-ring-width:0px;--un-ring-color:rgba(147,197,253,.5);--un-blur: ;--un-brightness: ;--un-contrast: ;--un-drop-shadow: ;--un-grayscale: ;--un-hue-rotate: ;--un-invert: ;--un-saturate: ;--un-sepia: ;--un-backdrop-blur: ;--un-backdrop-brightness: ;--un-backdrop-contrast: ;--un-backdrop-grayscale: ;--un-backdrop-hue-rotate: ;--un-backdrop-invert: ;--un-backdrop-opacity: ;--un-backdrop-saturate: ;--un-backdrop-sepia: }`
+        }
+      ]
+    });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({
-        class: "h-screen bg-background-primary overflow-hidden",
-        style: { "scroll-snap-type": "y mandatory" }
-      }, _attrs))} data-v-5caf6d3c><div class="particles" data-v-5caf6d3c><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div><div class="particle" data-v-5caf6d3c></div></div><div class="${ssrRenderClass([
-        isHoveringTarget.value ? "bg-blue-500/40 w-20 h-20" : "bg-blue-400/20 w-6 h-6",
-        "fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
-      ])}" style="${ssrRenderStyle({
-        left: mousePosition.value.x + "px",
-        top: mousePosition.value.y + "px",
-        transform: "translate(-50%, -50%)",
-        boxShadow: isHoveringTarget.value ? "0 0 40px 20px rgba(59, 130, 246, 0.5)" : "0 0 20px 10px rgba(96, 165, 250, 0.3)"
-      })}" data-v-5caf6d3c></div><header class="fixed top-0 left-0 right-0 z-50 glass-header" data-v-5caf6d3c><div class="container mx-auto px-6 py-4" data-v-5caf6d3c><nav class="flex items-center justify-between" data-v-5caf6d3c><div class="text-2xl md:text-3xl font-bold gradient-text" data-v-5caf6d3c> My Portfolio </div><div class="hidden md:flex items-center space-x-10" data-v-5caf6d3c><a href="#home" class="link cursor-glow text-lg font-medium" data-v-5caf6d3c>Home</a><a href="#about" class="link cursor-glow text-lg font-medium" data-v-5caf6d3c>About</a><a href="#experience" class="link cursor-glow text-lg font-medium" data-v-5caf6d3c>Experience</a><a href="#projects" class="link cursor-glow text-lg font-medium" data-v-5caf6d3c>Projects</a><a href="#contact" class="link cursor-glow text-lg font-medium" data-v-5caf6d3c>Contact</a></div><button class="md:hidden btn-ghost" data-v-5caf6d3c><svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" data-v-5caf6d3c></path></svg></button></nav>`);
-      if (mobileMenuOpen.value) {
-        _push(`<div class="md:hidden mt-6 pb-6 border-t border-border-primary" data-v-5caf6d3c><div class="flex flex-col space-y-6 pt-6" data-v-5caf6d3c><a href="#home" class="link cursor-glow text-xl font-medium" data-v-5caf6d3c>Home</a><a href="#about" class="link cursor-glow text-xl font-medium" data-v-5caf6d3c>About</a><a href="#experience" class="link cursor-glow text-xl font-medium" data-v-5caf6d3c>Experience</a><a href="#projects" class="link cursor-glow text-xl font-medium" data-v-5caf6d3c>Projects</a><a href="#contact" class="link cursor-glow text-xl font-medium" data-v-5caf6d3c>Contact</a></div></div>`);
-      } else {
-        _push(`<!---->`);
-      }
-      _push(`</div></header><main class="pt-24 h-full" data-v-5caf6d3c><section id="home" class="h-screen flex items-center justify-center animated-bg px-4" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto text-center" data-v-5caf6d3c><div class="animate-fade-in" data-v-5caf6d3c><h1 class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up" style="${ssrRenderStyle({ "font-weight": "600", "background-size": "200% 200%", "animation": "gradientShift 3s ease-in-out infinite" })}" data-v-5caf6d3c> Hey, I&#39;m </h1><h1 class="text-4xl md:text-6xl lg:text-7xl font-bold" style="${ssrRenderStyle({ "font-weight": "600" })}" data-v-5caf6d3c><span class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up" style="${ssrRenderStyle({ "animation-delay": "0.2s" })}" data-v-5caf6d3c><span class="${ssrRenderClass([animateName.value ? "animate-bounce" : ""])}" data-v-5caf6d3c> Chris Leon Noltemeier </span></span></h1><h1 class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text mt-2 animate-slide-up" style="${ssrRenderStyle({ "animation-delay": "0.4s", "font-weight": "600", "background-size": "200% 200%", "animation": "gradientShift 3s ease-in-out infinite" })}" data-v-5caf6d3c> Full-Stack Developer </h1><br data-v-5caf6d3c><p class="text-lg md:text-xl lg:text-2xl text-text-secondary mb-8 max-w-2xl mx-auto animate-slide-up px-4" style="${ssrRenderStyle({ "animation-delay": "0.6s" })}" data-v-5caf6d3c> I am passionate about learning new technologies and building efficient solutions </p></div></div></section><section id="about" class="h-screen modern-section flex items-center py-8" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto px-4" data-v-5caf6d3c><div class="max-w-6xl mx-auto" data-v-5caf6d3c><h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 gradient-text animate-slide-up" data-v-5caf6d3c> About Me </h2><div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center" data-v-5caf6d3c><div class="space-y-4 md:space-y-6 animate-slide-left order-2 md:order-1" data-v-5caf6d3c><p class="text-lg text-text-secondary leading-relaxed" data-v-5caf6d3c> I’m Chris Leon Noltemeier, a full-stack developer passionate about creating efficient, user-friendly applications that solve real-world problems. I enjoy turning ideas into working products and bringing them all the way from concept to deployment. </p><p class="text-lg text-text-secondary leading-relaxed" data-v-5caf6d3c> My experience covers modern frontend frameworks, scalable backend systems, and cloud infrastructure. I focus on writing clean, maintainable code and building reliable solutions that can grow with future needs. </p><p class="text-lg text-text-secondary leading-relaxed" data-v-5caf6d3c> I’m always eager to learn new technologies, improve workflows through automation, and take on challenges across the full stack—from intuitive interfaces to optimized backend performance and cloud environments. </p></div><div class="scene animate-slide-right" data-v-5caf6d3c><div class="cube" data-v-5caf6d3c><div class="face front" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c><h3 data-v-5caf6d3c>Frontend</h3><ul data-v-5caf6d3c><li data-v-5caf6d3c>Vue.js</li><li data-v-5caf6d3c>Nuxt.js</li><li data-v-5caf6d3c>TypeScript</li><li data-v-5caf6d3c>JavaScript</li><li data-v-5caf6d3c>HTML/CSS</li><li data-v-5caf6d3c>Tailwind CSS</li></ul></div></div><div class="face back" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c><h3 data-v-5caf6d3c>Backend</h3><ul data-v-5caf6d3c><li data-v-5caf6d3c>Python</li><li data-v-5caf6d3c>FastAPI</li><li data-v-5caf6d3c>REST APIs</li></ul><br data-v-5caf6d3c><h3 data-v-5caf6d3c>Database</h3><ul data-v-5caf6d3c><li data-v-5caf6d3c>PostgreSQL</li><li data-v-5caf6d3c>SQLite</li></ul></div></div><div class="face left" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c></div></div><div class="face right" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c></div></div><div class="face top" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c></div></div><div class="face bottom" data-v-5caf6d3c><div class="tech-content" data-v-5caf6d3c><h3 data-v-5caf6d3c>DevOps</h3><ul data-v-5caf6d3c><li data-v-5caf6d3c>Docker</li><li data-v-5caf6d3c>AWS</li><li data-v-5caf6d3c>Terraform</li><li data-v-5caf6d3c>CI/CD</li><li data-v-5caf6d3c>Git</li></ul></div></div></div></div></div></div></div></section><section id="experience" class="h-screen modern-section flex items-center py-8" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto px-4" data-v-5caf6d3c><div class="max-w-4xl mx-auto" data-v-5caf6d3c><h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12 gradient-text animate-slide-up" data-v-5caf6d3c> Experience &amp; Education </h2><div class="space-y-8" data-v-5caf6d3c><div class="card-elevated p-4 md:p-8" data-v-5caf6d3c><h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary" data-v-5caf6d3c> Work Experience </h3><div class="space-y-6" data-v-5caf6d3c><div class="border-l-4 border-accent-600 pl-6" data-v-5caf6d3c><div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2" data-v-5caf6d3c><h4 class="text-xl font-semibold text-text-primary" data-v-5caf6d3c> Software Developer </h4><span class="text-sm text-accent-400 font-medium" data-v-5caf6d3c> June 2025–Present </span></div><p class="text-lg text-accent-400 font-medium mb-1" data-v-5caf6d3c> Naue Group </p><p class="text-text-secondary" data-v-5caf6d3c>Full-time</p></div></div></div><div class="card-elevated p-4 md:p-8" data-v-5caf6d3c><h3 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-text-primary" data-v-5caf6d3c> Education </h3><div class="space-y-6" data-v-5caf6d3c><div class="border-l-4 border-accent-600 pl-6" data-v-5caf6d3c><div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2" data-v-5caf6d3c><h4 class="text-xl font-semibold text-text-primary" data-v-5caf6d3c> IT Specialist Application Development </h4><span class="text-sm text-accent-400 font-medium" data-v-5caf6d3c> Aug. 2022–June 2025 </span></div><p class="text-lg text-accent-400 font-medium mb-1" data-v-5caf6d3c> Berufskolleg Lübbecke </p><p class="text-text-secondary" data-v-5caf6d3c>Apprenticeship</p></div><div class="border-l-4 border-accent-600 pl-6" data-v-5caf6d3c><div class="flex flex-col md:flex-row md:items-center md:justify-between mb-2" data-v-5caf6d3c><h4 class="text-xl font-semibold text-text-primary" data-v-5caf6d3c> Technical College Certificate in Computer Science </h4><span class="text-sm text-accent-400 font-medium" data-v-5caf6d3c> Aug. 2020–July 2022 </span></div><p class="text-lg text-accent-400 font-medium mb-1" data-v-5caf6d3c> Berufskolleg Lübbecke </p><p class="text-text-secondary" data-v-5caf6d3c>High School Diploma</p></div></div></div></div></div></div></section><section id="projects" class="h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto px-4" data-v-5caf6d3c><div class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start" data-v-5caf6d3c><div class="flex flex-col h-full justify-start" data-v-5caf6d3c><h2 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28" data-v-5caf6d3c> My Projects </h2><div class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start" data-v-5caf6d3c><!--[-->`);
-      ssrRenderList(projectData.value, (project, index) => {
-        _push(`<div class="${ssrRenderClass([{
-          "ring-2 ring-accent-400 bg-accent-600/10": selectedProject.value === index
-        }, "card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"])}" data-v-5caf6d3c><div class="flex gap-3 md:gap-4 p-3 md:p-4" data-v-5caf6d3c><div class="flex-shrink-0" data-v-5caf6d3c><div class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover" data-v-5caf6d3c><img${ssrRenderAttr("src", project.images[0])}${ssrRenderAttr("alt", project.title + " Screenshot")} class="w-full h-full object-cover transition-transform duration-300" data-v-5caf6d3c></div></div><div class="flex-1 min-w-0" data-v-5caf6d3c><h3 class="text-base md:text-lg font-bold mb-2 text-text-primary truncate" data-v-5caf6d3c>${ssrInterpolate(project.title)}</h3><p class="text-text-secondary mb-3 text-xs md:text-sm line-clamp-2" data-v-5caf6d3c>${ssrInterpolate(project.description)}</p><div class="flex gap-1 flex-wrap" data-v-5caf6d3c><!--[-->`);
-        ssrRenderList(project.technologies, (tech) => {
-          _push(`<span class="tech-tag text-xs px-2 py-1" data-v-5caf6d3c>${ssrInterpolate(tech)}</span>`);
-        });
-        _push(`<!--]--></div></div></div></div>`);
-      });
-      _push(`<!--]--></div></div><div class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-8" data-v-5caf6d3c><div class="animate-fade-in flex flex-col justify-start h-full" data-v-5caf6d3c><div class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0" data-v-5caf6d3c><img${ssrRenderAttr(
-        "src",
-        projectData.value[selectedProject.value]?.images[selectedImageIndex.value]
-      )}${ssrRenderAttr("alt", projectData.value[selectedProject.value]?.title + " Screenshot")} class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-v-5caf6d3c>`);
-      if (projectData.value[selectedProject.value]?.images.length > 1) {
-        _push(`<div class="absolute inset-0 flex items-center justify-between p-2 pointer-events-none" data-v-5caf6d3c><button class="${ssrRenderClass([{ "opacity-50": selectedImageIndex.value === 0 }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" data-v-5caf6d3c></path></svg></button><button class="${ssrRenderClass([{
-          "opacity-50": selectedImageIndex.value === projectData.value[selectedProject.value]?.images.length - 1
-        }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" data-v-5caf6d3c></path></svg></button></div>`);
-      } else {
-        _push(`<!---->`);
-      }
-      if (projectData.value[selectedProject.value]?.images.length > 1) {
-        _push(`<div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate(projectData.value[selectedProject.value]?.images.length)}</div>`);
-      } else {
-        _push(`<!---->`);
-      }
-      if (showZoomIcon.value) {
-        _push(`<div class="absolute inset-0 bg-black/20 transition-colors duration-300 flex items-center justify-center pointer-events-none" data-v-5caf6d3c><svg class="w-8 h-8 text-white transition-opacity duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" data-v-5caf6d3c></path></svg></div>`);
-      } else {
-        _push(`<!---->`);
-      }
-      _push(`</div><h2 class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0" data-v-5caf6d3c>${ssrInterpolate(projectData.value[selectedProject.value]?.title)}</h2><p class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2" data-v-5caf6d3c>${ssrInterpolate(projectData.value[selectedProject.value]?.description)}</p><div class="mb-4 flex-1 min-h-0 overflow-y-auto" data-v-5caf6d3c><h3 class="text-base md:text-lg font-semibold text-text-primary mb-2" data-v-5caf6d3c> Features </h3><ul class="text-text-secondary space-y-1 text-xs md:text-sm" data-v-5caf6d3c><!--[-->`);
-      ssrRenderList(projectData.value[selectedProject.value]?.features, (feature) => {
-        _push(`<li class="flex items-start" data-v-5caf6d3c><span class="text-accent-400 mr-2 mt-1" data-v-5caf6d3c>•</span><span data-v-5caf6d3c>${ssrInterpolate(feature)}</span></li>`);
-      });
-      _push(`<!--]--></ul></div><div class="mb-4 flex-shrink-0" data-v-5caf6d3c><h3 class="text-base md:text-lg font-semibold text-text-primary mb-2" data-v-5caf6d3c> Technologies </h3><div class="flex flex-wrap gap-1 md:gap-2" data-v-5caf6d3c><!--[-->`);
-      ssrRenderList(projectData.value[selectedProject.value]?.technologies, (tech) => {
-        _push(`<span class="px-2 md:px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-xs md:text-sm" data-v-5caf6d3c>${ssrInterpolate(tech)}</span>`);
-      });
-      _push(`<!--]--></div></div></div></div></div></div></section><section id="contact" class="h-screen modern-section flex flex-col justify-center py-8" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto px-4 flex-1 flex items-center" data-v-5caf6d3c><div class="max-w-2xl mx-auto text-center" data-v-5caf6d3c><h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 gradient-text animate-slide-up" data-v-5caf6d3c> Get In Touch </h2><p class="text-base md:text-lg text-text-secondary mb-6 md:mb-8 px-4" data-v-5caf6d3c> I&#39;m always interested in new opportunities and exciting projects. Let&#39;s work together to bring your ideas to life! </p><div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4" data-v-5caf6d3c><button class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden" data-v-5caf6d3c><span class="relative z-10" data-v-5caf6d3c>Send Message</span><div class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" data-v-5caf6d3c></div></button><button class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3" data-v-5caf6d3c> View Resume </button></div></div></div></section></main>`);
-      if (imageModalOpen.value) {
-        _push(`<div class="fixed inset-0 z-[99999] flex items-center justify-center p-4" data-v-5caf6d3c><div class="absolute inset-0 bg-black/90 backdrop-blur-sm" data-v-5caf6d3c></div><div class="relative max-w-[95vw] max-h-[95vh] animate-fade-in" data-v-5caf6d3c><button class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10" data-v-5caf6d3c><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-v-5caf6d3c></path></svg></button>`);
-        if (projectData.value[selectedProject.value]?.images.length > 1) {
-          _push(`<div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none" data-v-5caf6d3c><button class="${ssrRenderClass([{ "opacity-50": selectedImageIndex.value === 0 }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" data-v-5caf6d3c></path></svg></button><button class="${ssrRenderClass([{
-            "opacity-50": selectedImageIndex.value === projectData.value[selectedProject.value]?.images.length - 1
-          }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" data-v-5caf6d3c></path></svg></button></div>`);
-        } else {
-          _push(`<!---->`);
-        }
-        if (projectData.value[selectedProject.value]?.images.length > 1) {
-          _push(`<div class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate(projectData.value[selectedProject.value]?.images.length)}</div>`);
-        } else {
-          _push(`<!---->`);
-        }
-        _push(`<img${ssrRenderAttr("src", projectData.value[selectedProject.value]?.images[selectedImageIndex.value])}${ssrRenderAttr("alt", projectData.value[selectedProject.value]?.title + " Screenshot")} class="w-full h-full object-contain rounded-lg shadow-2xl" data-v-5caf6d3c></div></div>`);
-      } else {
-        _push(`<!---->`);
-      }
-      _push(`</div>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "antialiased bg-white dark:bg-[#020420] dark:text-white flex flex-col items-center justify-center min-h-screen place-content-center sm:text-base text-[#020420] text-sm" }, _attrs))} data-v-98a0f204><div class="flex flex-col mt-6 sm:mt-0" data-v-98a0f204><h1 class="flex flex-col gap-y-4 items-center justify-center" data-v-98a0f204><a href="https://nuxt.com?utm_source=nuxt-welcome" target="_blank" class="gap-4 inline-flex items-end" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" fill="none" aria-label="Nuxt" class="h-8 sm:h-12" viewBox="0 0 800 200" data-v-98a0f204><path fill="#00dc82" d="M168.303 200h111.522c3.543 0 7.022-.924 10.09-2.679A20.1 20.1 0 0 0 297.3 190a19.86 19.86 0 0 0 2.7-10.001 19.86 19.86 0 0 0-2.709-9.998L222.396 41.429a20.1 20.1 0 0 0-7.384-7.32 20.3 20.3 0 0 0-10.088-2.679c-3.541 0-7.02.925-10.087 2.68a20.1 20.1 0 0 0-7.384 7.32l-19.15 32.896L130.86 9.998a20.1 20.1 0 0 0-7.387-7.32A20.3 20.3 0 0 0 113.384 0c-3.542 0-7.022.924-10.09 2.679a20.1 20.1 0 0 0-7.387 7.319L2.709 170A19.85 19.85 0 0 0 0 179.999c-.002 3.511.93 6.96 2.7 10.001a20.1 20.1 0 0 0 7.385 7.321A20.3 20.3 0 0 0 20.175 200h70.004c27.737 0 48.192-12.075 62.266-35.633l34.171-58.652 18.303-31.389 54.93 94.285h-73.233zm-79.265-31.421-48.854-.011 73.232-125.706 36.541 62.853-24.466 42.01c-9.347 15.285-19.965 20.854-36.453 20.854" data-v-98a0f204></path><path fill="currentColor" d="M377 200a4 4 0 0 0 4-4v-93s5.244 8.286 15 25l38.707 66.961c1.789 3.119 5.084 5.039 8.649 5.039H470V50h-27a4 4 0 0 0-4 4v94l-17-30-36.588-62.98c-1.792-3.108-5.081-5.02-8.639-5.02H350v150zm299.203-56.143L710.551 92h-25.73a9.97 9.97 0 0 0-8.333 4.522L660.757 120.5l-15.731-23.978A9.97 9.97 0 0 0 636.693 92h-25.527l34.348 51.643L608.524 200h24.966a9.97 9.97 0 0 0 8.29-4.458l19.18-28.756 18.981 28.72a9.97 9.97 0 0 0 8.313 4.494h24.736zM724.598 92h19.714V60.071h28.251V92H800v24.857h-27.437V159.5c0 10.5 5.284 15.429 14.43 15.429H800V200h-16.869c-23.576 0-38.819-14.143-38.819-39.214v-43.929h-19.714zM590 92h-15c-3.489 0-6.218.145-8.5 2.523-2.282 2.246-2.5 3.63-2.5 7.066v52.486c0 8.058-.376 12.962-4 16.925-3.624 3.831-8.619 5-16 5-7.247 0-12.376-1.169-16-5-3.624-3.963-4-8.867-4-16.925v-52.486c0-3.435-.218-4.82-2.5-7.066C519.218 92.145 516.489 92 513 92h-15v62.422q0 21.006 11.676 33.292C517.594 195.905 529.103 200 544 200s26.204-4.095 34.123-12.286Q590 175.428 590 154.422z" data-v-98a0f204></path></svg> <span class="bg-[#00DC42]/10 border border-[#00DC42]/50 font-mono font-semibold group-hover:bg-[#00DC42]/15 group-hover:border-[#00DC42] inline-block leading-none px-2 py-1 rounded sm:px-2.5 sm:py-1.5 sm:text-[14px] text-[#00DC82] text-[12px]" data-v-98a0f204>4.0.3</span></a></h1><div class="gap-4 grid grid-cols-1 max-w-[980px] mt-6 px-4 sm:gap-6 sm:grid-cols-3 sm:mt-10 w-full" data-v-98a0f204><div class="bg-gray-50/10 border border-[#00DC42]/50 dark:bg-white/5 flex flex-col gap-1 p-6 rounded-lg sm:col-span-2" data-v-98a0f204><div class="bg-[#00DC82]/5 border border-[#00DC82] dark:bg-[#020420] dark:border-[#00DC82]/80 dark:text-[#00DC82] flex h-[32px] items-center justify-center rounded text-[#00DC82] w-[32px]" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" class="size-[18px]" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="m228.1 121.2-143.9-88A8 8 0 0 0 72 40v176a8 8 0 0 0 12.2 6.8l143.9-88a7.9 7.9 0 0 0 0-13.6" opacity=".2" data-v-98a0f204></path><path fill="currentColor" d="M80 232a15.5 15.5 0 0 1-7.8-2.1A15.8 15.8 0 0 1 64 216V40a15.8 15.8 0 0 1 8.2-13.9 15.5 15.5 0 0 1 16.1.3l144 87.9a16 16 0 0 1 0 27.4l-144 87.9A15.4 15.4 0 0 1 80 232m0-192v176l144-88Z" data-v-98a0f204></path></svg></div><h2 class="font-semibold mt-1 text-base" data-v-98a0f204>Get started</h2><p class="dark:text-gray-200 text-gray-700 text-sm" data-v-98a0f204>Remove this welcome page by replacing <a class="bg-green-50 border border-green-600/10 dark:bg-[#020420] dark:border-white/10 dark:text-[#00DC82] font-bold font-mono p-1 rounded text-green-700" data-v-98a0f204>&lt;NuxtWelcome/&gt;</a> in <a href="https://nuxt.com/docs/guide/directory-structure/app" target="_blank" rel="noopener" class="bg-green-50 border border-green-600/20 dark:bg-[#020420] dark:border-white/20 dark:text-[#00DC82] font-bold font-mono hover:border-[#00DC82] p-1 rounded text-green-700" data-v-98a0f204>app.vue</a> with your own code.</p></div><a href="https://nuxt.com/docs?utm_source=nuxt-welcome" target="_blank" class="bg-gray-50/10 border border-gray-200 dark:bg-white/5 dark:border-white/10 flex flex-col gap-1 group hover:border-[#00DC82] hover:dark:border-[#00DC82] p-6 relative rounded-lg transition-all" data-v-98a0f204><div class="bg-[#00DC82]/5 border border-[#00DC82] dark:bg-[#020420] dark:border-[#00DC82]/50 dark:text-[#00DC82] flex group-hover:dark:border-[#00DC82]/80 h-[32px] items-center justify-center rounded text-[#00DC82] transition-all w-[32px]" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M136 48v128H88V80H40V48a8 8 0 0 1 8-8h32a8 8 0 0 1 8 8 8 8 0 0 1 8-8h32a8 8 0 0 1 8 8m89.9 149.6-8.3-30.9-46.4 12.5 8.3 30.9a8 8 0 0 0 9.8 5.6l30.9-8.3a8 8 0 0 0 5.7-9.8M184.5 43.1a8.1 8.1 0 0 0-9.8-5.7l-30.9 8.3a8.1 8.1 0 0 0-5.7 9.8l8.3 30.9L192.8 74Z" opacity=".2" data-v-98a0f204></path><path fill="currentColor" d="M233.6 195.6 192.2 41a16 16 0 0 0-19.6-11.3L141.7 38l-1 .3A16 16 0 0 0 128 32H96a15.8 15.8 0 0 0-8 2.2 15.8 15.8 0 0 0-8-2.2H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h32a15.8 15.8 0 0 0 8-2.2 15.8 15.8 0 0 0 8 2.2h32a16 16 0 0 0 16-16v-99.6l27.8 103.7a16 16 0 0 0 15.5 11.9 20 20 0 0 0 4.1-.5l30.9-8.3a16 16 0 0 0 11.3-19.6M156.2 92.1l30.9-8.3 20.7 77.3-30.9 8.3Zm20.5-46.9 6.3 23.1-30.9 8.3-6.3-23.1ZM128 48v120H96V48Zm-48 0v24H48V48ZM48 208V88h32v120Zm80 0H96v-24h32zm90.2-8.3-30.9 8.3-6.3-23.2 31-8.3z" data-v-98a0f204></path></svg></div> <svg xmlns="http://www.w3.org/2000/svg" class="absolute dark:text-white/40 group-hover:size-5 group-hover:text-[#00DC82] right-4 size-4 text-[#020420]/20 top-4 transition-all" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.7 197.7a8.2 8.2 0 0 1-11.4 0 8.1 8.1 0 0 1 0-11.4L172.7 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8" data-v-98a0f204></path></svg> <h2 class="font-semibold mt-1 text-base" data-v-98a0f204>Documentation</h2> <p class="dark:text-gray-200 group-hover:dark:text-gray-100 text-gray-700 text-sm" data-v-98a0f204>We highly recommend you take a look at the Nuxt documentation to level up.</p></a></div><div class="gap-4 grid grid-cols-1 max-w-[980px] mt-4 px-4 sm:gap-6 sm:grid-cols-3 sm:mt-6 w-full" data-v-98a0f204><a href="https://nuxt.com/modules?utm_source=nuxt-welcome" target="_blank" class="bg-gray-50/10 border border-gray-200 dark:bg-white/5 dark:border-white/10 flex flex-col gap-1 group hover:border-[#00DC82] hover:dark:border-[#00DC82] p-6 relative rounded-lg transition-all" data-v-98a0f204><div class="bg-[#00DC82]/5 border border-[#00DC82] dark:bg-[#020420] dark:border-[#00DC82]/50 dark:text-[#00DC82] flex group-hover:dark:border-[#00DC82]/80 h-[32px] items-center justify-center rounded text-[#00DC82] transition-all w-[32px]" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M64 216a8 8 0 0 1-8-8v-42.7a27.6 27.6 0 0 1-14.1 2.6A28 28 0 1 1 56 114.7V72a8 8 0 0 1 8-8h46.7a27.6 27.6 0 0 1-2.6-14.1A28 28 0 1 1 161.3 64H208a8 8 0 0 1 8 8v42.7a27.6 27.6 0 0 0-14.1-2.6 28 28 0 1 0 14.1 53.2V208a8 8 0 0 1-8 8Z" opacity=".2" data-v-98a0f204></path><path fill="currentColor" d="M220.3 158.5a8.1 8.1 0 0 0-7.7-.4 20.2 20.2 0 0 1-23.2-4.4 20 20 0 0 1 13.1-33.6 19.6 19.6 0 0 1 10.1 1.8 8.1 8.1 0 0 0 7.7-.4 8.2 8.2 0 0 0 3.7-6.8V72a16 16 0 0 0-16-16h-36.2c.1-1.3.2-2.7.2-4a36.1 36.1 0 0 0-38.3-35.9 36 36 0 0 0-33.6 33.3 36.4 36.4 0 0 0 .1 6.6H64a16 16 0 0 0-16 16v32.2l-4-.2a35.6 35.6 0 0 0-26.2 11.4 35.3 35.3 0 0 0-9.7 26.9 36 36 0 0 0 33.3 33.6 36.4 36.4 0 0 0 6.6-.1V208a16 16 0 0 0 16 16h144a16 16 0 0 0 16-16v-42.7a8.2 8.2 0 0 0-3.7-6.8M208 208H64v-42.7a8.2 8.2 0 0 0-3.7-6.8 8.1 8.1 0 0 0-7.7-.4 19.6 19.6 0 0 1-10.1 1.8 20 20 0 0 1-13.1-33.6 20.2 20.2 0 0 1 23.2-4.4 8.1 8.1 0 0 0 7.7-.4 8.2 8.2 0 0 0 3.7-6.8V72h46.7a8.2 8.2 0 0 0 6.8-3.7 8.1 8.1 0 0 0 .4-7.7 19.6 19.6 0 0 1-1.8-10.1 20 20 0 0 1 33.6-13.1 20.2 20.2 0 0 1 4.4 23.2 8.1 8.1 0 0 0 .4 7.7 8.2 8.2 0 0 0 6.8 3.7H208v32.2a36.4 36.4 0 0 0-6.6-.1 36 36 0 0 0-33.3 33.6A36.1 36.1 0 0 0 204 176l4-.2Z" data-v-98a0f204></path></svg></div> <svg xmlns="http://www.w3.org/2000/svg" class="absolute dark:text-white/40 group-hover:size-5 group-hover:text-[#00DC82] right-4 size-4 text-[#020420]/20 top-4 transition-all" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.7 197.7a8.2 8.2 0 0 1-11.4 0 8.1 8.1 0 0 1 0-11.4L172.7 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8" data-v-98a0f204></path></svg> <h2 class="font-semibold mt-1 text-base" data-v-98a0f204>Modules</h2> <p class="dark:text-gray-200 group-hover:dark:text-gray-100 text-gray-700 text-sm" data-v-98a0f204>Discover our list of modules to supercharge your Nuxt project.</p></a> <a href="https://nuxt.com/docs/examples?utm_source=nuxt-welcome" target="_blank" class="bg-gray-50/10 border border-gray-200 dark:bg-white/5 dark:border-white/10 flex flex-col gap-1 group hover:border-[#00DC82] hover:dark:border-[#00DC82] p-6 relative rounded-lg transition-all" data-v-98a0f204><div class="bg-[#00DC82]/5 border border-[#00DC82] dark:bg-[#020420] dark:border-[#00DC82]/50 dark:text-[#00DC82] flex group-hover:dark:border-[#00DC82]/80 h-[32px] items-center justify-center rounded text-[#00DC82] transition-all w-[32px]" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M224 56v144a8 8 0 0 1-8 8H40a8 8 0 0 1-8-8V56a8 8 0 0 1 8-8h176a8 8 0 0 1 8 8" opacity=".2" data-v-98a0f204></path><path fill="currentColor" d="M216 40H40a16 16 0 0 0-16 16v144a16 16 0 0 0 16 16h176a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 160H40V56h176zM80 84a12 12 0 1 1-12-12 12 12 0 0 1 12 12m40 0a12 12 0 1 1-12-12 12 12 0 0 1 12 12" data-v-98a0f204></path></svg></div> <svg xmlns="http://www.w3.org/2000/svg" class="absolute dark:text-white/40 group-hover:size-5 group-hover:text-[#00DC82] right-4 size-4 text-[#020420]/20 top-4 transition-all" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.7 197.7a8.2 8.2 0 0 1-11.4 0 8.1 8.1 0 0 1 0-11.4L172.7 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8" data-v-98a0f204></path></svg> <h2 class="font-semibold mt-1 text-base" data-v-98a0f204>Examples</h2> <p class="dark:text-gray-200 group-hover:dark:text-gray-100 text-gray-700 text-sm" data-v-98a0f204>Explore different way of using Nuxt features and get inspired.</p></a> <a href="https://nuxt.com/deploy?utm_source=nuxt-welcome" target="_blank" class="bg-gray-50/10 border border-gray-200 dark:bg-white/5 dark:border-white/10 flex flex-col gap-1 group hover:border-[#00DC82] hover:dark:border-[#00DC82] p-6 relative rounded-lg transition-all" data-v-98a0f204><div class="bg-[#00DC82]/5 border border-[#00DC82] dark:bg-[#020420] dark:border-[#00DC82]/50 dark:text-[#00DC82] flex group-hover:dark:border-[#00DC82]/80 h-[32px] items-center justify-center rounded text-[#00DC82] transition-all w-[32px]" data-v-98a0f204><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M94.1 184.6c-11.4 33.9-56.6 33.9-56.6 33.9s0-45.2 33.9-56.6Zm90.5-67.9v64.6a8 8 0 0 1-2.4 5.6l-32.3 32.4a8 8 0 0 1-13.5-4.1l-8.4-41.9Zm-45.3-45.3H74.7a8 8 0 0 0-5.6 2.4l-32.4 32.3a8 8 0 0 0 4.1 13.5l41.9 8.4Z" opacity=".2" data-v-98a0f204></path><path fill="currentColor" d="M96.6 177a7.9 7.9 0 0 0-10.1 5c-6.6 19.7-27.9 25.8-40.2 27.7 1.9-12.3 8-33.6 27.7-40.2a8 8 0 1 0-5.1-15.1c-16.4 5.4-28.4 18.4-34.8 37.5a91.8 91.8 0 0 0-4.6 26.6 8 8 0 0 0 8 8 91.8 91.8 0 0 0 26.6-4.6c19.1-6.4 32.1-18.4 37.5-34.8a7.9 7.9 0 0 0-5-10.1" data-v-98a0f204></path><path fill="currentColor" d="M227.6 41.8a15.7 15.7 0 0 0-13.4-13.4c-11.3-1.7-40.6-2.5-69.2 26.1l-9 8.9H74.7a16.2 16.2 0 0 0-11.3 4.7l-32.3 32.4a15.9 15.9 0 0 0-4 15.9 16 16 0 0 0 12.2 11.1l39.5 7.9 41.8 41.8 7.9 39.5a16 16 0 0 0 11.1 12.2 14.7 14.7 0 0 0 4.6.7 15.6 15.6 0 0 0 11.3-4.7l32.4-32.3a16.2 16.2 0 0 0 4.7-11.3V120l8.9-9c28.6-28.6 27.8-57.9 26.1-69.2M74.7 79.4H120l-39.9 39.9-37.7-7.5Zm81.6-13.6c7.8-7.8 28.8-25.6 55.5-21.6 4 26.7-13.8 47.7-21.6 55.5L128 161.9 94.1 128Zm20.3 115.5-32.4 32.3-7.5-37.7 39.9-39.9Z" data-v-98a0f204></path></svg></div> <svg xmlns="http://www.w3.org/2000/svg" class="absolute dark:text-white/40 group-hover:size-5 group-hover:text-[#00DC82] right-4 size-4 text-[#020420]/20 top-4 transition-all" viewBox="0 0 256 256" data-v-98a0f204><path fill="currentColor" d="M200 64v104a8 8 0 0 1-16 0V83.3L69.7 197.7a8.2 8.2 0 0 1-11.4 0 8.1 8.1 0 0 1 0-11.4L172.7 72H88a8 8 0 0 1 0-16h104a8 8 0 0 1 8 8" data-v-98a0f204></path></svg> <h2 class="font-semibold mt-1 text-base" data-v-98a0f204>Deploy</h2> <p class="dark:text-gray-200 group-hover:dark:text-gray-100 text-gray-700 text-sm" data-v-98a0f204>Learn how to deploy your Nuxt project on different providers.</p></a></div><footer class="lg:px-8 mb-6 mt-6 mx-auto px-4 sm:mb-0 sm:mt-10 sm:px-6 w-full" data-v-98a0f204><ul class="flex gap-4 items-center justify-center" data-v-98a0f204><li data-v-98a0f204><a href="https://go.nuxt.com/github" target="_blank" class="dark:hover:text-white dark:text-gray-400 focus-visible:ring-2 hover:text-[#020420] text-gray-500" data-v-98a0f204><span class="sr-only" data-v-98a0f204>Nuxt GitHub Repository</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-v-98a0f204><path fill="currentColor" d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" data-v-98a0f204></path></svg></a></li><li data-v-98a0f204><a href="https://go.nuxt.com/discord" target="_blank" class="dark:hover:text-white dark:text-gray-400 focus-visible:ring-2 hover:text-[#020420] text-gray-500" data-v-98a0f204><span class="sr-only" data-v-98a0f204>Nuxt Discord Server</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-v-98a0f204><path fill="currentColor" d="M20.317 4.37a19.8 19.8 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.3 18.3 0 0 0-5.487 0 13 13 0 0 0-.617-1.25.08.08 0 0 0-.079-.037A19.7 19.7 0 0 0 3.677 4.37a.1.1 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.08.08 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.08.08 0 0 0 .084-.028 14 14 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13 13 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10 10 0 0 0 .372-.292.07.07 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.07.07 0 0 1 .078.01q.181.149.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.08.08 0 0 0 .084.028 19.8 19.8 0 0 0 6.002-3.03.08.08 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03M8.02 15.33c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418m7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418" data-v-98a0f204></path></svg></a></li><li data-v-98a0f204><a href="https://go.nuxt.com/x" target="_blank" class="dark:hover:text-white dark:text-gray-400 focus-visible:ring-2 hover:text-[#020420] text-gray-500" data-v-98a0f204><span class="sr-only" data-v-98a0f204>Nuxt on X</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-v-98a0f204><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" data-v-98a0f204></path></svg></a></li><li data-v-98a0f204><a href="https://go.nuxt.com/bluesky" target="_blank" class="dark:hover:text-white dark:text-gray-400 focus-visible:ring-2 hover:text-[#020420] text-gray-500" data-v-98a0f204><span class="sr-only" data-v-98a0f204>Nuxt Bluesky</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-v-98a0f204><path fill="currentColor" d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364q.204-.03.415-.056-.207.033-.415.056c-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a9 9 0 0 1-.415-.056q.21.026.415.056c2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.206-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8" data-v-98a0f204></path></svg></a></li><li data-v-98a0f204><a href="https://go.nuxt.com/linkedin" target="_blank" class="dark:hover:text-white dark:text-gray-400 focus-visible:ring-2 hover:text-[#020420] text-gray-500" data-v-98a0f204><span class="sr-only" data-v-98a0f204>Nuxt Linkedin</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-v-98a0f204><path fill="currentColor" d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.06 2.06 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065m1.782 13.019H3.555V9h3.564zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" data-v-98a0f204></path></svg></a></li></ul></footer></div></div>`);
     };
   }
 };
 const _sfc_setup$2 = _sfc_main$2.setup;
 _sfc_main$2.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("app.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("../node_modules/nuxt/dist/app/components/welcome.vue");
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
-const AppComponent = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-5caf6d3c"]]);
+const AppComponent = /* @__PURE__ */ _export_sfc(_sfc_main$2, [["__scopeId", "data-v-98a0f204"]]);
 const _sfc_main$1 = {
   __name: "nuxt-error-page",
   __ssrInlineRender: true,
@@ -822,8 +693,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-BtR90EAJ.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-D20C2Z43.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-D9RSH_T_.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-CHfJCch2.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -833,7 +704,7 @@ const _sfc_main$1 = {
 const _sfc_setup$1 = _sfc_main$1.setup;
 _sfc_main$1.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("node_modules/nuxt/dist/app/components/nuxt-error-page.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("../node_modules/nuxt/dist/app/components/nuxt-error-page.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
 const _sfc_main = {
@@ -881,7 +752,7 @@ const _sfc_main = {
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("node_modules/nuxt/dist/app/components/nuxt-root.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("../node_modules/nuxt/dist/app/components/nuxt-root.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
 let entry;
@@ -904,5 +775,5 @@ let entry;
 }
 const entry$1 = (ssrContext) => entry(ssrContext);
 
-export { _export_sfc as _, useNuxtApp as a, useRuntimeConfig as b, nuxtLinkDefaults as c, entry$1 as default, navigateTo as n, resolveRouteObject as r, tryUseNuxtApp as t, useRouter as u };
+export { _export_sfc as _, useNuxtApp as a, useRuntimeConfig as b, nuxtLinkDefaults as c, useHead as d, entry$1 as default, navigateTo as n, resolveRouteObject as r, useRouter as u };
 //# sourceMappingURL=server.mjs.map
