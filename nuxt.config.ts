@@ -2,13 +2,10 @@ import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
-  compatibilityDate: "2025-07-15",
   devtools: { enabled: false },
 
   nitro: {
-    preset: "vercel",
-    minify: true,
-    compressPublicAssets: true
+    preset: "vercel"
   },
 
   postcss: {
@@ -37,11 +34,6 @@ export default defineNuxtConfig({
     }
   },
 
-  // Vercel-specific configuration
-  experimental: {
-    payloadExtraction: false
-  },
-
   // Build optimizations
   build: {
     transpile: []
@@ -61,9 +53,9 @@ export default defineNuxtConfig({
       rollupOptions: {
         external: []
       }
-    },
-    optimizeDeps: {
-      exclude: ['vue-bundle-renderer', '@vue/shared']
     }
-  }
+  },
+
+  // SSR configuration
+  ssr: true
 });

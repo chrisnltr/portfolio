@@ -49,14 +49,6 @@
       "dest": "/__nitro"
     },
     {
-      "src": "/__nuxt_error",
-      "dest": "/__nuxt_error"
-    },
-    {
-      "src": "/__nuxt_island/(?:.*)",
-      "dest": "/__nuxt_island/[...]"
-    },
-    {
       "src": "/(.*)",
       "dest": "/__nitro"
     }

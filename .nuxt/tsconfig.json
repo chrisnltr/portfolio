@@ -53,16 +53,16 @@
         "../node_modules/vite/client"
       ],
       "~": [
-        "../app"
+        ".."
       ],
       "~/*": [
-        "../app/*"
+        "../*"
       ],
       "@": [
-        "../app"
+        ".."
       ],
       "@/*": [
-        "../app/*"
+        "../*"
       ],
       "~~": [
         ".."
@@ -82,6 +82,18 @@
       "#shared/*": [
         "../shared/*"
       ],
+      "assets": [
+        "../assets"
+      ],
+      "assets/*": [
+        "../assets/*"
+      ],
+      "public": [
+        "../public"
+      ],
+      "public/*": [
+        "../public/*"
+      ],
       "#app": [
         "../node_modules/nuxt/dist/app"
       ],
@@ -95,13 +107,13 @@
         "../node_modules/vue-router"
       ],
       "#unhead/composables": [
-        "../node_modules/nuxt/dist/head/runtime/composables"
+        "../node_modules/nuxt/dist/head/runtime/composables/v3"
       ],
       "#imports": [
         "./imports"
       ],
       "#app-manifest": [
-        "./manifest/meta/dev"
+        "./manifest/meta/0f5f11c4-0c03-49b1-b191-788499c19d23.json"
       ],
       "#components": [
         "./components"
@@ -122,7 +134,7 @@
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
+    "noUncheckedIndexedAccess": false,
     "forceConsistentCasingInFileNames": true,
     "noImplicitOverride": true,
     "module": "preserve",
@@ -142,39 +154,21 @@
     "allowSyntheticDefaultImports": true
   },
   "include": [
-    "./nuxt.d.ts",
-    "../app/**/*",
-    "../modules/*/runtime/**/*",
-    "../layers/*/app/**/*",
-    "../layers/*/modules/*/runtime/**/*",
-    "../shared/**/*.d.ts",
-    "../modules/*/shared/**/*.d.ts",
-    "../layers/*/shared/**/*.d.ts",
-    "../*.d.ts",
-    "../layers/*/*.d.ts",
-    "./nuxt.node.d.ts",
-    "../modules/*.*",
-    "../nuxt.config.*",
+    "../**/*",
     "../.config/nuxt.*",
-    "../layers/*/nuxt.config.*",
-    "../layers/*/.config/nuxt.*",
-    "../layers/*/modules/**/*",
-    "../shared/**/*",
-    "../modules/*/shared/**/*",
-    "../layers/*/shared/**/*",
+    "./nuxt.d.ts",
     "../node_modules/runtime",
-    "../node_modules/dist/runtime"
+    "../node_modules/dist/runtime",
+    ".."
   ],
   "exclude": [
+    "../dist",
+    "../.data",
     "../node_modules",
     "../node_modules/nuxt/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
-    "../dist",
-    "../.data",
-    "../modules/*/runtime/server/**/*",
-    "../layers/*/server/**/*",
-    "../layers/*/modules/*/runtime/server/**/*",
     "../node_modules/runtime/server",
-    "../node_modules/dist/runtime/server"
+    "../node_modules/dist/runtime/server",
+    "../.vercel/output"
   ]
 }
