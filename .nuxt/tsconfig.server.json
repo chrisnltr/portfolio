@@ -56,11 +56,20 @@
       "@nuxt/devtools": [
         "../node_modules/@nuxt/devtools"
       ],
+      "vue": [
+        "../node_modules/vue"
+      ],
       "@vue/runtime-core": [
         "../node_modules/@vue/runtime-core"
       ],
       "@vue/compiler-sfc": [
         "../node_modules/@vue/compiler-sfc"
+      ],
+      "vue-router": [
+        "../node_modules/vue-router"
+      ],
+      "vue-router/auto-routes": [
+        "../node_modules/vue-router/vue-router-auto-routes"
       ],
       "unplugin-vue-router/client": [
         "../node_modules/unplugin-vue-router/client"
@@ -76,6 +85,9 @@
       ],
       "#shared": [
         "../shared"
+      ],
+      "#shared/*": [
+        "../shared/*"
       ],
       "assets": [
         "../assets"
@@ -110,7 +122,8 @@
   },
   "include": [
     "./types/nitro-nuxt.d.ts",
-    "../node_modules/@nuxt/telemetry/runtime/server",
+    "../node_modules/runtime/server",
+    "../node_modules/dist/runtime/server",
     "./types/nitro.d.ts",
     "../**/*",
     "../server/**/*"

@@ -26,7 +26,6 @@ function getNuxtAppCtx(id = appId) {
 }
 const NuxtPluginIndicator = "__nuxt_plugin";
 function createNuxtApp(options) {
-  var _a;
   let hydratingCount = 0;
   const nuxtApp = {
     _id: options.id || appId || "nuxt-app",
@@ -35,14 +34,14 @@ function createNuxtApp(options) {
     globalName: "nuxt",
     versions: {
       get nuxt() {
-        return "3.17.7";
+        return "3.18.1";
       },
       get vue() {
         return nuxtApp.vueApp.version;
       }
     },
     payload: shallowReactive({
-      ...((_a = options.ssrContext) == null ? void 0 : _a.payload) || {},
+      ...options.ssrContext?.payload || {},
       data: shallowReactive({}),
       state: reactive({}),
       once: /* @__PURE__ */ new Set(),
@@ -132,15 +131,13 @@ async function applyPlugin(nuxtApp, plugin) {
   }
 }
 async function applyPlugins(nuxtApp, plugins2) {
-  var _a, _b, _c, _d;
   const resolvedPlugins = /* @__PURE__ */ new Set();
   const unresolvedPlugins = [];
   const parallels = [];
-  const errors = [];
+  let error = void 0;
   let promiseDepth = 0;
   async function executePlugin(plugin) {
-    var _a2;
-    const unresolvedPluginsForThisPlugin = ((_a2 = plugin.dependsOn) == null ? void 0 : _a2.filter((name) => plugins2.some((p) => p._name === name) && !resolvedPlugins.has(name))) ?? [];
+    const unresolvedPluginsForThisPlugin = plugin.dependsOn?.filter((name) => plugins2.some((p) => p._name === name) && !resolvedPlugins.has(name)) ?? [];
     if (unresolvedPluginsForThisPlugin.length > 0) {
       unresolvedPlugins.push([new Set(unresolvedPluginsForThisPlugin), plugin]);
     } else {
@@ -157,22 +154,27 @@ async function applyPlugins(nuxtApp, plugins2) {
             }
           }));
         }
+      }).catch((e) => {
+        if (!plugin.parallel && !nuxtApp.payload.error) {
+          throw e;
+        }
+        error ||= e;
       });
       if (plugin.parallel) {
-        parallels.push(promise.catch((e) => errors.push(e)));
+        parallels.push(promise);
       } else {
         await promise;
       }
     }
   }
   for (const plugin of plugins2) {
-    if (((_a = nuxtApp.ssrContext) == null ? void 0 : _a.islandContext) && ((_b = plugin.env) == null ? void 0 : _b.islands) === false) {
+    if (nuxtApp.ssrContext?.islandContext && plugin.env?.islands === false) {
       continue;
     }
     registerPluginHooks(nuxtApp, plugin);
   }
   for (const plugin of plugins2) {
-    if (((_c = nuxtApp.ssrContext) == null ? void 0 : _c.islandContext) && ((_d = plugin.env) == null ? void 0 : _d.islands) === false) {
+    if (nuxtApp.ssrContext?.islandContext && plugin.env?.islands === false) {
       continue;
     }
     await executePlugin(plugin);
@@ -183,8 +185,8 @@ async function applyPlugins(nuxtApp, plugins2) {
       await Promise.all(parallels);
     }
   }
-  if (errors.length) {
-    throw errors[0];
+  if (error) {
+    throw nuxtApp.payload.error || error;
   }
 }
 // @__NO_SIDE_EFFECTS__
@@ -205,12 +207,11 @@ function callWithNuxt(nuxt, setup, args) {
   }
 }
 function tryUseNuxtApp(id) {
-  var _a;
   let nuxtAppInstance;
   if (hasInjectionContext()) {
-    nuxtAppInstance = (_a = getCurrentInstance()) == null ? void 0 : _a.appContext.app.$nuxt;
+    nuxtAppInstance = getCurrentInstance()?.appContext.app.$nuxt;
   }
-  nuxtAppInstance || (nuxtAppInstance = getNuxtAppCtx(id).tryUse());
+  nuxtAppInstance ||= getNuxtAppCtx(id).tryUse();
   return nuxtAppInstance || null;
 }
 function useNuxtApp(id) {
@@ -231,8 +232,7 @@ function defineGetter(obj, key, val) {
 }
 const PageRouteSymbol = Symbol("route");
 const useRouter = () => {
-  var _a;
-  return (_a = useNuxtApp()) == null ? void 0 : _a.$router;
+  return useNuxtApp()?.$router;
 };
 const useRoute = () => {
   if (hasInjectionContext()) {
@@ -256,12 +256,12 @@ const isProcessingMiddleware = () => {
 };
 const URL_QUOTE_RE = /"/g;
 const navigateTo = (to, options) => {
-  to || (to = "/");
+  to ||= "/";
   const toPath = typeof to === "string" ? to : "path" in to ? resolveRouteObject(to) : useRouter().resolve(to).href;
   const isExternalHost = hasProtocol(toPath, { acceptRelative: true });
-  const isExternal = (options == null ? void 0 : options.external) || isExternalHost;
+  const isExternal = options?.external || isExternalHost;
   if (isExternal) {
-    if (!(options == null ? void 0 : options.external)) {
+    if (!options?.external) {
       throw new Error("Navigating to an external URL is not allowed by default. Use `navigateTo(url, { external: true })`.");
     }
     const { protocol } = new URL(toPath, "http://localhost");
@@ -281,7 +281,7 @@ const navigateTo = (to, options) => {
         const encodedLoc = location2.replace(URL_QUOTE_RE, "%22");
         const encodedHeader = encodeURL(location2, isExternalHost);
         nuxtApp.ssrContext._renderResponse = {
-          statusCode: sanitizeStatusCode((options == null ? void 0 : options.redirectCode) || 302, 302),
+          statusCode: sanitizeStatusCode(options?.redirectCode || 302, 302),
           body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0; url=${encodedLoc}"></head></html>`,
           headers: { location: encodedHeader }
         };
@@ -299,7 +299,7 @@ const navigateTo = (to, options) => {
   }
   if (isExternal) {
     nuxtApp._scope.stop();
-    if (options == null ? void 0 : options.replace) {
+    if (options?.replace) {
       (void 0).replace(toPath);
     } else {
       (void 0).href = toPath;
@@ -313,7 +313,7 @@ const navigateTo = (to, options) => {
     }
     return Promise.resolve();
   }
-  return (options == null ? void 0 : options.replace) ? router.replace(to) : router.push(to);
+  return options?.replace ? router.replace(to) : router.push(to);
 };
 function resolveRouteObject(to) {
   return withQuery(to.path || "", to.query || {}) + (to.hash || "");
@@ -336,7 +336,7 @@ const showError = (error) => {
     const nuxtApp = useNuxtApp();
     const error2 = useError();
     if (false) ;
-    error2.value || (error2.value = nuxtError);
+    error2.value ||= nuxtError;
   } catch {
     throw nuxtError;
   }
@@ -504,9 +504,8 @@ const router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw = /* @__PURE__ */ defin
       setup: (props, { slots }) => {
         const navigate = () => handleNavigation(props.to, props.replace);
         return () => {
-          var _a;
           const route2 = router.resolve(props.to);
-          return props.custom ? (_a = slots.default) == null ? void 0 : _a.call(slots, { href: props.to, navigate, route: route2 }) : h("a", { href: props.to, onClick: (e) => {
+          return props.custom ? slots.default?.({ href: props.to, navigate, route: route2 }) : h("a", { href: props.to, onClick: (e) => {
             e.preventDefault();
             return navigate();
           } }, slots);
@@ -514,20 +513,19 @@ const router_DclsWNDeVV7SyG4lslgLnjbQUK1ws8wgf2FHaAbo7Cw = /* @__PURE__ */ defin
       }
     }));
     nuxtApp._route = route;
-    nuxtApp._middleware || (nuxtApp._middleware = {
+    nuxtApp._middleware ||= {
       global: [],
       named: {}
-    });
+    };
     const initialLayout = nuxtApp.payload.state._layout;
     nuxtApp.hooks.hookOnce("app:created", async () => {
       router.beforeEach(async (to, from) => {
-        var _a;
         to.meta = reactive(to.meta || {});
         if (nuxtApp.isHydrating && initialLayout && !isReadonly(to.meta.layout)) {
           to.meta.layout = initialLayout;
         }
         nuxtApp._processingMiddleware = true;
-        if (!((_a = nuxtApp.ssrContext) == null ? void 0 : _a.islandContext)) {
+        if (!nuxtApp.ssrContext?.islandContext) {
           const middlewareEntries = /* @__PURE__ */ new Set([...globalMiddleware, ...nuxtApp._middleware.global]);
           {
             const routeRules = await nuxtApp.runWithContext(() => getRouteRules({ path: to.path }));
@@ -720,7 +718,6 @@ const _sfc_main$2 = {
       }
     ]);
     return (_ctx, _push, _parent, _attrs) => {
-      var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p;
       _push(`<div${ssrRenderAttrs(mergeProps({
         class: "h-screen bg-background-primary overflow-hidden",
         style: { "scroll-snap-type": "y mandatory" }
@@ -750,17 +747,17 @@ const _sfc_main$2 = {
       });
       _push(`<!--]--></div></div><div class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-8" data-v-5caf6d3c><div class="animate-fade-in flex flex-col justify-start h-full" data-v-5caf6d3c><div class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden cursor-pointer relative flex-shrink-0" data-v-5caf6d3c><img${ssrRenderAttr(
         "src",
-        (_a = projectData.value[selectedProject.value]) == null ? void 0 : _a.images[selectedImageIndex.value]
-      )}${ssrRenderAttr("alt", ((_b = projectData.value[selectedProject.value]) == null ? void 0 : _b.title) + " Screenshot")} class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-v-5caf6d3c>`);
-      if (((_c = projectData.value[selectedProject.value]) == null ? void 0 : _c.images.length) > 1) {
+        projectData.value[selectedProject.value]?.images[selectedImageIndex.value]
+      )}${ssrRenderAttr("alt", projectData.value[selectedProject.value]?.title + " Screenshot")} class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" data-v-5caf6d3c>`);
+      if (projectData.value[selectedProject.value]?.images.length > 1) {
         _push(`<div class="absolute inset-0 flex items-center justify-between p-2 pointer-events-none" data-v-5caf6d3c><button class="${ssrRenderClass([{ "opacity-50": selectedImageIndex.value === 0 }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" data-v-5caf6d3c></path></svg></button><button class="${ssrRenderClass([{
-          "opacity-50": selectedImageIndex.value === ((_d = projectData.value[selectedProject.value]) == null ? void 0 : _d.images.length) - 1
+          "opacity-50": selectedImageIndex.value === projectData.value[selectedProject.value]?.images.length - 1
         }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-2 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" data-v-5caf6d3c></path></svg></button></div>`);
       } else {
         _push(`<!---->`);
       }
-      if (((_e = projectData.value[selectedProject.value]) == null ? void 0 : _e.images.length) > 1) {
-        _push(`<div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate((_f = projectData.value[selectedProject.value]) == null ? void 0 : _f.images.length)}</div>`);
+      if (projectData.value[selectedProject.value]?.images.length > 1) {
+        _push(`<div class="absolute bottom-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate(projectData.value[selectedProject.value]?.images.length)}</div>`);
       } else {
         _push(`<!---->`);
       }
@@ -769,30 +766,30 @@ const _sfc_main$2 = {
       } else {
         _push(`<!---->`);
       }
-      _push(`</div><h2 class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0" data-v-5caf6d3c>${ssrInterpolate((_g = projectData.value[selectedProject.value]) == null ? void 0 : _g.title)}</h2><p class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2" data-v-5caf6d3c>${ssrInterpolate((_h = projectData.value[selectedProject.value]) == null ? void 0 : _h.description)}</p><div class="mb-4 flex-1 min-h-0 overflow-y-auto" data-v-5caf6d3c><h3 class="text-base md:text-lg font-semibold text-text-primary mb-2" data-v-5caf6d3c> Features </h3><ul class="text-text-secondary space-y-1 text-xs md:text-sm" data-v-5caf6d3c><!--[-->`);
-      ssrRenderList((_i = projectData.value[selectedProject.value]) == null ? void 0 : _i.features, (feature) => {
+      _push(`</div><h2 class="text-xl md:text-2xl font-bold text-text-primary mb-3 flex-shrink-0" data-v-5caf6d3c>${ssrInterpolate(projectData.value[selectedProject.value]?.title)}</h2><p class="text-text-secondary mb-4 text-sm md:text-base flex-shrink-0 line-clamp-2" data-v-5caf6d3c>${ssrInterpolate(projectData.value[selectedProject.value]?.description)}</p><div class="mb-4 flex-1 min-h-0 overflow-y-auto" data-v-5caf6d3c><h3 class="text-base md:text-lg font-semibold text-text-primary mb-2" data-v-5caf6d3c> Features </h3><ul class="text-text-secondary space-y-1 text-xs md:text-sm" data-v-5caf6d3c><!--[-->`);
+      ssrRenderList(projectData.value[selectedProject.value]?.features, (feature) => {
         _push(`<li class="flex items-start" data-v-5caf6d3c><span class="text-accent-400 mr-2 mt-1" data-v-5caf6d3c>•</span><span data-v-5caf6d3c>${ssrInterpolate(feature)}</span></li>`);
       });
       _push(`<!--]--></ul></div><div class="mb-4 flex-shrink-0" data-v-5caf6d3c><h3 class="text-base md:text-lg font-semibold text-text-primary mb-2" data-v-5caf6d3c> Technologies </h3><div class="flex flex-wrap gap-1 md:gap-2" data-v-5caf6d3c><!--[-->`);
-      ssrRenderList((_j = projectData.value[selectedProject.value]) == null ? void 0 : _j.technologies, (tech) => {
+      ssrRenderList(projectData.value[selectedProject.value]?.technologies, (tech) => {
         _push(`<span class="px-2 md:px-3 py-1 bg-accent-600/20 text-accent-400 rounded-full text-xs md:text-sm" data-v-5caf6d3c>${ssrInterpolate(tech)}</span>`);
       });
       _push(`<!--]--></div></div></div></div></div></div></section><section id="contact" class="h-screen modern-section flex flex-col justify-center py-8" style="${ssrRenderStyle({ "scroll-snap-align": "start" })}" data-v-5caf6d3c><div class="container mx-auto px-4 flex-1 flex items-center" data-v-5caf6d3c><div class="max-w-2xl mx-auto text-center" data-v-5caf6d3c><h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-8 md:mb-12 gradient-text animate-slide-up" data-v-5caf6d3c> Get In Touch </h2><p class="text-base md:text-lg text-text-secondary mb-6 md:mb-8 px-4" data-v-5caf6d3c> I&#39;m always interested in new opportunities and exciting projects. Let&#39;s work together to bring your ideas to life! </p><div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4" data-v-5caf6d3c><button class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden" data-v-5caf6d3c><span class="relative z-10" data-v-5caf6d3c>Send Message</span><div class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out" data-v-5caf6d3c></div></button><button class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3" data-v-5caf6d3c> View Resume </button></div></div></div></section></main>`);
       if (imageModalOpen.value) {
         _push(`<div class="fixed inset-0 z-[99999] flex items-center justify-center p-4" data-v-5caf6d3c><div class="absolute inset-0 bg-black/90 backdrop-blur-sm" data-v-5caf6d3c></div><div class="relative max-w-[95vw] max-h-[95vh] animate-fade-in" data-v-5caf6d3c><button class="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors z-10" data-v-5caf6d3c><svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" data-v-5caf6d3c></path></svg></button>`);
-        if (((_k = projectData.value[selectedProject.value]) == null ? void 0 : _k.images.length) > 1) {
+        if (projectData.value[selectedProject.value]?.images.length > 1) {
           _push(`<div class="absolute inset-0 flex items-center justify-between p-4 pointer-events-none" data-v-5caf6d3c><button class="${ssrRenderClass([{ "opacity-50": selectedImageIndex.value === 0 }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" data-v-5caf6d3c></path></svg></button><button class="${ssrRenderClass([{
-            "opacity-50": selectedImageIndex.value === ((_l = projectData.value[selectedProject.value]) == null ? void 0 : _l.images.length) - 1
+            "opacity-50": selectedImageIndex.value === projectData.value[selectedProject.value]?.images.length - 1
           }, "bg-black/50 hover:bg-black/70 active:bg-black/80 text-white rounded-full p-3 transition-all duration-200 pointer-events-auto focus:outline-none focus:ring-2 focus:ring-white/30"])}" data-v-5caf6d3c><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" data-v-5caf6d3c><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" data-v-5caf6d3c></path></svg></button></div>`);
         } else {
           _push(`<!---->`);
         }
-        if (((_m = projectData.value[selectedProject.value]) == null ? void 0 : _m.images.length) > 1) {
-          _push(`<div class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate((_n = projectData.value[selectedProject.value]) == null ? void 0 : _n.images.length)}</div>`);
+        if (projectData.value[selectedProject.value]?.images.length > 1) {
+          _push(`<div class="absolute top-4 left-1/2 transform -translate-x-1/2 bg-black/50 text-white text-sm px-3 py-1 rounded-full pointer-events-none" data-v-5caf6d3c>${ssrInterpolate(selectedImageIndex.value + 1)} / ${ssrInterpolate(projectData.value[selectedProject.value]?.images.length)}</div>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`<img${ssrRenderAttr("src", (_o = projectData.value[selectedProject.value]) == null ? void 0 : _o.images[selectedImageIndex.value])}${ssrRenderAttr("alt", ((_p = projectData.value[selectedProject.value]) == null ? void 0 : _p.title) + " Screenshot")} class="w-full h-full object-contain rounded-lg shadow-2xl" data-v-5caf6d3c></div></div>`);
+        _push(`<img${ssrRenderAttr("src", projectData.value[selectedProject.value]?.images[selectedImageIndex.value])}${ssrRenderAttr("alt", projectData.value[selectedProject.value]?.title + " Screenshot")} class="w-full h-full object-contain rounded-lg shadow-2xl" data-v-5caf6d3c></div></div>`);
       } else {
         _push(`<!---->`);
       }
@@ -828,8 +825,8 @@ const _sfc_main$1 = {
     const statusMessage = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-BNwv3EHQ.js"));
-    const _Error = defineAsyncComponent(() => import("./_nuxt/error-500-1Qd1vrCO.js"));
+    const _Error404 = defineAsyncComponent(() => import("./_nuxt/error-404-BtR90EAJ.js"));
+    const _Error = defineAsyncComponent(() => import("./_nuxt/error-500-D20C2Z43.js"));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ statusCode: unref(statusCode), statusMessage: unref(statusMessage), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
@@ -893,7 +890,6 @@ _sfc_main.setup = (props, ctx) => {
 let entry;
 {
   entry = async function createNuxtAppServer(ssrContext) {
-    var _a;
     const vueApp = createApp(_sfc_main);
     const nuxt = createNuxtApp({ vueApp, ssrContext });
     try {
@@ -901,9 +897,9 @@ let entry;
       await nuxt.hooks.callHook("app:created", vueApp);
     } catch (error) {
       await nuxt.hooks.callHook("app:error", error);
-      (_a = nuxt.payload).error || (_a.error = createError(error));
+      nuxt.payload.error ||= createError(error);
     }
-    if (ssrContext == null ? void 0 : ssrContext._renderResponse) {
+    if (ssrContext?._renderResponse) {
       throw new Error("skipping render");
     }
     return vueApp;
