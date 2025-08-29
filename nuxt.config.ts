@@ -6,7 +6,9 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   nitro: {
-    preset: "vercel"
+    preset: "vercel",
+    minify: true,
+    compressPublicAssets: true
   },
 
   postcss: {
@@ -51,5 +53,17 @@ export default defineNuxtConfig({
   // Runtime config for better compatibility
   runtimeConfig: {
     public: {}
+  },
+
+  // Vite configuration
+  vite: {
+    build: {
+      rollupOptions: {
+        external: []
+      }
+    },
+    optimizeDeps: {
+      exclude: ['vue-bundle-renderer', '@vue/shared']
+    }
   }
 });
