@@ -596,24 +596,19 @@
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
             </p>
-            <div
-              class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
-            >
-              <button
-                class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
-                @click="sendEmail"
-              >
-                <span class="relative z-10">Send Message</span>
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
-                ></div>
-              </button>
-              <button
-                class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3"
-              >
-                View Resume
-              </button>
-            </div>
+                         <div
+               class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
+             >
+               <button
+                 class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
+                 @click="sendEmail"
+               >
+                 <span class="relative z-10">Send Message</span>
+                 <div
+                   class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
+                 ></div>
+               </button>
+             </div>
           </div>
         </div>
       </section>
