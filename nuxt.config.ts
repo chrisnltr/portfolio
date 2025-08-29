@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   nitro: {
-    // Vercel preset removed
+    preset: "vercel"
   },
 
   postcss: {
