@@ -35,13 +35,21 @@ export default defineNuxtConfig({
     }
   },
 
-  // Vercel-spezifische Konfiguration
+  // Vercel-specific configuration
   experimental: {
     payloadExtraction: false
   },
 
-  // Build-Optimierungen
+  // Build optimizations
   build: {
     transpile: []
+  },
+
+  // Ensure proper module resolution
+  modules: [],
+  
+  // Runtime config for better compatibility
+  runtimeConfig: {
+    public: {}
   }
 });

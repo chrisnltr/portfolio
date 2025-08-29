@@ -7,3 +7,4 @@ const template = (messages) => {
 };
 
 export { template };
+//# sourceMappingURL=error-500.mjs.map
