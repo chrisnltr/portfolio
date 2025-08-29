@@ -65,4 +65,3 @@ const client_manifest = {
 };
 
 export { client_manifest as default };
-//# sourceMappingURL=client.manifest.mjs.map

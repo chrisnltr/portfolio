@@ -21,4 +21,3 @@ const listener = function(req, res) {
 };
 
 export { listener as default };
-//# sourceMappingURL=index.mjs.map
