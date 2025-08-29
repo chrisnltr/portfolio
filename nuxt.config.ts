@@ -1,23 +1,30 @@
 import { defineNuxtConfig } from "nuxt/config";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
+  css: ["~/assets/css/main.css"],
   devtools: { enabled: false },
-  nitro: { preset: 'vercel' },
 
-  // CSS
-  css: ["./assets/css/main.css"],
+  nitro: {
+    preset: "vercel",
+    externals: {
+      inline: [
+        "vue-bundle-renderer",
+        "vue",
+        "vue/server-renderer"
+      ]
+    }
+  },
 
-  // PostCSS
+
   postcss: {
     plugins: {
       "@tailwindcss/postcss": {},
-      autoprefixer: {},
-    },
+      autoprefixer: {}
+    }
   },
 
-  // App config
+  // App Head
   app: {
     head: {
       title: "Chris Leon Noltemeier",
@@ -26,29 +33,20 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content:
-            "A modern portfolio website built with Nuxt.js and Tailwind CSS",
+          content: "A modern portfolio website built with Nuxt.js and Tailwind CSS"
         },
-        { name: "theme-color", content: "#000000" },
+        { name: "theme-color", content: "#000000" }
       ],
       link: [
+        // stelle sicher, dass die Datei unter /public/images/CN-transparent.png liegt
         { rel: "icon", type: "image/png", href: "/images/CN-transparent.png" },
-        {
-          rel: "apple-touch-icon",
-          type: "image/png",
-          href: "/images/CN-transparent.png",
-        },
-        {
-          rel: "shortcut icon",
-          type: "image/png",
-          href: "/images/CN-transparent.png",
-        },
-      ],
-    },
+        { rel: "apple-touch-icon", type: "image/png", href: "/images/CN-transparent.png" },
+        { rel: "shortcut icon", type: "image/png", href: "/images/CN-transparent.png" }
+      ]
+    }
   },
 
-  // Build config
   build: {
-    // No transpile needed for Tailwind CSS v4
-  },
+    // keine Transpiles nötig für Tailwind v4
+  }
 });
