@@ -6,14 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   nitro: {
-    preset: "vercel",
-    externals: {
-      inline: [
-        "vue-bundle-renderer",
-        "vue",
-        "vue/server-renderer"
-      ]
-    }
+    preset: "vercel"
   },
 
 
@@ -38,10 +31,7 @@ export default defineNuxtConfig({
         { name: "theme-color", content: "#000000" }
       ],
       link: [
-        // stelle sicher, dass die Datei unter /public/images/CN-transparent.png liegt
-        { rel: "icon", type: "image/png", href: "/images/CN-transparent.png" },
-        { rel: "apple-touch-icon", type: "image/png", href: "/images/CN-transparent.png" },
-        { rel: "shortcut icon", type: "image/png", href: "/images/CN-transparent.png" }
+        { rel: "icon", type: "image/png", href: "/images/CN-transparent.png" }
       ]
     }
   },
