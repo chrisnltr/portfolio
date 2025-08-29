@@ -104,7 +104,7 @@
       </div>
     </header>
 
-    <main class="pt-24 min-h-full">
+    <main class="pt-16 min-h-full">
                    <section
         id="home"
         class="min-h-screen flex items-center justify-center animated-bg px-4"
@@ -1021,8 +1021,14 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(5px);
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .face {
+    padding: 20px;
+  }
 }
 
 .tech-content {
@@ -1032,9 +1038,9 @@ onUnmounted(() => {
 }
 
 .tech-content h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: rgba(59, 130, 246, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1054,8 +1060,8 @@ onUnmounted(() => {
 }
 
 .tech-content li {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 4px;
   font-weight: 600;
   opacity: 1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
