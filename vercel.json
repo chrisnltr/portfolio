@@ -1,11 +1,10 @@
 {
+  "framework": "nuxtjs",
   "buildCommand": "npm run build",
-  "outputDirectory": ".output/public",
-  "framework": "nuxt",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "functions": {
-    "app/server/**/*.js": {
-      "runtime": "nodejs18.x"
+    "api/**/*.js": {
+      "runtime": "nodejs22.x"
     }
   }
 }
