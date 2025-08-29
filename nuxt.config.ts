@@ -10,10 +10,12 @@ export default defineNuxtConfig({
 
   postcss: {
     plugins: {
-      "@tailwindcss/postcss": {},
+      tailwindcss: {},
       autoprefixer: {}
     }
   },
+
+  modules: ['@nuxtjs/tailwindcss'],
 
   // App Head
   app: {
@@ -41,7 +43,6 @@ export default defineNuxtConfig({
   },
 
   // Ensure proper module resolution
-  modules: [],
   
   // Runtime config for better compatibility
   runtimeConfig: {
