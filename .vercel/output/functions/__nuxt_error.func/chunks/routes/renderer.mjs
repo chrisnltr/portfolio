@@ -1,5 +1,5 @@
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'vue-bundle-renderer/runtime';
-import { j as joinRelativeURL, a as useRuntimeConfig, g as getResponseStatusText, b as getResponseStatus, d as defineRenderHandler, c as getQuery, e as createError, f as destr, h as getRouteRules, u as useNitroApp } from '../_/nitro.mjs';
+import { j as joinRelativeURL, a as useRuntimeConfig, d as defineRenderHandler, g as getQuery, c as createError, b as destr, e as getRouteRules, u as useNitroApp, f as getResponseStatusText, h as getResponseStatus } from '../_/nitro.mjs';
 import { renderToString } from 'vue/server-renderer';
 import { createHead as createHead$1, propsToString, renderSSRHead } from 'unhead/server';
 import { stringify, uneval } from 'devalue';
@@ -184,17 +184,6 @@ const getEntryIds = () => getClientManifest().then((r) => Object.values(r).filte
   )
 ).map((r2) => r2.src));
 
-function renderPayloadResponse(ssrContext) {
-  return {
-    body: stringify(splitPayload(ssrContext).payload, ssrContext._payloadReducers) ,
-    statusCode: getResponseStatus(ssrContext.event),
-    statusMessage: getResponseStatusText(ssrContext.event),
-    headers: {
-      "content-type": "application/json;charset=utf-8" ,
-      "x-powered-by": "Nuxt"
-    }
-  };
-}
 function renderPayloadJsonScript(opts) {
   const contents = opts.data ? stringify(opts.data, opts.ssrContext._payloadReducers) : "";
   const payload = {
@@ -216,13 +205,6 @@ function renderPayloadJsonScript(opts) {
       innerHTML: `window.__NUXT__={};window.__NUXT__.config=${config}`
     }
   ];
-}
-function splitPayload(ssrContext) {
-  const { data, prerenderedAt, ...initial } = ssrContext.payload;
-  return {
-    initial: { ...initial, prerenderedAt },
-    payload: { data, prerenderedAt }
-  };
 }
 
 const unheadOptions = {
@@ -271,7 +253,6 @@ globalThis.__publicAssetsURL = publicAssetsURL;
 const HAS_APP_TELEPORTS = !!(appTeleportAttrs.id);
 const APP_TELEPORT_OPEN_TAG = HAS_APP_TELEPORTS ? `<${appTeleportTag}${propsToString(appTeleportAttrs)}>` : "";
 const APP_TELEPORT_CLOSE_TAG = HAS_APP_TELEPORTS ? `</${appTeleportTag}>` : "";
-const PAYLOAD_URL_RE = /^[^?]*\/_payload.json(?:\?.*)?$/ ;
 const renderer = defineRenderHandler(async (event) => {
   const nitroApp = useNitroApp();
   const ssrError = event.path.startsWith("/__nuxt_error") ? getQuery(event) : null;
@@ -294,12 +275,6 @@ const renderer = defineRenderHandler(async (event) => {
     }
     setSSRError(ssrContext, ssrError);
   }
-  const isRenderingPayload = PAYLOAD_URL_RE.test(ssrContext.url);
-  if (isRenderingPayload) {
-    const url = ssrContext.url.substring(0, ssrContext.url.lastIndexOf("/")) || "/";
-    ssrContext.url = url;
-    event._path = event.node.req.url = url;
-  }
   const routeOptions = getRouteRules(event);
   if (routeOptions.ssr === false) {
     ssrContext.noSSR = true;
@@ -318,17 +293,13 @@ const renderer = defineRenderHandler(async (event) => {
     await ssrContext.nuxt?.hooks.callHook("app:error", _err);
     throw _err;
   });
-  const inlinedStyles = !ssrContext._renderResponse && !isRenderingPayload ? await renderInlineStyles(ssrContext.modules ?? []) : [];
+  const inlinedStyles = !ssrContext._renderResponse && true ? await renderInlineStyles(ssrContext.modules ?? []) : [];
   await ssrContext.nuxt?.hooks.callHook("app:rendered", { ssrContext, renderResult: _rendered });
   if (ssrContext._renderResponse) {
     return ssrContext._renderResponse;
   }
   if (ssrContext.payload?.error && !ssrError) {
     throw ssrContext.payload.error;
-  }
-  if (isRenderingPayload) {
-    const response = renderPayloadResponse(ssrContext);
-    return response;
   }
   const NO_SCRIPTS = routeOptions.noScripts;
   const { styles, scripts } = getRequestDependencies(ssrContext, renderer.rendererContext);

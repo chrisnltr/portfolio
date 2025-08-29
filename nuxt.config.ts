@@ -43,5 +43,15 @@ export default defineNuxtConfig({
   // Build-Optimierungen
   build: {
     transpile: []
+  },
+
+  // SSR-Konfiguration für Vercel
+  ssr: true,
+
+  // Runtime-Konfiguration
+  runtimeConfig: {
+    public: {
+      // Hier können öffentliche Umgebungsvariablen definiert werden
+    }
   }
 });

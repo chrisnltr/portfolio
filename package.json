@@ -3,7 +3,7 @@
   "type": "module",
   "private": true,
   "engines": {
-    "node": "22.x"
+    "node": "18.x"
   },
   "scripts": {
     "build": "nuxt build",
@@ -16,8 +16,7 @@
     "@vue/shared": "^3.5.20",
     "nuxt": "^4.0.3",
     "vue": "^3.5.20",
-    "@nuxt/kit": "^4.0.3",
-    "vue-bundle-renderer": "^3.5.20"
+    "@nuxt/kit": "^4.0.3"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",

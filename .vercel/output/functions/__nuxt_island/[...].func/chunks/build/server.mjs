@@ -1,5 +1,5 @@
 import { hasInjectionContext, getCurrentInstance, inject, createApp, provide, toRef, onErrorCaptured, onServerPrefetch, unref, createVNode, resolveDynamicComponent, shallowReactive, reactive, effectScope, computed, defineComponent, h, isReadonly, isRef, isShallow, isReactive, toRaw, defineAsyncComponent, mergeProps, getCurrentScope, useSSRContext } from 'vue';
-import { i as hasProtocol, k as isScriptProtocol, l as joinURL, w as withQuery, s as sanitizeStatusCode, m as getContext, $ as $fetch, n as createHooks, e as createError$1, o as isEqual, q as stringifyParsedURL, r as stringifyQuery, p as parseQuery, v as toRouteMatcher, x as createRouter, y as defu } from '../_/nitro.mjs';
+import { i as hasProtocol, k as isScriptProtocol, l as joinURL, w as withQuery, s as sanitizeStatusCode, m as getContext, $ as $fetch, n as createHooks, c as createError$1, o as isEqual, q as stringifyParsedURL, r as stringifyQuery, p as parseQuery, v as toRouteMatcher, x as createRouter, y as defu } from '../_/nitro.mjs';
 import { u as useHead$1, h as headSymbol, b as baseURL } from '../routes/renderer.mjs';
 import { ssrRenderSuspense, ssrRenderComponent, ssrRenderVNode, ssrRenderAttrs } from 'vue/server-renderer';
 import 'node:http';
