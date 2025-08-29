@@ -439,6 +439,39 @@ body {
 		padding-left: 1rem;
 		padding-right: 1rem;
 	}
+
+	/* Disable hover effects on mobile */
+	.card-elevated:hover {
+		transform: none;
+		box-shadow: none;
+		border-color: rgba(255, 255, 255, 0.1);
+	}
+
+	.btn-primary:hover,
+	.btn-secondary:hover {
+		transform: none;
+		box-shadow: none;
+	}
+
+	.btn-ghost:hover {
+		background: transparent;
+	}
+
+	.link:hover {
+		color: var(--text-primary);
+	}
+
+	.link:hover::after {
+		width: 0;
+	}
+
+	.cursor-glow:hover {
+		text-shadow: none;
+	}
+
+	.image-hover:hover img {
+		transform: none;
+	}
 }
 
 /* Scrollbar Styling */

@@ -17,6 +17,7 @@
       <div class="particle"></div>
     </div>
     <div
+      v-if="!isMobile"
       ref="cursorFollower"
       class="fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
       :class="
@@ -980,23 +981,29 @@ onMounted(() => {
   checkMobile();
   window.addEventListener('resize', checkMobile);
   
-  document.addEventListener("mousemove", updateMousePosition);
-  document.addEventListener("mouseover", checkHover);
+  // Only add mouse events on desktop
+  if (!isMobile.value) {
+    document.addEventListener("mousemove", updateMousePosition);
+    document.addEventListener("mouseover", checkHover);
+  }
   document.addEventListener("wheel", handleWheel, { passive: false });
 });
 
 onUnmounted(() => {
   window.removeEventListener('resize', checkMobile);
-  document.removeEventListener("mousemove", updateMousePosition);
-  document.removeEventListener("mouseover", checkHover);
+  // Only remove mouse events if they were added
+  if (!isMobile.value) {
+    document.removeEventListener("mousemove", updateMousePosition);
+    document.removeEventListener("mouseover", checkHover);
+  }
   document.removeEventListener("wheel", handleWheel);
 });
 </script>
 
 <style scoped>
 .scene {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   perspective: 1000px;
   margin: 20px auto;
 }
@@ -1074,32 +1081,34 @@ onUnmounted(() => {
   transition: transform 1s ease-in-out;
 }
 
-.cube:hover {
-  transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
+@media (min-width: 768px) {
+  .cube:hover {
+    transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
+  }
 }
 
 .front {
-  transform: rotateY(0deg) translateZ(150px);
+  transform: rotateY(0deg) translateZ(100px);
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(150px);
+  transform: rotateY(180deg) translateZ(100px);
 }
 
 .left {
-  transform: rotateY(-90deg) translateZ(150px);
+  transform: rotateY(-90deg) translateZ(100px);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(150px);
+  transform: rotateY(90deg) translateZ(100px);
 }
 
 .top {
-  transform: rotateX(90deg) translateZ(150px);
+  transform: rotateX(90deg) translateZ(100px);
 }
 
 .bottom {
-  transform: rotateX(-90deg) translateZ(150px) rotateZ(180deg);
+  transform: rotateX(-90deg) translateZ(100px) rotateZ(180deg);
 }
 
 @media (min-width: 768px) {
