@@ -215,8 +215,12 @@
                 </p>
               </div>
 
-              <div class="scene animate-slide-right">
-                <div class="cube">
+                             <div class="scene animate-slide-right">
+                 <div 
+                   class="cube"
+                   :class="{ 'cube-rotated': isCubeRotated }"
+                   @click="toggleCubeRotation"
+                 >
                   <div class="face front">
                     <div class="tech-content">
                       <h3>Frontend</h3>
@@ -381,16 +385,16 @@
               <div
                 class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
               >
-                <div
-                  v-for="(project, index) in projectData"
-                  :key="index"
-                  class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-                  :class="{
-                    'ring-2 ring-accent-400 bg-accent-600/10':
-                      selectedProject === index,
-                  }"
-                  @click="selectProject(index)"
-                >
+                                 <div
+                   v-for="(project, index) in projectData"
+                   :key="index"
+                   class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+                   :class="{
+                     'bg-accent-600/10':
+                       selectedProject === index,
+                   }"
+                   @click="selectProject(index)"
+                 >
                   <div class="flex gap-3 md:gap-4 p-3 md:p-4">
                     <div class="flex-shrink-0">
                       <div
@@ -728,6 +732,7 @@ const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
 const mobileMenuOpen = ref(false);
 const isMobile = ref(false);
+const isCubeRotated = ref(false);
 
 const projectData = ref([
   {
@@ -929,6 +934,12 @@ const closeMobileMenu = () => {
   mobileMenuOpen.value = false;
 };
 
+const toggleCubeRotation = () => {
+  if (isMobile.value) {
+    isCubeRotated.value = !isCubeRotated.value;
+  }
+};
+
 let isScrolling = false;
 let currentSectionIndex = 0;
 const sections = ["home", "about", "experience", "projects", "contact"];
@@ -1080,12 +1091,17 @@ onUnmounted(() => {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 1s ease-in-out;
+  cursor: pointer;
 }
 
 @media (min-width: 768px) {
   .cube:hover {
     transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
   }
+}
+
+.cube-rotated {
+  transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
 }
 
 .front {
