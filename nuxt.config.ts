@@ -58,5 +58,10 @@ export default defineNuxtConfig({
   },
 
   // SSR configuration
-  ssr: true
+  ssr: true,
+
+  // Experimental features
+  experimental: {
+    payloadExtraction: false
+  }
 });
