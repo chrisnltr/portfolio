@@ -12,7 +12,8 @@
     "preview": "nuxt preview"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.11"
+    "@tailwindcss/postcss": "^4.1.11",
+    "vue-bundle-renderer": "^2.1.2"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
