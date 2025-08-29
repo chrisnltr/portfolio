@@ -411,6 +411,34 @@ body {
 		padding: 10px 20px;
 		font-size: 14px;
 	}
+
+	/* Mobile-specific improvements */
+	body {
+		overflow-x: hidden;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	/* Disable scroll-snap on mobile */
+	.overflow-hidden {
+		overflow: auto !important;
+	}
+
+	/* Better touch scrolling */
+	* {
+		-webkit-tap-highlight-color: transparent;
+	}
+
+	/* Improve mobile navigation */
+	.link {
+		padding: 8px 0;
+		display: block;
+	}
+
+	/* Better mobile spacing */
+	.container {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
 }
 
 /* Scrollbar Styling */

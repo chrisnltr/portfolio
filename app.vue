@@ -1,7 +1,8 @@
 <template>
   <div
-    class="h-screen bg-background-primary overflow-hidden"
-    style="scroll-snap-type: y mandatory"
+    class="min-h-screen bg-background-primary"
+    :class="{ 'overflow-hidden': !isMobile }"
+    :style="!isMobile ? 'scroll-snap-type: y mandatory' : ''"
   >
     <!-- Particle Animation Background -->
     <div class="particles">
@@ -102,12 +103,12 @@
       </div>
     </header>
 
-    <main class="pt-24 h-full">
-             <section
-         id="home"
-         class="h-screen flex items-center justify-center animated-bg px-4"
-         style="scroll-snap-align: start"
-       >
+    <main class="pt-24 min-h-full">
+                   <section
+        id="home"
+        class="min-h-screen flex items-center justify-center animated-bg px-4"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
+      >
          <div class="container mx-auto text-center">
           <div class="animate-fade-in">
             <h1
@@ -178,8 +179,8 @@
 
       <section
         id="about"
-        class="h-screen modern-section flex items-center py-8"
-        style="scroll-snap-align: start"
+        class="min-h-screen modern-section flex items-center py-8"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-6xl mx-auto">
@@ -274,8 +275,8 @@
 
       <section
         id="experience"
-        class="h-screen modern-section flex items-center py-8"
-        style="scroll-snap-align: start"
+        class="min-h-screen modern-section flex items-center py-8"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto">
@@ -362,8 +363,8 @@
 
       <section
         id="projects"
-        class="h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
-        style="scroll-snap-align: start"
+        class="min-h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div
@@ -578,8 +579,8 @@
 
       <section
         id="contact"
-        class="h-screen modern-section flex flex-col justify-center py-8"
-        style="scroll-snap-align: start"
+        class="min-h-screen modern-section flex flex-col justify-center py-8"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4 flex-1 flex items-center">
           <div class="max-w-2xl mx-auto text-center">
@@ -730,6 +731,7 @@ const selectedImageIndex = ref(0); // Default to first image
 const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
 const mobileMenuOpen = ref(false);
+const isMobile = ref(false);
 
 const projectData = ref([
   {
@@ -936,6 +938,9 @@ let currentSectionIndex = 0;
 const sections = ["home", "about", "experience", "projects", "contact"];
 
 const handleWheel = (e) => {
+  // Only apply custom scroll behavior on desktop
+  if (isMobile.value) return;
+
   e.preventDefault();
 
   if (isScrolling) return;
@@ -967,12 +972,21 @@ const handleWheel = (e) => {
 };
 
 onMounted(() => {
+  // Check if device is mobile
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth <= 768 || 'ontouchstart' in window;
+  };
+  
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+  
   document.addEventListener("mousemove", updateMousePosition);
   document.addEventListener("mouseover", checkHover);
   document.addEventListener("wheel", handleWheel, { passive: false });
 });
 
 onUnmounted(() => {
+  window.removeEventListener('resize', checkMobile);
   document.removeEventListener("mousemove", updateMousePosition);
   document.removeEventListener("mouseover", checkHover);
   document.removeEventListener("wheel", handleWheel);
