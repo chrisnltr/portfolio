@@ -1,22 +1,23 @@
 import { defineNuxtConfig } from "nuxt/config";
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: "2025-07-15",
-  devtools: { enabled: true },
+  css: ["~/assets/css/main.css"],
+  devtools: { enabled: false },
 
-  // CSS
-  css: ["./assets/css/main.css"],
-
-  // PostCSS
-  postcss: {
-    plugins: {
-      "@tailwindcss/postcss": {},
-      autoprefixer: {},
-    },
+  nitro: {
+    preset: "vercel"
   },
 
-  // App config
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {}
+    }
+  },
+
+  modules: ['@nuxtjs/tailwindcss'],
+
+  // App Head
   app: {
     head: {
       title: "Chris Leon Noltemeier",
@@ -25,29 +26,43 @@ export default defineNuxtConfig({
         { name: "viewport", content: "width=device-width, initial-scale=1" },
         {
           name: "description",
-          content:
-            "A modern portfolio website built with Nuxt.js and Tailwind CSS",
+          content: "A modern portfolio website built with Nuxt.js and Tailwind CSS"
         },
-        { name: "theme-color", content: "#000000" },
+        { name: "theme-color", content: "#000000" }
       ],
       link: [
-        { rel: "icon", type: "image/png", href: "/images/CN-transparent.png" },
-        {
-          rel: "apple-touch-icon",
-          type: "image/png",
-          href: "/images/CN-transparent.png",
-        },
-        {
-          rel: "shortcut icon",
-          type: "image/png",
-          href: "/images/CN-transparent.png",
-        },
-      ],
-    },
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "icon", type: "image/png", href: "/images/CN-transparent.png" }
+      ]
+    }
   },
 
-  // Build config
+  // Build optimizations
   build: {
-    // No transpile needed for Tailwind CSS v4
+    transpile: []
   },
+
+  // Ensure proper module resolution
+  
+  // Runtime config for better compatibility
+  runtimeConfig: {
+    public: {}
+  },
+
+  // Vite configuration
+  vite: {
+    build: {
+      rollupOptions: {
+        external: []
+      }
+    }
+  },
+
+  // SSR configuration
+  ssr: true,
+
+  // Experimental features
+  experimental: {
+    payloadExtraction: false
+  }
 });

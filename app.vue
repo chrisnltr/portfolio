@@ -1,7 +1,9 @@
 <template>
+  <Analytics />
   <div
-    class="min-h-screen bg-background-primary overflow-y-auto"
-    style="scroll-snap-type: y mandatory"
+    class="min-h-screen bg-background-primary"
+    :class="{ 'overflow-hidden': !isMobile }"
+    :style="!isMobile ? 'scroll-snap-type: y mandatory' : ''"
   >
     <!-- Particle Animation Background -->
     <div class="particles">
@@ -16,6 +18,7 @@
       <div class="particle"></div>
     </div>
     <div
+      v-if="!isMobile"
       ref="cursorFollower"
       class="fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
       :class="
@@ -32,21 +35,21 @@
     ></div>
 
     <header class="fixed top-0 left-0 right-0 z-50 glass-header">
-      <div class="container mx-auto px-4 py-4">
+      <div class="container mx-auto px-6 py-4">
         <nav class="flex items-center justify-between">
-          <div class="text-xl md:text-2xl font-bold gradient-text">
+          <div class="text-2xl md:text-3xl font-bold gradient-text">
             My Portfolio
           </div>
-          <div class="hidden md:flex items-center space-x-8">
-            <a href="#home" class="link cursor-glow">Home</a>
-            <a href="#about" class="link cursor-glow">About</a>
-            <a href="#experience" class="link cursor-glow">Experience</a>
-            <a href="#projects" class="link cursor-glow">Projects</a>
-            <a href="#contact" class="link cursor-glow">Contact</a>
+          <div class="hidden md:flex items-center space-x-10">
+            <a href="#home" class="link cursor-glow text-lg font-medium">Home</a>
+            <a href="#about" class="link cursor-glow text-lg font-medium">About</a>
+            <a href="#experience" class="link cursor-glow text-lg font-medium">Experience</a>
+            <a href="#projects" class="link cursor-glow text-lg font-medium">Projects</a>
+            <a href="#contact" class="link cursor-glow text-lg font-medium">Contact</a>
           </div>
           <button class="md:hidden btn-ghost" @click="toggleMobileMenu">
             <svg
-              class="w-6 h-6"
+              class="w-7 h-7"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -64,36 +67,36 @@
         <!-- Mobile Menu -->
         <div
           v-if="mobileMenuOpen"
-          class="md:hidden mt-4 pb-4 border-t border-border-primary"
+          class="md:hidden mt-6 pb-6 border-t border-border-primary"
         >
-          <div class="flex flex-col space-y-4 pt-4">
+          <div class="flex flex-col space-y-6 pt-6">
             <a
               href="#home"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Home</a
             >
             <a
               href="#about"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >About</a
             >
             <a
               href="#experience"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Experience</a
             >
             <a
               href="#projects"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Projects</a
             >
             <a
               href="#contact"
-              class="link cursor-glow text-lg"
+              class="link cursor-glow text-xl font-medium"
               @click="closeMobileMenu"
               >Contact</a
             >
@@ -102,13 +105,13 @@
       </div>
     </header>
 
-    <main class="pt-20">
-      <section
+    <main class="pt-16 min-h-full">
+                   <section
         id="home"
         class="min-h-screen flex items-center justify-center animated-bg px-4"
-        style="scroll-snap-align: start"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
-        <div class="container mx-auto text-center -mt-20">
+         <div class="container mx-auto text-center">
           <div class="animate-fade-in">
             <h1
               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
@@ -179,7 +182,7 @@
       <section
         id="about"
         class="min-h-screen modern-section flex items-center py-8"
-        style="scroll-snap-align: start"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-6xl mx-auto">
@@ -213,8 +216,12 @@
                 </p>
               </div>
 
-              <div class="scene animate-slide-right">
-                <div class="cube">
+                             <div class="scene animate-slide-right">
+                 <div 
+                   class="cube"
+                   :class="{ 'cube-rotated': isCubeRotated }"
+                   @click="toggleCubeRotation"
+                 >
                   <div class="face front">
                     <div class="tech-content">
                       <h3>Frontend</h3>
@@ -275,7 +282,7 @@
       <section
         id="experience"
         class="min-h-screen modern-section flex items-center py-8"
-        style="scroll-snap-align: start"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto">
@@ -363,32 +370,32 @@
       <section
         id="projects"
         class="min-h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
-        style="scroll-snap-align: start"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div
             class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start"
           >
             <div class="flex flex-col h-full justify-start">
-              <h2
-                class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8"
-              >
-                My Projects
-              </h2>
+               <h2
+                 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28"
+               >
+                 My Projects
+               </h2>
 
               <div
                 class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
               >
-                <div
-                  v-for="(project, index) in projectData"
-                  :key="index"
-                  class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-                  :class="{
-                    'ring-2 ring-accent-400 bg-accent-600/10':
-                      selectedProject === index,
-                  }"
-                  @click="selectProject(index)"
-                >
+                                 <div
+                   v-for="(project, index) in projectData"
+                   :key="index"
+                   class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+                   :class="{
+                     'bg-accent-600/10':
+                       selectedProject === index,
+                   }"
+                   @click="selectProject(index)"
+                 >
                   <div class="flex gap-3 md:gap-4 p-3 md:p-4">
                     <div class="flex-shrink-0">
                       <div
@@ -429,7 +436,7 @@
             </div>
 
             <div
-              class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start"
+              class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-8"
             >
               <div class="animate-fade-in flex flex-col justify-start h-full">
                 <div
@@ -579,7 +586,7 @@
       <section
         id="contact"
         class="min-h-screen modern-section flex flex-col justify-center py-8"
-        style="scroll-snap-align: start"
+        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4 flex-1 flex items-center">
           <div class="max-w-2xl mx-auto text-center">
@@ -594,24 +601,19 @@
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
             </p>
-            <div
-              class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
-            >
-              <button
-                class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
-                @click="sendEmail"
-              >
-                <span class="relative z-10">Send Message</span>
-                <div
-                  class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
-                ></div>
-              </button>
-              <button
-                class="btn-secondary text-base md:text-lg px-6 md:px-8 py-3"
-              >
-                View Resume
-              </button>
-            </div>
+                         <div
+               class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
+             >
+               <button
+                 class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
+                 @click="sendEmail"
+               >
+                 <span class="relative z-10">Send Message</span>
+                 <div
+                   class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
+                 ></div>
+               </button>
+             </div>
           </div>
         </div>
       </section>
@@ -720,6 +722,8 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { Analytics } from '@vercel/analytics/nuxt';
+
 
 const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref(null);
@@ -730,6 +734,8 @@ const selectedImageIndex = ref(0); // Default to first image
 const imageModalOpen = ref(false);
 const showZoomIcon = ref(false);
 const mobileMenuOpen = ref(false);
+const isMobile = ref(false);
+const isCubeRotated = ref(false);
 
 const projectData = ref([
   {
@@ -737,9 +743,9 @@ const projectData = ref([
     description:
       "Digital accident documentation system built with Flutter, enabling users to create complete insurance-ready accident reports with photos, sketches, and map integration.",
     images: [
-      "/images/UnfallApp01.png",
-      "/images/UnfallApp.png",
-      "/images/UnfallApp.png",
+      "/images/UnfallApp1.png",
+      "/images/UnfallApp2.png",
+      "/images/UnfallApp3.png",
     ],
     features: [
       "Accident Report Creation: Collect all relevant insurance data in structured forms",
@@ -747,7 +753,6 @@ const projectData = ref([
       "Photo Upload: Attach accident images directly within the report",
       "PDF Export: Generate and share a standardized accident report PDF",
       "Multi-language Support: Automatic translations for international usability",
-      "Offline Support: Record accidents without an internet connection and sync later",
     ],
     technologies: [
       "Flutter",
@@ -764,9 +769,11 @@ const projectData = ref([
     description:
       "Online 3D billiards game built with Unity, featuring real-time 1v1 matches with friends, realistic physics, smooth cue controls, private rooms, and a clean, responsive UI.",
     images: [
-      "/images/BilliardGame.png",
-      "/images/BilliardGame.png",
-      "/images/BilliardGame.png",
+      "/images/BilliardGame1.png",
+      "/images/BilliardGame2.png",
+      "/images/BilliardGame3.png",
+      "/images/BilliardGame4.png",
+      "/images/BilliardGame5.png",
     ],
     features: [
       "Online 1v1 Matches: Challenge friends via invite codes or quick join",
@@ -775,13 +782,13 @@ const projectData = ref([
       "Private Rooms: Create and share room codes for frictionless friend matches",
       "Rules & Timers: Standard pool rules (8-Ball/9-Ball) with optional shot timer and fouls",
       "Custom Themes: Table/cue customization and AI-generated menu backgrounds",
-      "Cross-Platform Ready: Keyboard/mouse and gamepad support; scalable UI",
     ],
     technologies: [
       "Unity",
       "C#",
       "Unity Input System",
-      "Photon Unity Networking",
+      "Mirror Networking",
+      "Steamworks",
     ],
   },
   {
@@ -797,7 +804,6 @@ const projectData = ref([
       "Hardware Data Sheet Management: Create, edit, delete hardware data sheets",
       "Advanced Search & Filtering: Multiple search criteria",
       "User Authentication: Login/logout with password hashing",
-      "Microsoft OAuth Integration: Single Sign-On via Microsoft Azure AD",
       "CSV Export: Complete export of all hardware data",
       "Hardware History: Track changes to hardware data sheets",
     ],
@@ -931,11 +937,20 @@ const closeMobileMenu = () => {
   mobileMenuOpen.value = false;
 };
 
+const toggleCubeRotation = () => {
+  if (isMobile.value) {
+    isCubeRotated.value = !isCubeRotated.value;
+  }
+};
+
 let isScrolling = false;
 let currentSectionIndex = 0;
 const sections = ["home", "about", "experience", "projects", "contact"];
 
 const handleWheel = (e) => {
+  // Only apply custom scroll behavior on desktop
+  if (isMobile.value) return;
+
   e.preventDefault();
 
   if (isScrolling) return;
@@ -967,22 +982,37 @@ const handleWheel = (e) => {
 };
 
 onMounted(() => {
-  document.addEventListener("mousemove", updateMousePosition);
-  document.addEventListener("mouseover", checkHover);
+  // Check if device is mobile
+  const checkMobile = () => {
+    isMobile.value = window.innerWidth <= 768 || 'ontouchstart' in window;
+  };
+  
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+  
+  // Only add mouse events on desktop
+  if (!isMobile.value) {
+    document.addEventListener("mousemove", updateMousePosition);
+    document.addEventListener("mouseover", checkHover);
+  }
   document.addEventListener("wheel", handleWheel, { passive: false });
 });
 
 onUnmounted(() => {
-  document.removeEventListener("mousemove", updateMousePosition);
-  document.removeEventListener("mouseover", checkHover);
+  window.removeEventListener('resize', checkMobile);
+  // Only remove mouse events if they were added
+  if (!isMobile.value) {
+    document.removeEventListener("mousemove", updateMousePosition);
+    document.removeEventListener("mouseover", checkHover);
+  }
   document.removeEventListener("wheel", handleWheel);
 });
 </script>
 
 <style scoped>
 .scene {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
   perspective: 1000px;
   margin: 20px auto;
 }
@@ -1005,8 +1035,14 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(5px);
-  padding: 20px;
+  padding: 10px;
   box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .face {
+    padding: 20px;
+  }
 }
 
 .tech-content {
@@ -1016,9 +1052,9 @@ onUnmounted(() => {
 }
 
 .tech-content h3 {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: bold;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: rgba(59, 130, 246, 1);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -1038,8 +1074,8 @@ onUnmounted(() => {
 }
 
 .tech-content li {
-  font-size: 16px;
-  margin-bottom: 8px;
+  font-size: 12px;
+  margin-bottom: 4px;
   font-weight: 600;
   opacity: 1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -1058,34 +1094,41 @@ onUnmounted(() => {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 1s ease-in-out;
+  cursor: pointer;
 }
 
-.cube:hover {
+@media (min-width: 768px) {
+  .cube:hover {
+    transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
+  }
+}
+
+.cube-rotated {
   transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
 }
 
 .front {
-  transform: rotateY(0deg) translateZ(150px);
+  transform: rotateY(0deg) translateZ(100px);
 }
 
 .back {
-  transform: rotateY(180deg) translateZ(150px);
+  transform: rotateY(180deg) translateZ(100px);
 }
 
 .left {
-  transform: rotateY(-90deg) translateZ(150px);
+  transform: rotateY(-90deg) translateZ(100px);
 }
 
 .right {
-  transform: rotateY(90deg) translateZ(150px);
+  transform: rotateY(90deg) translateZ(100px);
 }
 
 .top {
-  transform: rotateX(90deg) translateZ(150px);
+  transform: rotateX(90deg) translateZ(100px);
 }
 
 .bottom {
-  transform: rotateX(-90deg) translateZ(150px) rotateZ(180deg);
+  transform: rotateX(-90deg) translateZ(100px) rotateZ(180deg);
 }
 
 @media (min-width: 768px) {

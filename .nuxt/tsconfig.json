@@ -34,6 +34,12 @@
       "@vue/compiler-sfc": [
         "../node_modules/@vue/compiler-sfc"
       ],
+      "vue-router": [
+        "../node_modules/vue-router"
+      ],
+      "vue-router/auto-routes": [
+        "../node_modules/vue-router/vue-router-auto-routes"
+      ],
       "unplugin-vue-router/client": [
         "../node_modules/unplugin-vue-router/client"
       ],
@@ -72,6 +78,9 @@
       ],
       "#shared": [
         "../shared"
+      ],
+      "#shared/*": [
+        "../shared/*"
       ],
       "assets": [
         "../assets"
@@ -148,10 +157,8 @@
     "../**/*",
     "../.config/nuxt.*",
     "./nuxt.d.ts",
-    "../node_modules/@nuxt/devtools/runtime",
-    "../node_modules/@nuxt/devtools/dist/runtime",
-    "../node_modules/@nuxt/telemetry/runtime",
-    "../node_modules/@nuxt/telemetry/dist/runtime",
+    "../node_modules/runtime",
+    "../node_modules/dist/runtime",
     ".."
   ],
   "exclude": [
@@ -159,12 +166,10 @@
     "../.data",
     "../node_modules",
     "../node_modules/nuxt/node_modules",
-    "../node_modules/@nuxt/devtools/node_modules",
+    "../node_modules/@nuxtjs/tailwindcss/node_modules",
     "../node_modules/@nuxt/telemetry/node_modules",
-    "../node_modules/@nuxt/devtools/runtime/server",
-    "../node_modules/@nuxt/devtools/dist/runtime/server",
-    "../node_modules/@nuxt/telemetry/runtime/server",
-    "../node_modules/@nuxt/telemetry/dist/runtime/server",
+    "../node_modules/runtime/server",
+    "../node_modules/dist/runtime/server",
     "dev"
   ]
 }
