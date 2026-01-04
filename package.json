@@ -6,7 +6,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "npm exec -- nuxt build",
+    "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview"
