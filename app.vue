@@ -1,5 +1,4 @@
 <template>
-  <Analytics />
   <div
     class="min-h-screen bg-background-primary"
     :class="{ 'overflow-hidden': !isMobile }"
@@ -722,8 +721,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
-import { Analytics } from '@vercel/analytics/nuxt';
-
 
 const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref(null);
