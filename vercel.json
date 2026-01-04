@@ -1,5 +1,5 @@
 {
   "framework": "nuxtjs",
-  "buildCommand": "npx nuxt build"
+  "buildCommand": "npm run build"
 }
 
