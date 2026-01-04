@@ -6,10 +6,11 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "npx nuxt build",
+    "build": "node node_modules/nuxt/bin/nuxt.js build || npx --yes nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "vercel-build": "npm run build"
   },
   "dependencies": {
     "@vercel/analytics": "^1.5.0",
