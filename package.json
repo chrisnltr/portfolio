@@ -28,10 +28,14 @@
     "glob": "^13.0.0",
     "@koa/router": "^15.2.0",
     "replace-in-file": "^8.4.0",
+    "keygrip": "npm:noop@1.0.0",
     "tailwind-config-viewer": {
       "@koa/router": "^15.2.0",
       "replace-in-file": "^8.4.0",
-      "koa": "^3.1.1"
+      "koa": "^3.1.1",
+      "cookies": {
+        "keygrip": "npm:noop@1.0.0"
+      }
     }
   }
 }
