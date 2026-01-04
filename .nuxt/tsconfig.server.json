@@ -105,7 +105,7 @@
         "./*"
       ],
       "#internal/nuxt/paths": [
-        "../node_modules/nuxt/dist/core/runtime/nitro/utils/paths"
+        "../node_modules/@nuxt/nitro-server/dist/runtime/utils/paths"
       ],
       "#unhead/composables": [
         "../node_modules/nuxt/dist/head/runtime/composables/v3"
@@ -121,9 +121,10 @@
     "./types/nitro-nuxt.d.ts",
     "../node_modules/runtime/server",
     "../node_modules/dist/runtime/server",
+    "../server/**/*",
+    "../shared/**/*.d.ts",
     "./types/nitro.d.ts",
-    "../**/*",
-    "../server/**/*"
+    "../**/*"
   ],
   "exclude": [
     "../node_modules",

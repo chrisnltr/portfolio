@@ -933,43 +933,6 @@ const toggleCubeRotation = () => {
   }
 };
 
-let isScrolling = false;
-let currentSectionIndex = 0;
-const sections = ["home", "about", "experience", "projects", "contact"];
-
-const handleWheel = (e) => {
-  // Only apply custom scroll behavior on desktop
-  if (isMobile.value) return;
-
-  e.preventDefault();
-
-  if (isScrolling) return;
-
-  const direction = e.deltaY > 0 ? 1 : -1;
-  const newIndex = Math.max(
-    0,
-    Math.min(sections.length - 1, currentSectionIndex + direction)
-  );
-
-  if (newIndex !== currentSectionIndex) {
-    isScrolling = true;
-    currentSectionIndex = newIndex;
-
-    const targetSection = document.getElementById(
-      sections[currentSectionIndex]
-    );
-    if (targetSection) {
-      targetSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }
-
-    setTimeout(() => {
-      isScrolling = false;
-    }, 1200);
-  }
-};
 
 // Check if device is mobile
 const checkMobile = () => {
@@ -985,7 +948,6 @@ onMounted(() => {
     document.addEventListener("mousemove", updateMousePosition);
     document.addEventListener("mouseover", checkHover);
   }
-  document.addEventListener("wheel", handleWheel, { passive: false });
 });
 
 onUnmounted(() => {
@@ -995,7 +957,6 @@ onUnmounted(() => {
     document.removeEventListener("mousemove", updateMousePosition);
     document.removeEventListener("mouseover", checkHover);
   }
-  document.removeEventListener("wheel", handleWheel);
 });
 </script>
 
