@@ -971,12 +971,12 @@ const handleWheel = (e) => {
   }
 };
 
+// Check if device is mobile
+const checkMobile = () => {
+  isMobile.value = window.innerWidth <= 768 || 'ontouchstart' in window;
+};
+
 onMounted(() => {
-  // Check if device is mobile
-  const checkMobile = () => {
-    isMobile.value = window.innerWidth <= 768 || 'ontouchstart' in window;
-  };
-  
   checkMobile();
   window.addEventListener('resize', checkMobile);
   
