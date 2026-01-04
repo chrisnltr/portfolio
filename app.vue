@@ -1,8 +1,6 @@
 <template>
   <div
     class="min-h-screen bg-background-primary"
-    :class="{ 'overflow-hidden': !isMobile }"
-    :style="!isMobile ? 'scroll-snap-type: y mandatory' : ''"
   >
     <!-- Particle Animation Background -->
     <div class="particles">
@@ -108,7 +106,6 @@
                    <section
         id="home"
         class="min-h-screen flex items-center justify-center animated-bg px-4"
-        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
          <div class="container mx-auto text-center">
           <div class="animate-fade-in">
@@ -181,7 +178,6 @@
       <section
         id="about"
         class="min-h-screen modern-section flex items-center py-8"
-        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-6xl mx-auto">
@@ -281,7 +277,6 @@
       <section
         id="experience"
         class="min-h-screen modern-section flex items-center py-8"
-        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div class="max-w-4xl mx-auto">
@@ -369,7 +364,6 @@
       <section
         id="projects"
         class="min-h-screen modern-section flex items-center py-8 transition-all duration-800 ease-out"
-        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4">
           <div
@@ -585,7 +579,6 @@
       <section
         id="contact"
         class="min-h-screen modern-section flex flex-col justify-center py-8"
-        :style="!isMobile ? 'scroll-snap-align: start' : ''"
       >
         <div class="container mx-auto px-4 flex-1 flex items-center">
           <div class="max-w-2xl mx-auto text-center">
