@@ -6,7 +6,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "node node_modules/nuxt/bin/nuxt.js build || npx --yes nuxt build",
+    "build": "node node_modules/nuxt/bin/nuxt.mjs build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
