@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="min-h-screen bg-background-primary"
-  >
+  <div class="min-h-screen bg-background-primary">
     <!-- Particle Animation Background -->
     <div class="particles">
       <div class="particle"></div>
@@ -38,11 +36,21 @@
             My Portfolio
           </div>
           <div class="hidden md:flex items-center space-x-10">
-            <a href="#home" class="link cursor-glow text-lg font-medium">Home</a>
-            <a href="#about" class="link cursor-glow text-lg font-medium">About</a>
-            <a href="#experience" class="link cursor-glow text-lg font-medium">Experience</a>
-            <a href="#projects" class="link cursor-glow text-lg font-medium">Projects</a>
-            <a href="#contact" class="link cursor-glow text-lg font-medium">Contact</a>
+            <a href="#home" class="link cursor-glow text-lg font-medium"
+              >Home</a
+            >
+            <a href="#about" class="link cursor-glow text-lg font-medium"
+              >About</a
+            >
+            <a href="#experience" class="link cursor-glow text-lg font-medium"
+              >Experience</a
+            >
+            <a href="#projects" class="link cursor-glow text-lg font-medium"
+              >Projects</a
+            >
+            <a href="#contact" class="link cursor-glow text-lg font-medium"
+              >Contact</a
+            >
           </div>
           <button class="md:hidden btn-ghost" @click="toggleMobileMenu">
             <svg
@@ -103,11 +111,11 @@
     </header>
 
     <main class="pt-16 min-h-full">
-                   <section
+      <section
         id="home"
         class="min-h-screen flex items-center justify-center animated-bg px-4"
       >
-         <div class="container mx-auto text-center">
+        <div class="container mx-auto text-center">
           <div class="animate-fade-in">
             <h1
               class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
@@ -211,12 +219,12 @@
                 </p>
               </div>
 
-                             <div class="scene animate-slide-right">
-                 <div 
-                   class="cube"
-                   :class="{ 'cube-rotated': isCubeRotated }"
-                   @click="toggleCubeRotation"
-                 >
+              <div class="scene animate-slide-right">
+                <div
+                  class="cube"
+                  :class="{ 'cube-rotated': isCubeRotated }"
+                  @click="toggleCubeRotation"
+                >
                   <div class="face front">
                     <div class="tech-content">
                       <h3>Frontend</h3>
@@ -370,25 +378,24 @@
             class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[600px] md:min-h-[700px] items-start"
           >
             <div class="flex flex-col h-full justify-start">
-               <h2
-                 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28"
-               >
-                 My Projects
-               </h2>
+              <h2
+                class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text animate-slide-up text-center mb-6 md:mb-8 mt-28"
+              >
+                My Projects
+              </h2>
 
               <div
                 class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
               >
-                                 <div
-                   v-for="(project, index) in projectData"
-                   :key="index"
-                   class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
-                   :class="{
-                     'bg-accent-600/10':
-                       selectedProject === index,
-                   }"
-                   @click="selectProject(index)"
-                 >
+                <div
+                  v-for="(project, index) in projectData"
+                  :key="index"
+                  class="card-elevated group hover:glow hover:scale-105 transition-all duration-300 cursor-pointer"
+                  :class="{
+                    'bg-accent-600/10': selectedProject === index,
+                  }"
+                  @click="selectProject(index)"
+                >
                   <div class="flex gap-3 md:gap-4 p-3 md:p-4">
                     <div class="flex-shrink-0">
                       <div
@@ -593,19 +600,19 @@
               I'm always interested in new opportunities and exciting projects.
               Let's work together to bring your ideas to life!
             </p>
-                         <div
-               class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
-             >
-               <button
-                 class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
-                 @click="sendEmail"
-               >
-                 <span class="relative z-10">Send Message</span>
-                 <div
-                   class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
-                 ></div>
-               </button>
-             </div>
+            <div
+              class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4"
+            >
+              <button
+                class="btn-primary text-base md:text-lg px-6 md:px-8 py-3 group relative overflow-hidden"
+                @click="sendEmail"
+              >
+                <span class="relative z-10">Send Message</span>
+                <div
+                  class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
+                ></div>
+              </button>
+            </div>
           </div>
         </div>
       </section>
@@ -933,16 +940,15 @@ const toggleCubeRotation = () => {
   }
 };
 
-
 // Check if device is mobile
 const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768 || 'ontouchstart' in window;
+  isMobile.value = window.innerWidth <= 768 || "ontouchstart" in window;
 };
 
 onMounted(() => {
   checkMobile();
-  window.addEventListener('resize', checkMobile);
-  
+  window.addEventListener("resize", checkMobile);
+
   // Only add mouse events on desktop
   if (!isMobile.value) {
     document.addEventListener("mousemove", updateMousePosition);
@@ -951,7 +957,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile);
+  window.removeEventListener("resize", checkMobile);
   // Only remove mouse events if they were added
   if (!isMobile.value) {
     document.removeEventListener("mousemove", updateMousePosition);
@@ -1050,7 +1056,8 @@ onUnmounted(() => {
 
 @media (min-width: 768px) {
   .cube:hover {
-    transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2) scaleY(1.2);
+    transform: rotateY(180deg) rotateX(-45deg) scaleZ(1.2) scaleX(1.2)
+      scaleY(1.2);
   }
 }
 
