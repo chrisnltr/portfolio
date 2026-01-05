@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-background-primary">
-    <!-- Particle Animation Background -->
+    <!-- Particle Animation Background TEST -->
     <div class="particles">
       <div class="particle"></div>
       <div class="particle"></div>
