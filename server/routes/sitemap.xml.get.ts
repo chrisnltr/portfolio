@@ -12,10 +12,11 @@ function getOrigin(event: { node: { req: { headers: { [key: string]: string | un
 
 export default defineEventHandler((event) => {
   const base = getOrigin(event);
+  const lastmod = new Date().toISOString().slice(0, 10);
 
   const urls = LOCALES.map(
     (locale) =>
-      `  <url>\n    <loc>${base}/${locale}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`,
+      `  <url>\n    <loc>${base}/${locale}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`,
   ).join("\n");
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

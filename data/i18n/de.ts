@@ -8,6 +8,9 @@ export const de: AppTranslations = {
     projects: "Projekte",
     contact: "Kontakt",
     ariaLabel: "Hauptnavigation",
+    menuToggle: "Navigation ein- oder ausblenden",
+    langSwitchDe: "Sprache auf Deutsch umstellen",
+    langSwitchEn: "Sprache auf Englisch umstellen",
   },
   hero: {
     greeting: "Hey, ich bin",

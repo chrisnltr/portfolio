@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   runtimeConfig: {
+    // TODO: Set in Vercel (or .env): RESEND_API_KEY, CONTACT_TO_EMAIL, CONTACT_FROM_EMAIL; optional FORMSPREE_ENDPOINT for fallback.
+    resendApiKey: "",
+    contactToEmail: "",
+    contactFromEmail: "",
+    formspreeEndpoint: "",
     public: {
       siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "",
     },

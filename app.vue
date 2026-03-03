@@ -1,6 +1,6 @@
 <template>
   <div class="min-h-screen bg-background-primary">
-    <div class="particles">
+    <div class="particles" :class="{ 'particles--reduced': isMobile }">
       <div class="particle"></div>
       <div class="particle"></div>
       <div class="particle"></div>

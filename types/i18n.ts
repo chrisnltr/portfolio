@@ -7,6 +7,9 @@ export type NavSection = {
   projects: string;
   contact: string;
   ariaLabel: string;
+  menuToggle: string;
+  langSwitchDe: string;
+  langSwitchEn: string;
 };
 
 export type HeroSection = {
@@ -130,6 +133,8 @@ export type SeoSection = {
   description: string;
   ogTitle: string;
   ogDescription: string;
+  /** Optional absolute URL for social share image (e.g. /og-image.png). */
+  ogImage?: string;
 };
 
 export type SocialTranslations = {

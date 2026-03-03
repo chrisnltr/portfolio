@@ -60,7 +60,7 @@
         >
           <a
             :href="currentCvUrl"
-            class="btn-primary text-base md:text-lg px-8 py-3 group relative overflow-hidden inline-flex items-center justify-center gap-2"
+            class="btn-primary text-base md:text-lg px-8 py-3 group relative overflow-hidden inline-flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -74,7 +74,7 @@
 
           <button
             type="button"
-            class="btn-secondary text-base md:text-lg px-8 py-3 inline-flex items-center justify-center gap-2"
+            class="btn-secondary text-base md:text-lg px-8 py-3 inline-flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
             @click="scrollToContact"
           >
             <span>{{ messages.hero.contactCta }}</span>

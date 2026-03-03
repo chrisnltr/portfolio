@@ -17,7 +17,7 @@
             v-for="item in navItems"
             :key="item.id"
             :href="`#${item.id}`"
-            class="link cursor-glow text-sm md:text-base font-medium"
+            class="link cursor-glow text-sm md:text-base font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] rounded"
           >
             {{ item.label }}
           </a>
@@ -34,7 +34,7 @@
                   : 'bg-transparent text-text-secondary border-border-primary hover:border-accent-400'
               "
               :aria-pressed="locale === loc"
-              :aria-label="loc === 'de' ? 'Sprache auf Deutsch umstellen' : 'Switch language to English'"
+              :aria-label="loc === 'de' ? messages.nav.langSwitchDe : messages.nav.langSwitchEn"
               @click="onLocaleClick(loc)"
             >
               {{ loc.toUpperCase() }}
@@ -44,11 +44,11 @@
 
         <button
           type="button"
-          class="md:hidden btn-ghost"
+          class="md:hidden btn-ghost focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
           @click="toggleMobileMenu"
           :aria-expanded="mobileMenuOpen"
           aria-controls="mobile-nav"
-          aria-label="Toggle navigation"
+          :aria-label="messages.nav.menuToggle"
         >
           <svg
             class="w-7 h-7"
@@ -76,7 +76,7 @@
             v-for="item in navItems"
             :key="item.id"
             :href="`#${item.id}`"
-            class="link cursor-glow text-base font-medium"
+            class="link cursor-glow text-base font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a] rounded block py-1"
             @click="closeMobileMenu"
           >
             {{ item.label }}
@@ -94,7 +94,7 @@
                   : 'bg-transparent text-text-secondary border-border-primary hover:border-accent-400'
               "
               :aria-pressed="locale === loc"
-              :aria-label="loc === 'de' ? 'Sprache auf Deutsch umstellen' : 'Switch language to English'"
+              :aria-label="loc === 'de' ? messages.nav.langSwitchDe : messages.nav.langSwitchEn"
               @click="onLocaleClick(loc)"
             >
               {{ loc.toUpperCase() }}
