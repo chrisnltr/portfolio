@@ -20,6 +20,14 @@ export const en: AppTranslations = {
     contactCta: "Contact / Book a call",
     contactCtaSecondary: "Let’s talk",
   },
+  about: {
+    title: "About Me",
+    paragraphs: [
+      "I’m Chris Leon Noltemeier, a full-stack developer focused on building efficient, user-friendly applications that solve real-world problems. I like to take ideas from first prototype to production and keep iteration cycles short.",
+      "My experience covers modern frontend frameworks, scalable backend systems and cloud infrastructure. I care about clean, maintainable code and pragmatic architecture that still leaves room to grow.",
+      "I enjoy improving workflows through automation and well-designed internal tools – from intuitive UIs to robust APIs and infrastructure that teams can rely on.",
+    ],
+  },
   impact: {
     title: "Impact & Highlights",
     items: [
@@ -47,6 +55,7 @@ export const en: AppTranslations = {
     naueGroup: {
       title: "Software Developer · Naue Group",
       employmentType: "Full-time",
+      dateRange: "June 2025 – Present",
       bullets: [
         {
           text: "Developed internal web tools to support logistics, production and quality workflows close to SAP processes.",
@@ -68,10 +77,12 @@ export const en: AppTranslations = {
     apprenticeship: {
       title: "IT Specialist Application Development",
       description: "Apprenticeship · Berufskolleg Lübbecke",
+      dateRange: "Aug 2022 – June 2025",
     },
     school: {
       title: "Technical College Certificate in Computer Science",
       description: "Technical high school diploma · Berufskolleg Lübbecke",
+      dateRange: "Aug 2020 – July 2022",
     },
   },
   projects: {

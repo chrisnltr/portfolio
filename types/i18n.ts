@@ -30,6 +30,11 @@ export type ImpactSection = {
   items: ImpactItem[];
 };
 
+export type AboutSection = {
+  title: string;
+  paragraphs: string[];
+};
+
 export type ExperienceBullet = {
   text: string;
 };
@@ -37,12 +42,14 @@ export type ExperienceBullet = {
 export type ExperienceEntryTranslation = {
   title: string;
   employmentType: string;
+  dateRange: string;
   bullets: ExperienceBullet[];
 };
 
 export type ExperienceEducationEntryTranslation = {
   title: string;
   description: string;
+  dateRange: string;
 };
 
 export type ExperienceSection = {
@@ -133,6 +140,7 @@ export type SocialTranslations = {
 export type AppTranslations = {
   nav: NavSection;
   hero: HeroSection;
+  about: AboutSection;
   impact: ImpactSection;
   experience: ExperienceSection;
   projects: ProjectsSectionTranslations;

@@ -20,6 +20,14 @@ export const de: AppTranslations = {
     contactCta: "Kontakt / Call buchen",
     contactCtaSecondary: "Lass uns sprechen",
   },
+  about: {
+    title: "Über mich",
+    paragraphs: [
+      "Ich bin Chris Leon Noltemeier, ein Full-Stack Developer mit Fokus auf Anwendungen, die echte Probleme lösen und sich im Alltag bewähren. Ich begleite Ideen gerne vom ersten Prototypen bis zum Produktivbetrieb.",
+      "Meine Erfahrung umfasst moderne Frontend-Frameworks, skalierbare Backends und Cloud-Infrastruktur. Mir sind saubere, wartbare Codebasen und pragmatische Architektur wichtig, die trotzdem Raum für Wachstum lässt.",
+      "Besonders Spaß macht mir, Workflows durch Automatisierung und gut gestaltete interne Tools zu verbessern – von klaren UIs bis hin zu robusten APIs und Infrastruktur, auf die Teams sich verlassen können.",
+    ],
+  },
   impact: {
     title: "Impact & Highlights",
     items: [
@@ -47,6 +55,7 @@ export const de: AppTranslations = {
     naueGroup: {
       title: "Software Developer · Naue Group",
       employmentType: "Vollzeit",
+      dateRange: "Juni 2025 – heute",
       bullets: [
         {
           text: "Entwicklung interner Webtools zur Unterstützung von Logistik-, Produktions- und Qualitätsprozessen in Nähe zu SAP.",
@@ -68,10 +77,12 @@ export const de: AppTranslations = {
     apprenticeship: {
       title: "Fachinformatiker Anwendungsentwicklung",
       description: "Ausbildung · Berufskolleg Lübbecke",
+      dateRange: "Aug. 2022 – Juni 2025",
     },
     school: {
       title: "Fachhochschulreife Informatik",
       description: "Berufskolleg Lübbecke · Abschluss Fachabitur",
+      dateRange: "Aug. 2020 – Juli 2022",
     },
   },
   projects: {
