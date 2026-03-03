@@ -5,17 +5,19 @@
   >
     <div class="container mx-auto text-center">
       <div class="animate-fade-in">
-        <h1
-          class="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text animate-slide-up"
-          style="
-            font-weight: 600;
-            background-size: 200% 200%;
-            animation: gradientShift 3s ease-in-out infinite;
-          "
-        >
-          {{ messages.hero.greeting }}
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold animate-slide-up">
           <span
-            class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up block"
+            class="gradient-text inline-block"
+            style="
+              font-weight: 600;
+              background-size: 200% 200%;
+              animation: gradientShift 3s ease-in-out infinite;
+            "
+          >
+            {{ messages.hero.greeting }}
+          </span>
+          <span
+            class="hero-name block mt-1 animate-slide-up cursor-pointer transition-all duration-500 ease-out hover:opacity-90"
             style="animation-delay: 0.15s"
           >
             {{ messages.hero.nameIntro }}

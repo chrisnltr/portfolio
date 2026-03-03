@@ -1,7 +1,7 @@
 <template>
   <section
     id="automation-ai"
-    class="modern-section flex items-center py-16 border-t border-border-primary/60"
+    class="min-h-screen modern-section flex items-center py-16 border-t border-border-primary/60"
   >
     <div class="container mx-auto px-4">
       <div class="max-w-6xl mx-auto">

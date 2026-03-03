@@ -19,7 +19,7 @@ export const de: AppTranslations = {
     positioningLine:
       "Full-Stack Developer | Automatisierung & API-Integrationen | AI-Workflows",
     openToWorkBadge: "Offen für neue Herausforderungen",
-    locationLabel: "Sitz in Hamburg · Remote möglich",
+    locationLabel: "Sitz in Bad Essen · Remote möglich",
     downloadCv: "CV herunterladen (PDF)",
     contactCta: "Kontakt / Call buchen",
     contactCtaSecondary: "Lass uns sprechen",
@@ -92,6 +92,9 @@ export const de: AppTranslations = {
   projects: {
     title: "Meine Projekte",
     caseStudyModalClose: "Case Study schließen",
+    galleryLabel: "Projektbilder",
+    prevImage: "Vorheriges Bild",
+    nextImage: "Nächstes Bild",
   },
   automationAi: {
     title: "Automatisierung & AI",
@@ -153,7 +156,7 @@ export const de: AppTranslations = {
     title:
       "Chris Leon Noltemeier – Full-Stack Developer (Automatisierung, APIs & AI-Workflows)",
     description:
-      "Portfolio von Chris Leon Noltemeier, Full-Stack Developer aus Hamburg mit Fokus auf Automatisierung, API-Integrationen und AI-gestützte interne Tools.",
+      "Portfolio von Chris Leon Noltemeier, Full-Stack Developer aus Bad Essen mit Fokus auf Automatisierung, API-Integrationen und AI-gestützte interne Tools.",
     ogTitle:
       "Chris Leon Noltemeier – Full-Stack Developer für Automatisierung & Integrationen",
     ogDescription:

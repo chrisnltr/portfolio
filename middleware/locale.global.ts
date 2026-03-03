@@ -1,7 +1,7 @@
 import type { AppLocale } from "~/types/i18n";
 
 const SUPPORTED_LOCALES: AppLocale[] = ["en", "de"];
-const DEFAULT_LOCALE: AppLocale = "en";
+const DEFAULT_LOCALE: AppLocale = "de";
 
 const getPreferredLocale = (): AppLocale => {
   if (process.client) {

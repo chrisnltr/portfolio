@@ -5,7 +5,7 @@ import { de } from "~/data/i18n/de";
 import type { AppLocale, AppTranslations } from "~/types/i18n";
 
 const SUPPORTED_LOCALES: AppLocale[] = ["en", "de"];
-const DEFAULT_LOCALE: AppLocale = "en";
+const DEFAULT_LOCALE: AppLocale = "de";
 
 const translationsByLocale: Record<AppLocale, AppTranslations> = {
   en,

@@ -3,7 +3,7 @@ import type { Profile } from "~/types/content";
 // TODO: Replace CV file names with your actual PDFs in /public/cv.
 export const profile: Profile = {
   name: "Chris Leon Noltemeier",
-  location: "Hamburg / Remote",
+  location: "Bad Essen / Remote",
   openToWork: true,
   cv: {
     en: "/cv/chris-leon-noltemeier-en.pdf",

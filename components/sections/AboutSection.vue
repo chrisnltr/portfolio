@@ -23,36 +23,58 @@
             </p>
           </div>
 
-          <div
-            class="card-elevated p-6 md:p-8 flex flex-col gap-4 text-left h-full"
-          >
-            <h3
-              class="text-base md:text-lg font-semibold text-text-primary tracking-wide uppercase text-xs mb-2"
-            >
-              Tech focus
-            </h3>
-            <div class="grid grid-cols-2 gap-4 text-sm md:text-base">
-              <div>
-                <p class="text-text-secondary font-semibold mb-2">
-                  Frontend
-                </p>
-                <ul class="space-y-1 text-text-secondary">
-                  <li>Vue.js / Nuxt</li>
-                  <li>TypeScript</li>
-                  <li>Tailwind CSS</li>
-                  <li>Responsive UIs</li>
-                </ul>
-              </div>
-              <div>
-                <p class="text-text-secondary font-semibold mb-2">
-                  Backend & Ops
-                </p>
-                <ul class="space-y-1 text-text-secondary">
-                  <li>Node.js / REST APIs</li>
-                  <li>PostgreSQL</li>
-                  <li>Docker & CI/CD</li>
-                  <li>Automation & tooling</li>
-                </ul>
+          <div class="flex flex-col items-center justify-center h-full">
+            <div class="tech-cube-scene">
+              <div class="tech-cube">
+                <div class="tech-cube-face tech-cube-front">
+                  <div class="tech-cube-content">
+                    <h3>Tech focus</h3>
+                    <ul>
+                      <li>Vue.js / Nuxt</li>
+                      <li>TypeScript</li>
+                      <li>Tailwind CSS</li>
+                      <li>Node.js / REST APIs</li>
+                      <li>PostgreSQL</li>
+                      <li>Docker & CI/CD</li>
+                      <li>Automation & tooling</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="tech-cube-face tech-cube-back">
+                  <div class="tech-cube-content">
+                    <h3>Stack</h3>
+                    <ul>
+                      <li>Vue · Node · PostgreSQL</li>
+                      <li>Docker · CI/CD</li>
+                      <li>TypeScript · Tailwind</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="tech-cube-face tech-cube-left">
+                  <div class="tech-cube-content">
+                    <h3></h3>
+                  </div>
+                </div>
+                <div class="tech-cube-face tech-cube-right">
+                  <div class="tech-cube-content">
+                    <h3></h3>
+                  </div>
+                </div>
+                <div class="tech-cube-face tech-cube-top">
+                  <div class="tech-cube-content">
+                    <h3></h3>
+                  </div>
+                </div>
+                <div class="tech-cube-face tech-cube-bottom">
+                  <div class="tech-cube-content">
+                    <h3>Focus</h3>
+                    <ul>
+                      <li>APIs & Integrationen</li>
+                      <li>Interne Tools</li>
+                      <li>Automatisierung</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

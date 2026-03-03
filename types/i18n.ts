@@ -88,6 +88,9 @@ export type ProjectTranslations = {
 export type ProjectsSectionTranslations = {
   title: string;
   caseStudyModalClose: string;
+  galleryLabel: string;
+  prevImage: string;
+  nextImage: string;
 };
 
 export type AutomationUseCase = {

@@ -77,15 +77,62 @@
         >
           <div v-if="currentProject" class="flex flex-col h-full">
             <div
-              class="aspect-video bg-background-tertiary rounded-lg mb-4 overflow-hidden relative cursor-pointer"
+              class="aspect-video bg-background-tertiary rounded-lg mb-3 overflow-hidden relative group"
             >
               <img
-                :src="currentProject.images[0]"
-                :alt="currentProject.translations.title + ' – screenshot'"
-                class="w-full h-full object-cover transition-transform duration-300"
+                :src="currentProject.images[selectedImageIndex]"
+                :alt="currentProject.translations.title + ' – screenshot ' + (selectedImageIndex + 1)"
+                class="w-full h-full object-cover transition-opacity duration-300"
                 loading="lazy"
                 decoding="async"
               />
+              <template v-if="currentProject.images.length > 1">
+                <button
+                  type="button"
+                  class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+                  :aria-label="messages.projects.prevImage"
+                  @click="prevImage"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+                  :aria-label="messages.projects.nextImage"
+                  @click="nextImage"
+                >
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </template>
+            </div>
+            <div
+              v-if="currentProject.images.length > 1"
+              class="flex gap-2 mb-4 flex-wrap"
+              role="tablist"
+              :aria-label="messages.projects.galleryLabel"
+            >
+              <button
+                v-for="(img, idx) in currentProject.images"
+                :key="idx"
+                type="button"
+                role="tab"
+                :aria-selected="selectedImageIndex === idx"
+                :tabindex="selectedImageIndex === idx ? 0 : -1"
+                class="w-14 h-10 md:w-16 md:h-11 rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
+                :class="selectedImageIndex === idx ? 'border-accent-500 opacity-100' : 'border-border-primary opacity-70 hover:opacity-90'"
+                @click="selectedImageIndex = idx"
+              >
+                <img
+                  :src="img"
+                  :alt="currentProject.translations.title + ' – Vorschaubild ' + (idx + 1)"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </button>
             </div>
 
             <h3 class="text-xl md:text-2xl font-bold text-text-primary mb-1">
@@ -162,15 +209,6 @@
               >
                 {{ currentProject.translations.githubLabel }}
               </a>
-              <span
-                v-if="
-                  currentProject.links.codeIsPrivate &&
-                  !currentProject.links.githubUrl
-                "
-                class="text-xs md:text-sm text-text-secondary"
-              >
-                {{ currentProject.translations.codeOnRequestLabel }}
-              </span>
             </div>
           </div>
         </div>
@@ -220,8 +258,23 @@ const currentProject = computed(() =>
   null,
 );
 
+const selectedImageIndex = ref(0);
+
 const selectProject = (slug: string) => {
   selectedSlug.value = slug;
+  selectedImageIndex.value = 0;
+};
+
+const prevImage = () => {
+  if (!currentProject.value) return;
+  const len = currentProject.value.images.length;
+  selectedImageIndex.value = (selectedImageIndex.value - 1 + len) % len;
+};
+
+const nextImage = () => {
+  if (!currentProject.value) return;
+  const len = currentProject.value.images.length;
+  selectedImageIndex.value = (selectedImageIndex.value + 1) % len;
 };
 
 const openModal = () => {

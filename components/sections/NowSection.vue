@@ -1,7 +1,7 @@
 <template>
   <section
     id="now"
-    class="modern-section flex items-center py-12 border-t border-border-primary/60"
+    class="min-h-screen modern-section flex items-center py-12 border-t border-border-primary/60"
   >
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">

@@ -140,12 +140,6 @@
             >
               {{ projectTranslations.githubLabel }}
             </a>
-            <p
-              v-if="links.codeIsPrivate && !links.githubUrl"
-              class="text-text-secondary text-xs md:text-sm"
-            >
-              {{ projectTranslations.codeOnRequestLabel }}
-            </p>
           </div>
         </section>
       </div>
