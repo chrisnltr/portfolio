@@ -6,6 +6,7 @@
       <ImpactSection />
       <AboutSection />
       <ExperienceSection />
+      <ProjectsSection />
       <AutomationAiSection />
       <NowSection />
       <!-- TODO: Wire up Projects and Contact sections as dedicated components. -->
@@ -19,6 +20,7 @@ import HeroSection from "~/components/sections/HeroSection.vue";
 import ImpactSection from "~/components/sections/ImpactSection.vue";
 import AboutSection from "~/components/sections/AboutSection.vue";
 import ExperienceSection from "~/components/sections/ExperienceSection.vue";
+import ProjectsSection from "~/components/sections/ProjectsSection.vue";
 import AutomationAiSection from "~/components/sections/AutomationAiSection.vue";
 import NowSection from "~/components/sections/NowSection.vue";
 </script>
