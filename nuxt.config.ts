@@ -5,6 +5,12 @@ export default defineNuxtConfig({
 
   devtools: { enabled: false },
 
+  runtimeConfig: {
+    public: {
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || "",
+    },
+  },
+
   css: ["~/assets/css/main.css"],
 
   tailwindcss: {

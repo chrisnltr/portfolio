@@ -1,7 +1,10 @@
 <template>
   <header class="fixed top-0 left-0 right-0 z-50 glass-header">
     <div class="container mx-auto px-6 py-4">
-      <nav class="flex items-center justify-between gap-4">
+      <nav
+        class="flex items-center justify-between gap-4"
+        :aria-label="messages.nav.ariaLabel"
+      >
         <a
           href="#home"
           class="flex items-center gap-2 text-2xl md:text-3xl font-bold gradient-text cursor-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 rounded-md"

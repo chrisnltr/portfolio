@@ -14,18 +14,11 @@
           "
         >
           {{ messages.hero.greeting }}
-        </h1>
-        <h1
-          class="text-4xl md:text-6xl lg:text-7xl font-bold"
-          style="font-weight: 600"
-        >
           <span
-            class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up"
+            class="text-text-primary hover:gradient-text transition-all duration-500 ease-out cursor-pointer animate-slide-up block"
             style="animation-delay: 0.15s"
           >
-            <span>
-              {{ messages.hero.nameIntro }}
-            </span>
+            {{ messages.hero.nameIntro }}
           </span>
         </h1>
         <h2

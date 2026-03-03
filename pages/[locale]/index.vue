@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainHeader />
-    <main class="pt-16 min-h-full">
+    <main class="pt-16 min-h-full" id="main-content">
       <HeroSection />
       <ImpactSection />
       <AboutSection />
@@ -9,7 +9,6 @@
       <ProjectsSection />
       <AutomationAiSection />
       <NowSection />
-      <!-- TODO: Wire up Projects and Contact sections as dedicated components. -->
     </main>
   </div>
 </template>
@@ -23,5 +22,30 @@ import ExperienceSection from "~/components/sections/ExperienceSection.vue";
 import ProjectsSection from "~/components/sections/ProjectsSection.vue";
 import AutomationAiSection from "~/components/sections/AutomationAiSection.vue";
 import NowSection from "~/components/sections/NowSection.vue";
+import { useI18n } from "~/composables/useI18n";
+import { useSeoMeta, useRequestURL } from "#app";
+
+const { locale, messages } = useI18n();
+const requestURL = useRequestURL();
+
+useSeoMeta(() => {
+  const seo = messages.value.seo;
+  const loc = locale.value;
+  const ogLocale = loc === "de" ? "de_DE" : "en_US";
+  const path = `/${loc}`;
+  const canonicalUrl = `${requestURL.origin}${path}`;
+
+  return {
+    title: seo.title,
+    description: seo.description,
+    ogTitle: seo.ogTitle,
+    ogDescription: seo.ogDescription,
+    ogLocale,
+    ogUrl: canonicalUrl,
+    twitterCard: "summary_large_image",
+    twitterTitle: seo.ogTitle,
+    twitterDescription: seo.ogDescription,
+  };
+});
 </script>
 

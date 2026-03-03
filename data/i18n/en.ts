@@ -7,6 +7,7 @@ export const en: AppTranslations = {
     experience: "Experience",
     projects: "Projects",
     contact: "Contact",
+    ariaLabel: "Main navigation",
   },
   hero: {
     greeting: "Hey, I'm",

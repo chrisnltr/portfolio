@@ -6,6 +6,7 @@ export type NavSection = {
   experience: string;
   projects: string;
   contact: string;
+  ariaLabel: string;
 };
 
 export type HeroSection = {

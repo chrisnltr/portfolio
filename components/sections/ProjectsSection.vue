@@ -20,12 +20,16 @@
             <article
               v-for="project in localizedProjects"
               :key="project.slug"
-              class="card-elevated group hover:glow hover:scale-[1.02] transition-all duration-300 cursor-pointer"
+              role="button"
+              tabindex="0"
+              class="card-elevated group hover:glow hover:scale-[1.02] transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
               :class="{
                 'bg-accent-600/10 border-accent-600/40':
                   project.slug === selectedSlug,
               }"
               @click="selectProject(project.slug)"
+              @keydown.enter="selectProject(project.slug)"
+              @keydown.space.prevent="selectProject(project.slug)"
             >
               <div class="flex gap-3 md:gap-4 p-3 md:p-4">
                 <div class="flex-shrink-0">
@@ -34,9 +38,10 @@
                   >
                     <img
                       :src="project.images[0]"
-                      :alt="project.translations.title + ' screenshot'"
+                      :alt="project.translations.title + ' – screenshot'"
                       class="w-full h-full object-cover transition-transform duration-300"
                       loading="lazy"
+                      decoding="async"
                     />
                   </div>
                 </div>
@@ -76,9 +81,10 @@
             >
               <img
                 :src="currentProject.images[0]"
-                :alt="currentProject.translations.title + ' screenshot'"
+                :alt="currentProject.translations.title + ' – screenshot'"
                 class="w-full h-full object-cover transition-transform duration-300"
                 loading="lazy"
+                decoding="async"
               />
             </div>
 
