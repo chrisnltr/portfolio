@@ -21,9 +21,5 @@ import AboutSection from "~/components/sections/AboutSection.vue";
 import ExperienceSection from "~/components/sections/ExperienceSection.vue";
 import AutomationAiSection from "~/components/sections/AutomationAiSection.vue";
 import NowSection from "~/components/sections/NowSection.vue";
-
-definePageMeta({
-  middleware: "locale",
-});
 </script>
 
