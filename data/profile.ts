@@ -13,12 +13,12 @@ export const profile: Profile = {
     {
       id: "github",
       type: "github",
-      url: "https://github.com/cln-dev", // TODO: Adjust if your GitHub handle differs.
+      url: "https://github.com/chrisnltr",
     },
     {
       id: "linkedin",
       type: "linkedin",
-      url: "https://www.linkedin.com/in/chris-leon-noltemeier", // TODO: Adjust to your actual LinkedIn URL.
+      url: "https://www.linkedin.com/in/chris-leon-noltemeier-811142315",
     },
     {
       id: "email",
