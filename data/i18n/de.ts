@@ -102,7 +102,7 @@ export const de: AppTranslations = {
       "Ich helfe Teams dabei, Workflows zu automatisieren, Tools zu verbinden und AI sinnvoll in bestehende Prozesse zu integrieren.",
     useCases: [
       {
-        title: "n8n / Zapier Workflows",
+        title: "n8n Workflows",
         description:
           "Konzeption und Implementierung von Automatisierungen, die CRM, Support- und interne Systeme verbinden – inklusive Webhooks, Retry-Logik und Monitoring.",
       },
@@ -137,20 +137,6 @@ export const de: AppTranslations = {
     validationEmailInvalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
     validationMessageRequired: "Bitte schreibe kurz, worum es geht.",
     spamProtectionLabel: "Dieses Feld leer lassen (Spam-Schutz).",
-  },
-  now: {
-    title: "Aktuell / Jetzt",
-    items: [
-      {
-        text: "Aufbau von AI-unterstützten Automatisierungen und internen Tools, die manuelle Routinearbeit reduzieren.",
-      },
-      {
-        text: "Weiterentwicklung eines Online-3D-Billard-Erlebnisses mit Echtzeit-Multiplayer und starker UX.",
-      },
-      {
-        text: "Feinschliff einer digitalen Unfallmelde-App und Ausloten, wo Automatisierung den Schadenprozess unterstützen kann.",
-      },
-    ],
   },
   seo: {
     title:

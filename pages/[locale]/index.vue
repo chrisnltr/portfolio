@@ -8,7 +8,6 @@
       <ExperienceSection />
       <ProjectsSection />
       <AutomationAiSection />
-      <NowSection />
       <ContactSection />
     </main>
   </div>
@@ -22,7 +21,6 @@ import AboutSection from "~/components/sections/AboutSection.vue";
 import ExperienceSection from "~/components/sections/ExperienceSection.vue";
 import ProjectsSection from "~/components/sections/ProjectsSection.vue";
 import AutomationAiSection from "~/components/sections/AutomationAiSection.vue";
-import NowSection from "~/components/sections/NowSection.vue";
 import ContactSection from "~/components/sections/ContactSection.vue";
 import { useI18n } from "~/composables/useI18n";
 import { useSeoMeta, useHead, useRequestURL } from "#app";

@@ -102,7 +102,7 @@ export const en: AppTranslations = {
       "Helping teams automate workflows, connect tools and ship AI-enabled features that actually integrate into existing processes.",
     useCases: [
       {
-        title: "n8n / Zapier workflows",
+        title: "n8n workflows",
         description:
           "Design and implement automations that connect CRMs, support systems and internal tools, including webhooks, retries and monitoring.",
       },
@@ -136,20 +136,6 @@ export const en: AppTranslations = {
     validationEmailInvalid: "Please enter a valid email address.",
     validationMessageRequired: "Please enter a short message.",
     spamProtectionLabel: "Leave this field empty (spam protection).",
-  },
-  now: {
-    title: "Now / Currently",
-    items: [
-      {
-        text: "Building AI-assisted automations and internal tools that remove manual, repetitive work from teams.",
-      },
-      {
-        text: "Iterating on an online 3D billiards experience with real-time multiplayer and smooth UX.",
-      },
-      {
-        text: "Refining a digital accident reporting app and exploring where automation can support the claims workflow.",
-      },
-    ],
   },
   seo: {
     title: "Chris Leon Noltemeier – Full-Stack Developer (Automation, APIs & AI Workflows)",

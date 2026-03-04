@@ -122,15 +122,6 @@ export type ContactSection = {
   spamProtectionLabel: string;
 };
 
-export type NowItem = {
-  text: string;
-};
-
-export type NowSection = {
-  title: string;
-  items: NowItem[];
-};
-
 export type SeoSection = {
   title: string;
   description: string;
@@ -155,7 +146,6 @@ export type AppTranslations = {
   projects: ProjectsSectionTranslations;
   automationAi: AutomationAiSection;
   contact: ContactSection;
-  now: NowSection;
   seo: SeoSection;
   social: SocialTranslations;
 };
