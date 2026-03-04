@@ -1,7 +1,7 @@
 <template>
   <section
     id="experience"
-    class="min-h-screen modern-section flex items-center py-12"
+    class="modern-section flex items-center py-14 md:py-20"
   >
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">

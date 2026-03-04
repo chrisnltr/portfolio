@@ -1,7 +1,7 @@
 <template>
   <section
     id="contact"
-    class="min-h-screen modern-section flex flex-col justify-center py-12"
+    class="modern-section flex flex-col justify-center py-14 md:py-20"
   >
     <div class="container mx-auto px-4 flex-1 flex items-center">
       <div class="max-w-xl mx-auto w-full">

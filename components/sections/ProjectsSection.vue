@@ -1,7 +1,7 @@
 <template>
   <section
     id="projects"
-    class="min-h-screen modern-section flex items-center py-12 transition-all duration-700 ease-out"
+    class="modern-section flex items-center py-14 md:py-20 transition-all duration-700 ease-out"
   >
     <div class="container mx-auto px-4">
       <div
