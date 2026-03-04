@@ -5,9 +5,9 @@
   >
     <div class="container mx-auto px-4">
       <div
-        class="grid md:grid-cols-2 gap-6 md:gap-8 max-w-7xl mx-auto min-h-[560px] items-start"
+        class="grid md:grid-cols-[2fr_3fr] gap-6 md:gap-8 max-w-7xl mx-auto min-h-[560px] items-start"
       >
-        <div class="flex flex-col h-full justify-start">
+        <div class="flex flex-col h-full justify-start mt-4 md:mt-8">
           <h2
             class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text text-center mb-6 md:mb-8"
           >
@@ -73,7 +73,7 @@
         </div>
 
         <div
-          class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-4 md:mt-8"
+          class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-4 md:mt-8 max-h-[calc(100vh-6rem)] overflow-y-auto"
         >
           <div v-if="currentProject" class="flex flex-col h-full">
             <div
