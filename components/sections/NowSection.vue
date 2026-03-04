@@ -6,7 +6,7 @@
     <div class="container mx-auto px-4">
       <div class="max-w-4xl mx-auto">
         <h2
-          class="text-2xl md:text-3xl font-bold text-center mb-8 gradient-text"
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 gradient-text"
         >
           {{ messages.now.title }}
         </h2>

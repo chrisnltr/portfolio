@@ -6,7 +6,7 @@
     <div class="container mx-auto px-4">
       <div class="max-w-6xl mx-auto">
         <div class="text-center mb-10 md:mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold gradient-text mb-4">
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-4">
             {{ messages.automationAi.title }}
           </h2>
           <p class="text-text-secondary text-sm md:text-base max-w-3xl mx-auto">

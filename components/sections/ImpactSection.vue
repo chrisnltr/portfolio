@@ -6,7 +6,7 @@
     <div class="container mx-auto px-4">
       <div class="max-w-5xl mx-auto">
         <h2
-          class="text-3xl md:text-4xl font-bold text-center mb-10 gradient-text animate-slide-up"
+          class="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-10 gradient-text animate-slide-up"
         >
           {{ messages.impact.title }}
         </h2>
