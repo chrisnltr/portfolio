@@ -9,6 +9,7 @@
       <ProjectsSection />
       <AutomationAiSection />
       <ContactSection />
+      <MainFooter />
     </main>
   </div>
 </template>
@@ -22,6 +23,7 @@ import ExperienceSection from "~/components/sections/ExperienceSection.vue";
 import ProjectsSection from "~/components/sections/ProjectsSection.vue";
 import AutomationAiSection from "~/components/sections/AutomationAiSection.vue";
 import ContactSection from "~/components/sections/ContactSection.vue";
+import MainFooter from "~/components/layout/MainFooter.vue";
 import { useI18n } from "~/composables/useI18n";
 import { useSeoMeta, useHead, useRequestURL } from "#app";
 

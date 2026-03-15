@@ -137,6 +137,11 @@ export type SocialTranslations = {
   emailLabel: string;
 };
 
+export type FooterSection = {
+  datenschutz: string;
+  privacy: string;
+};
+
 export type AppTranslations = {
   nav: NavSection;
   hero: HeroSection;
@@ -148,5 +153,6 @@ export type AppTranslations = {
   contact: ContactSection;
   seo: SeoSection;
   social: SocialTranslations;
+  footer: FooterSection;
 };
 

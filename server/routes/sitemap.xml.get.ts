@@ -14,10 +14,22 @@ export default defineEventHandler((event) => {
   const base = getOrigin(event);
   const lastmod = new Date().toISOString().slice(0, 10);
 
-  const urls = LOCALES.map(
+  const localeUrls = LOCALES.map(
     (locale) =>
       `  <url>\n    <loc>${base}/${locale}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`,
   ).join("\n");
+
+  const legalUrls = [
+    { path: "/de/datenschutz", changefreq: "monthly" as const },
+    { path: "/en/privacy", changefreq: "monthly" as const },
+  ]
+    .map(
+      (entry) =>
+        `  <url>\n    <loc>${base}${entry.path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${entry.changefreq}</changefreq>\n    <priority>0.5</priority>\n  </url>`,
+    )
+    .join("\n");
+
+  const urls = [localeUrls, legalUrls].join("\n");
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

@@ -151,5 +151,9 @@ export const en: AppTranslations = {
     linkedinLabel: "Open LinkedIn profile",
     emailLabel: "Send email",
   },
+  footer: {
+    datenschutz: "Datenschutz",
+    privacy: "Privacy Policy",
+  },
 };
 
