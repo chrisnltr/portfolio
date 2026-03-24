@@ -35,7 +35,7 @@
           {{ messages.hero.roleHeadline }}
         </h2>
         <p
-          class="text-lg md:text-xl lg:text-2xl text-text-secondary mt-4 mb-6 max-w-2xl mx-auto animate-slide-up px-4"
+          class="text-lg md:text-xl lg:text-2xl text-text-secondary mt-4 mb-6 mx-auto animate-slide-up px-4 whitespace-nowrap"
           style="animation-delay: 0.45s"
         >
           {{ messages.hero.positioningLine }}
@@ -62,6 +62,7 @@
         >
           <a
             :href="currentCvUrl"
+            download
             class="btn-primary text-base md:text-lg px-8 py-3 group relative overflow-hidden inline-flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
             target="_blank"
             rel="noopener noreferrer"
@@ -153,15 +154,13 @@
 import { computed } from "vue";
 import { useI18n } from "~/composables/useI18n";
 import { profile } from "~/data/profile";
+import cvDownloadFile from "~/assets/css/Lebenslauf - Chris Leon Noltemeier.pdf?url";
 
 const { locale, messages: rawMessages } = useI18n();
 
 const messages = computed(() => rawMessages.value);
 
-const currentCvUrl = computed(() => {
-  const current = locale.value;
-  return profile.cv[current] ?? profile.cv.en;
-});
+const currentCvUrl = computed(() => cvDownloadFile);
 
 const scrollToContact = () => {
   if (typeof document === "undefined") return;
