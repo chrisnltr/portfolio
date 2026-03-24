@@ -20,7 +20,7 @@ export const projects: ProjectCaseStudy[] = [
     },
     translations: {
       en: {
-        title: "Accident Report App",
+        title: "CrashReport",
         subtitle: "Digital accident documentation for insurance-ready reports",
         shortDescription:
           "A mobile app that guides drivers through capturing all accident details, photos and sketches, and exports a ready-to-send PDF.",
@@ -39,7 +39,7 @@ export const projects: ProjectCaseStudy[] = [
         biggestChallenge:
           "Designing a UX that stays calm and clear in a stressful situation while still collecting all legally relevant data.",
         linksTitle: "Links",
-        liveDemoLabel: "Live demo",
+        liveDemoLabel: "Visit website",
         githubLabel: "GitHub",
         codeOnRequestLabel: "Code available on request",
         caseStudyCta: "View case study",
@@ -52,7 +52,7 @@ export const projects: ProjectCaseStudy[] = [
         ],
       },
       de: {
-        title: "Accident Report App",
+        title: "CrashReport",
         subtitle: "Digitale Unfallaufnahme für versandfertige Berichte",
         shortDescription:
           "Eine mobile App, die Fahrer Schritt für Schritt durch alle relevanten Unfalldaten führt und daraus einen versandfertigen PDF-Bericht erstellt.",
@@ -71,7 +71,7 @@ export const projects: ProjectCaseStudy[] = [
         biggestChallenge:
           "Eine UX zu gestalten, die in einer Stresssituation ruhig und klar bleibt und trotzdem alle rechtlich relevanten Daten einsammelt.",
         linksTitle: "Links",
-        liveDemoLabel: "Live-Demo",
+        liveDemoLabel: "Zur Webseite",
         githubLabel: "GitHub",
         codeOnRequestLabel: "Code auf Anfrage",
         caseStudyCta: "Case Study ansehen",

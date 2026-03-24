@@ -184,12 +184,22 @@
 
             <div class="mt-auto flex flex-wrap items-center gap-3">
               <button
+                v-if="showCaseStudyButton"
                 type="button"
                 class="btn-primary text-xs md:text-sm px-4 py-2"
                 @click="openModal"
               >
                 {{ currentProject.translations.caseStudyCta }}
               </button>
+              <a
+                v-if="currentProjectWebsiteUrl"
+                :href="currentProjectWebsiteUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-primary text-xs md:text-sm px-4 py-2 inline-flex items-center"
+              >
+                {{ currentProject.translations.liveDemoLabel }}
+              </a>
 
               <a
                 v-if="currentProject.links.liveUrl"
@@ -259,6 +269,20 @@ const currentProject = computed(() =>
 );
 
 const selectedImageIndex = ref(0);
+
+const showCaseStudyButton = computed(
+  () => currentProject.value?.slug !== "accident-report-app",
+);
+
+const currentProjectWebsiteUrl = computed(() => {
+  if (!currentProject.value) return "";
+  if (currentProject.value.slug === "accident-report-app") {
+    return locale.value === "de"
+      ? "https://crashreport-site.vercel.app/de"
+      : "https://crashreport-site.vercel.app/en";
+  }
+  return currentProject.value.links.liveUrl;
+});
 
 const selectProject = (slug: string) => {
   selectedSlug.value = slug;
