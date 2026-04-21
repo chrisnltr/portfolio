@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom CSS Variables for Theme */
 :root {
 	--background-primary: #0a0a0a;
 	--background-secondary: #1a1a1a;
@@ -14,14 +13,12 @@
 	--border-primary: #333333;
 }
 
-/* Base Styles */
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
 }
 
-/* Accessibility: visible focus for keyboard users */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
