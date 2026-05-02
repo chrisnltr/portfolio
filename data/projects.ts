@@ -14,7 +14,7 @@ export const projects: ProjectCaseStudy[] = [
       "flutter_gen",
     ],
     links: {
-      liveUrl: "", // TODO: Add public link if available.
+      liveUrl: "https://crashreport.de/",
       githubUrl: "", // TODO: Add GitHub repo or keep empty if private.
       codeIsPrivate: true,
     },
