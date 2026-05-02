@@ -18,7 +18,7 @@ export const profile: Profile = {
     {
       id: "linkedin",
       type: "linkedin",
-      url: "https://www.linkedin.com/in/chris-leon-noltemeier-811142315",
+      url: "https://www.linkedin.com/in/chris-leon-noltemeier",
     },
     {
       id: "email",
