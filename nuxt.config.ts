@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
 
-  modules: ["@nuxtjs/tailwindcss"],
+  modules: ["@nuxtjs/tailwindcss", "@vercel/analytics/nuxt"],
 
   devtools: { enabled: false },
 
