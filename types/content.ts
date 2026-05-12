@@ -12,7 +12,6 @@ export type Profile = {
   name: string;
   location: string;
   openToWork: boolean;
-  cv: Record<AppLocale, string>;
   socialLinks: SocialLink[];
 };
 

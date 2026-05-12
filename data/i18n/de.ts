@@ -20,9 +20,6 @@ export const de: AppTranslations = {
       "Full-Stack Developer | Automatisierung & API-Integrationen | AI-Workflows",
     openToWorkBadge: "Offen für neue Herausforderungen",
     locationLabel: "Sitz in Bad Essen · Remote möglich",
-    downloadCv: "CV herunterladen (PDF)",
-    contactCta: "Kontakt / Call buchen",
-    contactCtaSecondary: "Lass uns sprechen",
   },
   about: {
     title: "Über mich",

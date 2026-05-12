@@ -19,9 +19,6 @@ export type HeroSection = {
   positioningLine: string;
   openToWorkBadge: string;
   locationLabel: string;
-  downloadCv: string;
-  contactCta: string;
-  contactCtaSecondary?: string;
 };
 
 export type ImpactItem = {

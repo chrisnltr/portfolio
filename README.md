@@ -25,14 +25,6 @@ Configure these in `.env` (or in your host’s dashboard, e.g. Vercel).
 - `CONTACT_FROM_EMAIL` — Sender address used by the mail provider.
 - **Optional:** `FORMSPREE_ENDPOINT` — If set, form submissions are proxied to Formspree instead of sending mail directly (useful if no mail provider is configured).
 
-## CV – Updating PDFs
-
-- CVs are served from the `public` folder. Paths are defined in **`data/profile.ts`** under `profile.cv`:
-  - `en`: `/cv/chris-leon-noltemeier-en.pdf`
-  - `de`: `/cv/chris-leon-noltemeier-de.pdf`
-- **To update:** Place your PDFs in `public/cv/` with the same file names, or change the paths in `data/profile.ts` and add the corresponding files to `public/cv/`.
-- No code change is required if you keep the same file names; just replace the files in `public/cv/`.
-
 ## Content & i18n
 
 ### Routing
@@ -47,7 +39,7 @@ Configure these in `.env` (or in your host’s dashboard, e.g. Vercel).
 ### Adding or editing content
 
 - **Translations:** Edit **`data/i18n/de.ts`** and **`data/i18n/en.ts`**. Types are in **`types/i18n.ts`**; keep keys in sync across both files.
-- **Profile (name, CV paths, social links):** **`data/profile.ts`**. Types in **`types/content.ts`**.
+- **Profile (name, social links):** **`data/profile.ts`**. Types in **`types/content.ts`**.
 - **Projects (case studies):** **`data/projects.ts`**. Each project has `translations.de` and `translations.en`; add or adjust entries there.
 - **Experience & education:** **`data/experience.ts`** — structure and translations per locale.
 - **Impact, Automation & AI, Now:** Copy lives in the i18n files under `impact`, `automationAi`, and `now`.

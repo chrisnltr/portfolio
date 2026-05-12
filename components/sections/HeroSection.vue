@@ -57,36 +57,8 @@
         </div>
 
         <div
-          class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-slide-up"
+          class="flex items-center justify-center gap-4 animate-slide-up"
           style="animation-delay: 0.65s"
-        >
-          <a
-            :href="currentCvUrl"
-            download
-            class="btn-primary text-base md:text-lg px-8 py-3 group relative overflow-hidden inline-flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span class="relative z-10">
-              {{ messages.hero.downloadCv }}
-            </span>
-            <div
-              class="absolute inset-0 bg-gradient-to-r from-accent-400 to-accent-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"
-            ></div>
-          </a>
-
-          <button
-            type="button"
-            class="btn-secondary text-base md:text-lg px-8 py-3 inline-flex items-center justify-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-            @click="scrollToContact"
-          >
-            <span>{{ messages.hero.contactCta }}</span>
-          </button>
-        </div>
-
-        <div
-          class="mt-6 flex items-center justify-center gap-4 animate-slide-up"
-          style="animation-delay: 0.75s"
         >
           <a
             v-for="link in profile.socialLinks"
@@ -154,24 +126,10 @@
 import { computed } from "vue";
 import { useI18n } from "~/composables/useI18n";
 import { profile } from "~/data/profile";
-import cvDownloadFile from "~/assets/css/Lebenslauf - Chris Leon Noltemeier.pdf?url";
 
-const { locale, messages: rawMessages } = useI18n();
+const { messages: rawMessages } = useI18n();
 
 const messages = computed(() => rawMessages.value);
-
-const currentCvUrl = computed(() => cvDownloadFile);
-
-const scrollToContact = () => {
-  if (typeof document === "undefined") return;
-  const el = document.getElementById("contact");
-  if (!el) return;
-
-  el.scrollIntoView({
-    behavior: "smooth",
-    block: "start",
-  });
-};
 
 const socialAriaLabel = (type: "github" | "linkedin" | "email") => {
   const social = messages.value.social;

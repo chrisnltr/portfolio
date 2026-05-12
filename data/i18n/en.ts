@@ -20,9 +20,6 @@ export const en: AppTranslations = {
       "Full-Stack Developer | Automation & API Integrations | AI-enabled workflows",
     openToWorkBadge: "Open to work",
     locationLabel: "Based in Bad Essen · Remote friendly",
-    downloadCv: "Download CV (PDF)",
-    contactCta: "Contact / Book a call",
-    contactCtaSecondary: "Let’s talk",
   },
   about: {
     title: "About Me",
