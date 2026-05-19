@@ -16,12 +16,15 @@
           >
             {{ messages.hero.greeting }}
           </span>
-          <span
-            class="hero-name block mt-1 animate-slide-up cursor-pointer transition-all duration-500 ease-out hover:opacity-90"
+          <button
+            type="button"
+            class="hero-name block mt-1 w-full animate-slide-up cursor-pointer border-0 bg-transparent p-0 font-inherit text-inherit transition-all duration-500 ease-out hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-400"
             style="animation-delay: 0.15s"
+            :aria-label="replayAriaLabel"
+            @click="replayIntro"
           >
             {{ messages.hero.nameIntro }}
-          </span>
+          </button>
         </h1>
         <h2
           class="text-3xl md:text-5xl lg:text-6xl font-bold gradient-text mt-3 animate-slide-up"
@@ -125,11 +128,19 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "~/composables/useI18n";
+import { useIntroAnimation } from "~/composables/useIntroAnimation";
 import { profile } from "~/data/profile";
 
-const { messages: rawMessages } = useI18n();
+const { messages: rawMessages, locale } = useI18n();
+const { replayIntro } = useIntroAnimation();
 
 const messages = computed(() => rawMessages.value);
+
+const replayAriaLabel = computed(() =>
+  locale.value === "de"
+    ? "Intro-Animation erneut abspielen"
+    : "Replay intro animation",
+);
 
 const socialAriaLabel = (type: "github" | "linkedin" | "email") => {
   const social = messages.value.social;

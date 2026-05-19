@@ -1,39 +1,69 @@
 <template>
   <div class="min-h-screen bg-background-primary">
-    <div class="particles" :class="{ 'particles--reduced': isMobile }">
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-      <div class="particle"></div>
-    </div>
     <div
-      v-if="!isMobile"
-      ref="cursorFollower"
-      class="fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
-      :class="
-        isHoveringTarget ? 'bg-blue-500/40 w-20 h-20' : 'bg-blue-400/20 w-6 h-6'
-      "
-      :style="{
-        left: mousePosition.x + 'px',
-        top: mousePosition.y + 'px',
-        transform: 'translate(-50%, -50%)',
-        boxShadow: isHoveringTarget
-          ? '0 0 40px 20px rgba(59, 130, 246, 0.5)'
-          : '0 0 20px 10px rgba(96, 165, 250, 0.3)',
-      }"
-    ></div>
+      v-if="introPhase === 'checking' && isHomePage"
+      class="fixed inset-0 z-[10000] bg-white"
+      aria-hidden="true"
+    />
 
-    <NuxtPage />
+    <IntroAnimation
+      v-if="introPhase === 'playing' || introPhase === 'hold'"
+      :key="introReplayKey"
+      :skip-white-hold="isManualReplay"
+      @frames-complete="startOutroHold"
+      @complete="completeIntro"
+      @skip="skipIntro"
+    />
+
+    <template v-if="showMainApp">
+      <div class="particles" :class="{ 'particles--reduced': isMobile }">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+      </div>
+      <div
+        v-if="!isMobile"
+        ref="cursorFollower"
+        class="fixed pointer-events-none z-[9999] rounded-full blur-xl transition-all duration-300 ease-out"
+        :class="
+          isHoveringTarget ? 'bg-blue-500/40 w-20 h-20' : 'bg-blue-400/20 w-6 h-6'
+        "
+        :style="{
+          left: mousePosition.x + 'px',
+          top: mousePosition.y + 'px',
+          transform: 'translate(-50%, -50%)',
+          boxShadow: isHoveringTarget
+            ? '0 0 40px 20px rgba(59, 130, 246, 0.5)'
+            : '0 0 20px 10px rgba(96, 165, 250, 0.3)',
+        }"
+      ></div>
+
+      <NuxtPage />
+    </template>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
+import IntroAnimation from "~/components/IntroAnimation.vue";
+import { useIntroAnimation } from "~/composables/useIntroAnimation";
+
+const {
+  phase: introPhase,
+  replayKey: introReplayKey,
+  isManualReplay,
+  isHomePage,
+  showMainApp,
+  completeIntro,
+  startOutroHold,
+  skipIntro,
+} = useIntroAnimation();
 
 const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref<HTMLElement | null>(null);
@@ -93,4 +123,3 @@ onUnmounted(() => {
   }
 });
 </script>
-
