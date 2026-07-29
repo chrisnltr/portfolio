@@ -1,7 +1,8 @@
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
 
-  modules: ["@nuxtjs/tailwindcss", "@vercel/analytics/nuxt"],
+  // Vercel Analytics is loaded only after statistics consent (see useConsent).
+  modules: ["@nuxtjs/tailwindcss"],
 
   devtools: { enabled: false },
 
