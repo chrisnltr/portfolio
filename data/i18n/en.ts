@@ -151,6 +151,47 @@ export const en: AppTranslations = {
   footer: {
     datenschutz: "Datenschutz",
     privacy: "Privacy Policy",
+    impressum: "Impressum",
+    imprint: "Legal notice",
+    consentSettings: "Privacy settings",
+  },
+  consent: {
+    banner: {
+      regionLabel: "Cookie and privacy notice",
+      title: "Your privacy matters to us",
+      description:
+        "We use technically necessary technologies so this website works reliably. Optional services for statistics, external content or marketing are activated only with your consent. You can change your choice at any time.",
+      acceptAll: "Accept all",
+      rejectAll: "Reject all",
+      settings: "Settings",
+      privacy: "Privacy policy",
+      imprint: "Legal notice",
+    },
+    settings: {
+      title: "Privacy settings",
+      description:
+        "Choose which optional categories you allow. Necessary technologies are always active.",
+      close: "Close settings",
+      necessaryTitle: "Necessary",
+      necessaryDescription:
+        "Technically required functions for operating the website, security and your preferences. This category cannot be disabled.",
+      alwaysOn: "Always on",
+      statisticsTitle: "Statistics",
+      statisticsDescription:
+        "Helps understand how the website is used. Disabled by default and only active with your consent.",
+      provider: "Provider",
+      storage: "Storage / cookies",
+      retention: "Retention",
+      privacyHint: "Provider privacy notice",
+      privacy: "Privacy policy",
+      imprint: "Legal notice",
+      save: "Save selection",
+      acceptAll: "Accept all",
+      rejectAll: "Reject all",
+      serviceLocale: "Language preference",
+      serviceConsent: "Consent storage",
+      serviceAnalytics: "Vercel Web Analytics",
+    },
   },
 };
 

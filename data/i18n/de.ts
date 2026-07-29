@@ -153,6 +153,47 @@ export const de: AppTranslations = {
   footer: {
     datenschutz: "Datenschutz",
     privacy: "Privacy Policy",
+    impressum: "Impressum",
+    imprint: "Legal notice",
+    consentSettings: "Datenschutzeinstellungen",
+  },
+  consent: {
+    banner: {
+      regionLabel: "Cookie- und Privatsphäre-Hinweis",
+      title: "Ihre Privatsphäre ist uns wichtig",
+      description:
+        "Wir verwenden technisch notwendige Technologien, damit diese Website zuverlässig funktioniert. Optionale Dienste für Statistik, externe Inhalte oder Marketing werden nur mit Ihrer Zustimmung aktiviert. Sie können Ihre Auswahl jederzeit ändern.",
+      acceptAll: "Alle akzeptieren",
+      rejectAll: "Alle ablehnen",
+      settings: "Einstellungen",
+      privacy: "Datenschutzerklärung",
+      imprint: "Impressum",
+    },
+    settings: {
+      title: "Datenschutzeinstellungen",
+      description:
+        "Entscheiden Sie, welche optionalen Kategorien Sie zulassen. Notwendige Technologien sind immer aktiv.",
+      close: "Einstellungen schließen",
+      necessaryTitle: "Notwendig",
+      necessaryDescription:
+        "Technisch erforderliche Funktionen für den Betrieb der Website, Sicherheit und Ihre Einstellungen. Diese Kategorie kann nicht deaktiviert werden.",
+      alwaysOn: "Immer aktiv",
+      statisticsTitle: "Statistik",
+      statisticsDescription:
+        "Hilft zu verstehen, wie die Website genutzt wird. Standardmäßig deaktiviert und nur mit Ihrer Zustimmung aktiv.",
+      provider: "Anbieter",
+      storage: "Speicher / Cookies",
+      retention: "Speicherdauer",
+      privacyHint: "Datenschutzhinweis des Anbieters",
+      privacy: "Datenschutzerklärung",
+      imprint: "Impressum",
+      save: "Auswahl speichern",
+      acceptAll: "Alle akzeptieren",
+      rejectAll: "Alle ablehnen",
+      serviceLocale: "Spracheinstellung",
+      serviceConsent: "Einwilligungsspeicher",
+      serviceAnalytics: "Vercel Web Analytics",
+    },
   },
 };
 

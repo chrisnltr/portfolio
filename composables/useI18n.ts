@@ -40,10 +40,17 @@ export const useI18n = () => {
     if (newLocale === locale.value) return;
 
     const path = route.path;
-    const isLegalPage = path.includes("/datenschutz") || path.includes("/privacy");
-    if (isLegalPage) {
-      await router.push(newLocale === "de" ? "/de/datenschutz" : "/en/privacy");
-      return;
+    const legalMap: Record<string, { de: string; en: string }> = {
+      datenschutz: { de: "/de/datenschutz", en: "/en/privacy" },
+      privacy: { de: "/de/datenschutz", en: "/en/privacy" },
+      impressum: { de: "/de/impressum", en: "/en/imprint" },
+      imprint: { de: "/de/impressum", en: "/en/imprint" },
+    };
+    for (const [key, routes] of Object.entries(legalMap)) {
+      if (path.includes(`/${key}`)) {
+        await router.push(routes[newLocale]);
+        return;
+      }
     }
 
     await router.push({

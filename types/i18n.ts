@@ -137,6 +137,48 @@ export type SocialTranslations = {
 export type FooterSection = {
   datenschutz: string;
   privacy: string;
+  impressum: string;
+  imprint: string;
+  consentSettings: string;
+};
+
+export type ConsentBannerTranslations = {
+  regionLabel: string;
+  title: string;
+  description: string;
+  acceptAll: string;
+  rejectAll: string;
+  settings: string;
+  privacy: string;
+  imprint: string;
+};
+
+export type ConsentSettingsTranslations = {
+  title: string;
+  description: string;
+  close: string;
+  necessaryTitle: string;
+  necessaryDescription: string;
+  alwaysOn: string;
+  statisticsTitle: string;
+  statisticsDescription: string;
+  provider: string;
+  storage: string;
+  retention: string;
+  privacyHint: string;
+  privacy: string;
+  imprint: string;
+  save: string;
+  acceptAll: string;
+  rejectAll: string;
+  serviceLocale: string;
+  serviceConsent: string;
+  serviceAnalytics: string;
+};
+
+export type ConsentTranslations = {
+  banner: ConsentBannerTranslations;
+  settings: ConsentSettingsTranslations;
 };
 
 export type AppTranslations = {
@@ -151,5 +193,6 @@ export type AppTranslations = {
   seo: SeoSection;
   social: SocialTranslations;
   footer: FooterSection;
+  consent: ConsentTranslations;
 };
 
