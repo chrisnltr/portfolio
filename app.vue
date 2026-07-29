@@ -29,11 +29,13 @@
     ></div>
 
     <NuxtPage />
+    <ConsentRoot />
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted } from "vue";
+import ConsentRoot from "~/components/consent/ConsentRoot.vue";
 
 const mousePosition = ref({ x: 0, y: 0 });
 const cursorFollower = ref<HTMLElement | null>(null);
