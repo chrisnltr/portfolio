@@ -22,6 +22,8 @@ export default defineEventHandler((event) => {
   const legalUrls = [
     { path: "/de/datenschutz", changefreq: "monthly" as const },
     { path: "/en/privacy", changefreq: "monthly" as const },
+    { path: "/de/impressum", changefreq: "monthly" as const },
+    { path: "/en/imprint", changefreq: "monthly" as const },
   ]
     .map(
       (entry) =>
