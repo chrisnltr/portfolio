@@ -1,20 +1,20 @@
 import type { H3Event } from "h3";
+import { Resend } from "resend";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME = 200;
 const MAX_EMAIL = 254;
-const MAX_TOPIC = 200;
+const MAX_SUBJECT = 200;
 const MAX_MESSAGE = 5000;
-const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
+const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 
-// In-memory rate limit (per-instance; TODO: use Redis or similar for multi-instance).
 const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
 function getClientIp(event: H3Event): string {
   const xff = getHeader(event, "x-forwarded-for");
   if (typeof xff === "string") {
-    return xff.split(",")[0].trim();
+    return xff.split(",")[0]?.trim() || "unknown";
   }
   return getRequestIP(event) || "unknown";
 }
@@ -40,13 +40,95 @@ function recordRateLimit(ip: string): void {
   entry.count += 1;
 }
 
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 interface ContactBody {
   name?: string;
   email?: string;
+  subject?: string;
   topic?: string;
   message?: string;
+  turnstileToken?: string;
   honeypot?: string;
   locale?: string;
+}
+
+interface TurnstileVerifyResponse {
+  success: boolean;
+  "error-codes"?: string[];
+}
+
+async function verifyTurnstileToken(
+  token: string,
+  secretKey: string,
+  remoteIp: string,
+): Promise<boolean> {
+  const body = new URLSearchParams();
+  body.set("secret", secretKey);
+  body.set("response", token);
+  if (remoteIp && remoteIp !== "unknown") {
+    body.set("remoteip", remoteIp);
+  }
+
+  const result = await $fetch<TurnstileVerifyResponse>(
+    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+    {
+      method: "POST",
+      body,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    },
+  );
+
+  return result?.success === true;
+}
+
+function buildEmailContent(input: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  locale: string;
+}): { text: string; html: string } {
+  const safeName = escapeHtml(input.name);
+  const safeEmail = escapeHtml(input.email);
+  const safeSubject = escapeHtml(input.subject || "(none)");
+  const safeLocale = escapeHtml(input.locale);
+  const safeMessage = escapeHtml(input.message).replace(/\n/g, "<br />");
+
+  const text = [
+    `Name: ${input.name}`,
+    `Email: ${input.email}`,
+    `Subject: ${input.subject || "(none)"}`,
+    `Locale: ${input.locale}`,
+    "",
+    "Message:",
+    input.message,
+  ].join("\n");
+
+  const html = `
+<!DOCTYPE html>
+<html>
+  <body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; color: #111;">
+    <h2 style="margin: 0 0 16px;">Portfolio contact form</h2>
+    <p style="margin: 0 0 8px;"><strong>Name:</strong> ${safeName}</p>
+    <p style="margin: 0 0 8px;"><strong>Email:</strong> ${safeEmail}</p>
+    <p style="margin: 0 0 8px;"><strong>Subject:</strong> ${safeSubject}</p>
+    <p style="margin: 0 0 16px;"><strong>Locale:</strong> ${safeLocale}</p>
+    <p style="margin: 0 0 8px;"><strong>Message:</strong></p>
+    <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
+  </body>
+</html>`.trim();
+
+  return { text, html };
 }
 
 export default defineEventHandler(async (event) => {
@@ -68,19 +150,31 @@ export default defineEventHandler(async (event) => {
   } catch {
     throw createError({
       statusCode: 400,
-      statusMessage: "Bad Request",
+      statusMessage: "Invalid request body",
     });
   }
 
-  // Honeypot: if filled, treat as spam and return success to not leak behavior.
+  // Honeypot: pretend success so bots do not learn the trap.
   if (body.honeypot && String(body.honeypot).trim() !== "") {
     return { ok: true };
   }
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
-  const topic = typeof body.topic === "string" ? body.topic.trim() : "";
+  const rawSubject =
+    typeof body.subject === "string"
+      ? body.subject
+      : typeof body.topic === "string"
+        ? body.topic
+        : "";
+  const subject = rawSubject.trim();
   const message = typeof body.message === "string" ? body.message.trim() : "";
+  const turnstileToken =
+    typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
+  const locale =
+    typeof body.locale === "string" && body.locale.trim()
+      ? body.locale.trim()
+      : "de";
 
   if (!name || name.length > MAX_NAME) {
     throw createError({
@@ -94,10 +188,10 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Invalid email",
     });
   }
-  if (topic.length > MAX_TOPIC) {
+  if (subject.length > MAX_SUBJECT) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Invalid topic",
+      statusMessage: "Invalid subject",
     });
   }
   if (!message || message.length > MAX_MESSAGE) {
@@ -107,79 +201,97 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const config = useRuntimeConfig();
-  const toEmail = config.contactToEmail;
-  const fromEmail = config.contactFromEmail;
-  const resendApiKey = config.resendApiKey;
-  const formspreeEndpoint = config.formspreeEndpoint;
+  const config = useRuntimeConfig(event);
+  const turnstileSecretKey = String(config.turnstileSecretKey || "");
+  const toEmail = String(config.contactToEmail || "");
+  const fromEmail = String(config.contactFromEmail || "");
+  const resendApiKey = String(config.resendApiKey || "");
 
-  const locale = typeof body.locale === "string" ? body.locale : "en";
-  const subject = `[Portfolio Contact] ${name} – ${topic || "No topic"}`;
-  const text = [
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Topic: ${topic || "(none)"}`,
-    `Locale: ${locale}`,
-    "",
-    "Message:",
+  if (!turnstileSecretKey) {
+    console.error("Contact form misconfigured: TURNSTILE_SECRET_KEY is missing");
+    throw createError({
+      statusCode: 503,
+      statusMessage: "Contact form not configured",
+    });
+  }
+
+  if (!turnstileToken) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: "Turnstile verification required",
+    });
+  }
+
+  let turnstileOk = false;
+  try {
+    turnstileOk = await verifyTurnstileToken(
+      turnstileToken,
+      turnstileSecretKey,
+      ip,
+    );
+  } catch (err) {
+    console.error("Turnstile verification request failed:", err);
+    throw createError({
+      statusCode: 502,
+      statusMessage: "Turnstile verification failed",
+    });
+  }
+
+  if (!turnstileOk) {
+    throw createError({
+      statusCode: 403,
+      statusMessage: "Turnstile verification failed",
+    });
+  }
+
+  if (!resendApiKey || !toEmail || !fromEmail) {
+    console.error(
+      "Contact form misconfigured: RESEND_API_KEY, CONTACT_TO_EMAIL or CONTACT_FROM_EMAIL missing",
+    );
+    throw createError({
+      statusCode: 503,
+      statusMessage: "Contact form not configured",
+    });
+  }
+
+  const emailSubject = `Portfolio-Anfrage: ${subject || "Kein Thema"}`;
+  const { text, html } = buildEmailContent({
+    name,
+    email,
+    subject,
     message,
-  ].join("\n");
-
-  // Option A: Resend
-  if (resendApiKey && toEmail && fromEmail) {
-    try {
-      const res = await $fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendApiKey}`,
-          "Content-Type": "application/json",
-        },
-        body: {
-          from: fromEmail,
-          to: toEmail,
-          subject,
-          text,
-        },
-      });
-      recordRateLimit(ip);
-      return { ok: true, id: (res as { id?: string })?.id };
-    } catch (err) {
-      console.error("Resend error:", err);
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Failed to send email",
-      });
-    }
-  }
-
-  // Option B: Formspree fallback
-  if (formspreeEndpoint) {
-    try {
-      await $fetch(formspreeEndpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: {
-          name,
-          email,
-          subject,
-          message: text,
-          _locale: locale,
-        },
-      });
-      recordRateLimit(ip);
-      return { ok: true };
-    } catch (err) {
-      console.error("Formspree error:", err);
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Failed to send email",
-      });
-    }
-  }
-
-  // No provider configured: return 503 so frontend can show a clear message.
-  throw createError({
-    statusCode: 503,
-    statusMessage: "Contact form not configured",
+    locale,
   });
+
+  try {
+    const resend = new Resend(resendApiKey);
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      to: toEmail,
+      replyTo: email,
+      subject: emailSubject,
+      text,
+      html,
+    });
+
+    if (error) {
+      console.error("Resend API error:", error);
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Failed to send email",
+      });
+    }
+
+    recordRateLimit(ip);
+    return { ok: true };
+  } catch (err) {
+    if (err && typeof err === "object" && "statusCode" in err) {
+      throw err;
+    }
+    console.error("Resend send failed:", err);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Failed to send email",
+    });
+  }
 });
