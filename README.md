@@ -12,18 +12,24 @@ A minimal, bilingual (DE/EN) Nuxt 3 portfolio with locale-based routing, SEO, an
 
 ## Environment Variables
 
-Configure these in `.env` (or in your host’s dashboard, e.g. Vercel).
+Configure these in `.env.local` (or in your host’s dashboard, e.g. Vercel). See also **`.env.example`** and **`CONTACT_FORM_SETUP.md`**.
 
 | Variable | Description |
 |----------|-------------|
-| `NUXT_PUBLIC_SITE_URL` | Full public URL of the site (e.g. `https://chrisnoltemeier.dev`). Used for sitemap, `robots.txt`, and canonical/OG URLs when the request host is not reliable (e.g. serverless). Optional; falls back to request host. |
+| `NUXT_PUBLIC_SITE_URL` | Full public URL of the site (e.g. `https://chrisnoltemeier.de`). Used for sitemap, `robots.txt`, and canonical/OG URLs when the request host is not reliable (e.g. serverless). Optional; falls back to request host. |
 
-**Contact form:**
+**Contact form (Resend + Cloudflare Turnstile):**
 
-- `RESEND_API_KEY` — API key for [Resend](https://resend.com) (or use another provider supported by the API route).
-- `CONTACT_TO_EMAIL` — Address where contact form submissions are sent.
-- `CONTACT_FROM_EMAIL` — Sender address used by the mail provider.
-- **Optional:** `FORMSPREE_ENDPOINT` — If set, form submissions are proxied to Formspree instead of sending mail directly (useful if no mail provider is configured).
+| Variable | Description |
+|----------|-------------|
+| `RESEND_API_KEY` | [Resend](https://resend.com) API key (server-only). |
+| `CONTACT_TO_EMAIL` | Inbox for submissions (e.g. `chris.noltemeier@gmail.com`). |
+| `CONTACT_FROM_EMAIL` | Verified Resend sender address. |
+| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server-only). |
+| `NUXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public). |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional alias for the site key. |
+
+Full setup steps: **`CONTACT_FORM_SETUP.md`**.
 
 ## Content & i18n
 
@@ -49,8 +55,8 @@ New projects or experience entries are added in the corresponding data files and
 ## Deployment (Vercel)
 
 - Connect the repo to Vercel. Use the **Nuxt** preset (build command and output are set automatically). Otherwise: **Build Command** `npm run build` and the output directory from the Nuxt preset.
-- Set **Environment Variables** in the Vercel project: at least `NUXT_PUBLIC_SITE_URL` for production; add `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, and `CONTACT_FROM_EMAIL` (or `FORMSPREE_ENDPOINT`) for the contact form. Names must match **Environment Variables** above.
-- **Production:** Set `NUXT_PUBLIC_SITE_URL` to your canonical URL (e.g. `https://chrisnoltemeier.dev`) so sitemap, `robots.txt`, and OG URLs are correct.
+- Set **Environment Variables** in the Vercel project: at least `NUXT_PUBLIC_SITE_URL` for production; add the contact-form variables listed above (see **`CONTACT_FORM_SETUP.md`**). Names must match **Environment Variables** above.
+- **Production:** Set `NUXT_PUBLIC_SITE_URL` to your canonical URL (e.g. `https://chrisnoltemeier.de`) so sitemap, `robots.txt`, and OG URLs are correct.
 - **Preview deployments:** If `NUXT_PUBLIC_SITE_URL` is not set, the app uses the preview URL as origin for meta and sitemap.
 
 ## SEO & technical notes
