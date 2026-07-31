@@ -112,10 +112,15 @@ export type ContactSection = {
   submittingLabel: string;
   successMessage: string;
   errorMessage: string;
+  notConfiguredMessage: string;
+  rateLimitedMessage: string;
+  turnstileFailedMessage: string;
+  turnstileUnavailable: string;
   validationNameRequired: string;
   validationEmailRequired: string;
   validationEmailInvalid: string;
   validationMessageRequired: string;
+  validationTurnstileRequired: string;
   spamProtectionLabel: string;
 };
 

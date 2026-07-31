@@ -128,10 +128,19 @@ export const en: AppTranslations = {
     successMessage: "Thanks for your message! I’ll get back to you shortly.",
     errorMessage:
       "Something went wrong while sending your message. Please try again or reach out via LinkedIn or email.",
+    notConfiguredMessage:
+      "The contact form is not fully configured right now. Please reach out via LinkedIn or email.",
+    rateLimitedMessage:
+      "Too many requests. Please wait a moment and try again.",
+    turnstileFailedMessage:
+      "Spam verification failed. Please complete the check again and retry.",
+    turnstileUnavailable:
+      "Spam protection is not configured. The form cannot be submitted right now.",
     validationNameRequired: "Please enter your name.",
     validationEmailRequired: "Please enter your email address.",
     validationEmailInvalid: "Please enter a valid email address.",
     validationMessageRequired: "Please enter a short message.",
+    validationTurnstileRequired: "Please complete the spam protection check.",
     spamProtectionLabel: "Leave this field empty (spam protection).",
   },
   seo: {

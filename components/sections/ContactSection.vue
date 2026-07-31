@@ -124,6 +124,35 @@
             </p>
           </div>
 
+          <ClientOnly>
+            <div
+              v-if="turnstileSiteKey"
+              class="flex flex-col items-center gap-2"
+            >
+              <ContactTurnstileWidget
+                ref="turnstileRef"
+                v-model="turnstileToken"
+                :site-key="turnstileSiteKey"
+                theme="dark"
+              />
+              <p
+                v-if="errors.turnstile"
+                id="contact-turnstile-error"
+                class="text-sm text-red-400"
+                role="alert"
+              >
+                {{ errors.turnstile }}
+              </p>
+            </div>
+            <p
+              v-else
+              class="text-sm text-amber-400 text-center"
+              role="alert"
+            >
+              {{ messages.contact.turnstileUnavailable }}
+            </p>
+          </ClientOnly>
+
           <div
             class="rounded-lg p-4 min-h-[3rem] flex items-center justify-center"
             role="status"
@@ -133,18 +162,18 @@
             <p v-if="status === 'success'" class="text-emerald-400 text-sm md:text-base">
               {{ messages.contact.successMessage }}
             </p>
-            <p v-else-if="status === 'error'" class="text-red-400 text-sm md:text-base">
-              {{ messages.contact.errorMessage }}
+            <p v-else-if="status === 'error'" class="text-red-400 text-sm md:text-base" role="alert">
+              {{ statusMessage || messages.contact.errorMessage }}
             </p>
-            <p v-else-if="status === 'not-configured'" class="text-amber-400 text-sm md:text-base">
-              {{ messages.contact.errorMessage }}
+            <p v-else-if="status === 'not-configured'" class="text-amber-400 text-sm md:text-base" role="alert">
+              {{ messages.contact.notConfiguredMessage }}
             </p>
           </div>
 
           <button
             type="submit"
             class="btn-primary w-full text-base md:text-lg px-6 py-3 disabled:opacity-60 disabled:cursor-not-allowed focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-background-primary"
-            :disabled="loading"
+            :disabled="loading || !turnstileSiteKey"
           >
             <span v-if="loading">{{ messages.contact.submittingLabel }}</span>
             <span v-else>{{ messages.contact.submitLabel }}</span>
@@ -161,6 +190,10 @@ import { useI18n } from "~/composables/useI18n";
 
 const { locale, messages: rawMessages } = useI18n();
 const messages = computed(() => rawMessages.value);
+const runtimeConfig = useRuntimeConfig();
+const turnstileSiteKey = computed(
+  () => String(runtimeConfig.public.turnstileSiteKey || "").trim(),
+);
 
 const honeypotId = "contact-website-url";
 
@@ -172,21 +205,36 @@ const form = reactive({
   honeypot: "",
 });
 
-const errors = reactive<{ name?: string; email?: string; message?: string }>({
+const errors = reactive<{
+  name?: string;
+  email?: string;
+  message?: string;
+  turnstile?: string;
+}>({
   name: undefined,
   email: undefined,
   message: undefined,
+  turnstile: undefined,
 });
 
 const loading = ref(false);
 const status = ref<"idle" | "success" | "error" | "not-configured">("idle");
+const statusMessage = ref("");
+const turnstileToken = ref("");
+const turnstileRef = ref<{ reset: () => void } | null>(null);
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function resetTurnstile() {
+  turnstileToken.value = "";
+  turnstileRef.value?.reset();
+}
 
 function validate(): boolean {
   errors.name = undefined;
   errors.email = undefined;
   errors.message = undefined;
+  errors.turnstile = undefined;
 
   const name = form.name.trim();
   if (!name) {
@@ -202,43 +250,67 @@ function validate(): boolean {
   if (!message) {
     errors.message = messages.value.contact.validationMessageRequired;
   }
+  if (!turnstileToken.value) {
+    errors.turnstile = messages.value.contact.validationTurnstileRequired;
+  }
 
-  return !errors.name && !errors.email && !errors.message;
+  return !errors.name && !errors.email && !errors.message && !errors.turnstile;
+}
+
+function mapErrorStatus(statusCode?: number): "error" | "not-configured" {
+  if (statusCode === 503) return "not-configured";
+  return "error";
+}
+
+function messageForStatusCode(statusCode?: number): string {
+  if (statusCode === 429) return messages.value.contact.rateLimitedMessage;
+  if (statusCode === 403) return messages.value.contact.turnstileFailedMessage;
+  return messages.value.contact.errorMessage;
 }
 
 async function submit() {
+  if (loading.value) return;
+
   status.value = "idle";
+  statusMessage.value = "";
   if (!validate()) return;
 
   loading.value = true;
   try {
-    const { error } = await useFetch("/api/contact", {
+    await $fetch("/api/contact", {
       method: "POST",
       body: {
         name: form.name.trim(),
         email: form.email.trim(),
-        topic: form.topic.trim() || undefined,
+        subject: form.topic.trim(),
         message: form.message.trim(),
+        turnstileToken: turnstileToken.value,
         honeypot: form.honeypot,
         locale: locale.value,
       },
     });
 
-    if (error.value) {
-      const statusCode = error.value?.statusCode ?? error.value?.data?.statusCode;
-      status.value = statusCode === 503 ? "not-configured" : "error";
-      return;
-    }
     status.value = "success";
     form.name = "";
     form.email = "";
     form.topic = "";
     form.message = "";
     form.honeypot = "";
-  } catch {
-    status.value = "error";
+  } catch (err: unknown) {
+    const fetchError = err as {
+      statusCode?: number;
+      status?: number;
+      data?: { statusCode?: number };
+    };
+    const statusCode =
+      fetchError?.statusCode ??
+      fetchError?.status ??
+      fetchError?.data?.statusCode;
+    status.value = mapErrorStatus(statusCode);
+    statusMessage.value = messageForStatusCode(statusCode);
   } finally {
     loading.value = false;
+    resetTurnstile();
   }
 }
 </script>

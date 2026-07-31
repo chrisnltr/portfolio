@@ -129,10 +129,19 @@ export const de: AppTranslations = {
       "Danke für deine Nachricht! Ich melde mich so schnell wie möglich.",
     errorMessage:
       "Beim Senden ist etwas schiefgelaufen. Bitte versuche es erneut oder nutze LinkedIn oder E-Mail.",
+    notConfiguredMessage:
+      "Das Kontaktformular ist derzeit nicht vollständig konfiguriert. Bitte nutze LinkedIn oder E-Mail.",
+    rateLimitedMessage:
+      "Zu viele Anfragen. Bitte warte kurz und versuche es erneut.",
+    turnstileFailedMessage:
+      "Die Spam-Prüfung ist fehlgeschlagen. Bitte bestätige den Schutz erneut und versuche es noch einmal.",
+    turnstileUnavailable:
+      "Spam-Schutz ist nicht konfiguriert. Das Formular kann derzeit nicht gesendet werden.",
     validationNameRequired: "Bitte gib deinen Namen ein.",
     validationEmailRequired: "Bitte gib deine E-Mail-Adresse ein.",
     validationEmailInvalid: "Bitte gib eine gültige E-Mail-Adresse ein.",
     validationMessageRequired: "Bitte schreibe kurz, worum es geht.",
+    validationTurnstileRequired: "Bitte bestätige den Spam-Schutz.",
     spamProtectionLabel: "Dieses Feld leer lassen (Spam-Schutz).",
   },
   seo: {
