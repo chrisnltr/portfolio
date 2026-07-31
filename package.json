@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
+    "resend": "^6.18.1",
     "vue": "^3.4.0",
     "vue-bundle-renderer": "^2.1.2"
   },
