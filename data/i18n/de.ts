@@ -121,7 +121,7 @@ export const de: AppTranslations = {
       "Ich bin offen für Festanstellungen, Freelancing und Projekte rund um Automatisierung, Integrationen und Developer-Tooling.",
     nameLabel: "Name",
     emailLabel: "E-Mail",
-    phoneLabel: "Telefonnummer (optional)",
+    phoneLabel: "Telefonnummer",
     messageLabel: "Nachricht",
     submitLabel: "Nachricht senden",
     submittingLabel: "Wird gesendet …",
