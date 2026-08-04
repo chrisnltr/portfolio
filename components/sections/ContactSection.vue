@@ -85,17 +85,17 @@
           </div>
 
           <div>
-            <label for="contact-topic" class="block text-sm font-medium text-text-primary mb-1">
-              {{ messages.contact.topicLabel }}
+            <label for="contact-phone" class="block text-sm font-medium text-text-primary mb-1">
+              {{ messages.contact.phoneLabel }}
             </label>
             <input
-              id="contact-topic"
-              v-model="form.topic"
-              type="text"
-              maxlength="200"
-              autocomplete="off"
+              id="contact-phone"
+              v-model="form.phone"
+              type="tel"
+              maxlength="40"
+              autocomplete="tel"
               class="w-full px-4 py-3 rounded-lg bg-background-tertiary border border-border-primary text-text-primary placeholder-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-transparent"
-              :placeholder="messages.contact.topicLabel"
+              :placeholder="messages.contact.phoneLabel"
             />
           </div>
 
@@ -200,7 +200,7 @@ const honeypotId = "contact-website-url";
 const form = reactive({
   name: "",
   email: "",
-  topic: "",
+  phone: "",
   message: "",
   honeypot: "",
 });
@@ -282,7 +282,7 @@ async function submit() {
       body: {
         name: form.name.trim(),
         email: form.email.trim(),
-        subject: form.topic.trim(),
+        phone: form.phone.trim(),
         message: form.message.trim(),
         turnstileToken: turnstileToken.value,
         honeypot: form.honeypot,
@@ -293,7 +293,7 @@ async function submit() {
     status.value = "success";
     form.name = "";
     form.email = "";
-    form.topic = "";
+    form.phone = "";
     form.message = "";
     form.honeypot = "";
   } catch (err: unknown) {

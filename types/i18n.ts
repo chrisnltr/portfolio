@@ -106,7 +106,7 @@ export type ContactSection = {
   intro: string;
   nameLabel: string;
   emailLabel: string;
-  topicLabel: string;
+  phoneLabel: string;
   messageLabel: string;
   submitLabel: string;
   submittingLabel: string;

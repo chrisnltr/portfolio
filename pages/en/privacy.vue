@@ -107,7 +107,7 @@
             <section>
               <h2 class="text-xl font-semibold text-text-primary mb-2">5. Contact form</h2>
               <p class="text-text-secondary leading-relaxed mb-2">
-                If you use the contact form, the data you enter (name, email, optional subject, message,
+                If you use the contact form, the data you enter (name, email, optional phone number, message,
                 plus technical spam protection / rate-limiting data on the server) is processed to respond
                 to your request.
               </p>

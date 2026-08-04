@@ -4,7 +4,7 @@ import { Resend } from "resend";
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MAX_NAME = 200;
 const MAX_EMAIL = 254;
-const MAX_SUBJECT = 200;
+const MAX_PHONE = 40;
 const MAX_MESSAGE = 5000;
 const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
@@ -52,8 +52,7 @@ function escapeHtml(value: string): string {
 interface ContactBody {
   name?: string;
   email?: string;
-  subject?: string;
-  topic?: string;
+  phone?: string;
   message?: string;
   turnstileToken?: string;
   honeypot?: string;
@@ -94,20 +93,20 @@ async function verifyTurnstileToken(
 function buildEmailContent(input: {
   name: string;
   email: string;
-  subject: string;
+  phone: string;
   message: string;
   locale: string;
 }): { text: string; html: string } {
   const safeName = escapeHtml(input.name);
   const safeEmail = escapeHtml(input.email);
-  const safeSubject = escapeHtml(input.subject || "(none)");
+  const safePhone = escapeHtml(input.phone || "(none)");
   const safeLocale = escapeHtml(input.locale);
   const safeMessage = escapeHtml(input.message).replace(/\n/g, "<br />");
 
   const text = [
     `Name: ${input.name}`,
     `Email: ${input.email}`,
-    `Subject: ${input.subject || "(none)"}`,
+    `Phone: ${input.phone || "(none)"}`,
     `Locale: ${input.locale}`,
     "",
     "Message:",
@@ -121,7 +120,7 @@ function buildEmailContent(input: {
     <h2 style="margin: 0 0 16px;">Portfolio contact form</h2>
     <p style="margin: 0 0 8px;"><strong>Name:</strong> ${safeName}</p>
     <p style="margin: 0 0 8px;"><strong>Email:</strong> ${safeEmail}</p>
-    <p style="margin: 0 0 8px;"><strong>Subject:</strong> ${safeSubject}</p>
+    <p style="margin: 0 0 8px;"><strong>Phone:</strong> ${safePhone}</p>
     <p style="margin: 0 0 16px;"><strong>Locale:</strong> ${safeLocale}</p>
     <p style="margin: 0 0 8px;"><strong>Message:</strong></p>
     <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
@@ -161,13 +160,7 @@ export default defineEventHandler(async (event) => {
 
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
-  const rawSubject =
-    typeof body.subject === "string"
-      ? body.subject
-      : typeof body.topic === "string"
-        ? body.topic
-        : "";
-  const subject = rawSubject.trim();
+  const phone = typeof body.phone === "string" ? body.phone.trim() : "";
   const message = typeof body.message === "string" ? body.message.trim() : "";
   const turnstileToken =
     typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
@@ -188,10 +181,10 @@ export default defineEventHandler(async (event) => {
       statusMessage: "Invalid email",
     });
   }
-  if (subject.length > MAX_SUBJECT) {
+  if (phone.length > MAX_PHONE) {
     throw createError({
       statusCode: 400,
-      statusMessage: "Invalid subject",
+      statusMessage: "Invalid phone",
     });
   }
   if (!message || message.length > MAX_MESSAGE) {
@@ -254,11 +247,11 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const emailSubject = `Portfolio-Anfrage: ${subject || "Kein Thema"}`;
+  const emailSubject = `Portfolio-Anfrage von ${name}`;
   const { text, html } = buildEmailContent({
     name,
     email,
-    subject,
+    phone,
     message,
     locale,
   });

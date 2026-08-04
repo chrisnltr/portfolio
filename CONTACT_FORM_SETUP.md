@@ -52,7 +52,7 @@ Redeploy the project (new deployment). Existing deployments do **not** pick up e
 4. Set `CONTACT_FROM_EMAIL` to an address on that verified domain (or the test sender).
 5. Set `CONTACT_TO_EMAIL` to `chris.noltemeier@gmail.com`.
 
-Mails use subject `Portfolio-Anfrage: [Thema]` and set the visitor’s email as **Reply-To**.
+Mails use subject `Portfolio-Anfrage von [Name]` and set the visitor’s email as **Reply-To**. Optional phone is included in the body when provided.
 
 ---
 
@@ -80,7 +80,7 @@ npm run dev
 
 1. Open `/de` or `/en` and scroll to **Kontakt / Contact**.
 2. Confirm the dark Turnstile widget appears under the message field.
-3. Fill Name, Email, optional Topic, Message; complete Turnstile; submit.
+3. Fill Name, Email, optional Phone, Message; complete Turnstile; submit.
 4. Button should show **Wird gesendet … / Sending…** and disable while pending.
 5. On success: green success message, fields cleared, Turnstile reset.
 6. Check inbox at `chris.noltemeier@gmail.com` (and spam folder).

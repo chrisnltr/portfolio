@@ -109,7 +109,7 @@
               <h2 class="text-xl font-semibold text-text-primary mb-2">5. Kontaktformular</h2>
               <p class="text-text-secondary leading-relaxed mb-2">
                 Wenn Sie das Kontaktformular nutzen, werden die von Ihnen eingegebenen Daten
-                (Name, E-Mail-Adresse, optional Betreff, Nachricht sowie technische Angaben zur
+                (Name, E-Mail-Adresse, optional Telefonnummer, Nachricht sowie technische Angaben zur
                 Spam-Abwehr/Rate-Limiting auf dem Server) verarbeitet, um Ihre Anfrage zu beantworten.
               </p>
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
