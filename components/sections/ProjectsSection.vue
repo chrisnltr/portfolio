@@ -5,7 +5,7 @@
   >
     <div class="container mx-auto px-4">
       <div
-        class="grid md:grid-cols-[2fr_3fr] gap-6 md:gap-8 max-w-7xl mx-auto min-h-[560px] items-start"
+        class="grid md:grid-cols-[2fr_3fr] gap-6 md:gap-8 max-w-7xl mx-auto md:min-h-[560px] items-start"
       >
         <div class="flex flex-col h-full justify-start mt-4 md:mt-8">
           <h2
@@ -15,7 +15,7 @@
           </h2>
 
           <div
-            class="space-y-3 pr-2 md:pr-4 flex-1 flex flex-col justify-start"
+            class="space-y-3 pr-0 md:pr-4 flex-1 flex flex-col justify-start"
           >
             <article
               v-for="project in localizedProjects"
@@ -73,7 +73,8 @@
         </div>
 
         <div
-          class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-4 md:mt-8 max-h-[calc(100vh-6rem)] overflow-y-auto"
+          ref="detailPanel"
+          class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-2 md:mt-8 md:max-h-[calc(100vh-6rem)] md:overflow-y-auto"
         >
           <div v-if="currentProject" class="flex flex-col h-full">
             <div
@@ -145,14 +146,14 @@
               {{ currentProject.translations.shortDescription }}
             </p>
 
-            <div class="mb-4 flex-1 overflow-y-auto">
+            <div class="mb-4 flex-1 md:overflow-y-auto">
               <h4
                 class="text-sm md:text-base font-semibold text-text-primary mb-2"
               >
                 {{ currentProject.translations.featuresTitle }}
               </h4>
               <ul
-                class="text-text-secondary space-y-1.5 text-xs md:text-sm max-h-40 overflow-y-auto pr-1"
+                class="text-text-secondary space-y-1.5 text-xs md:text-sm md:max-h-40 md:overflow-y-auto pr-1"
               >
                 <li
                   v-for="feature in currentProject.translations.features"
@@ -227,7 +228,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, nextTick, ref } from "vue";
 import { useI18n } from "~/composables/useI18n";
 import { projects } from "~/data/projects";
 import ProjectCaseStudyModal from "~/components/projects/ProjectCaseStudyModal.vue";
@@ -251,6 +252,7 @@ const selectedSlug = ref<string | null>(
   localizedProjects.value.length > 0 ? localizedProjects.value[0].slug : null,
 );
 const modalOpen = ref(false);
+const detailPanel = ref<HTMLElement | null>(null);
 
 const currentProject = computed(() =>
   localizedProjects.value.find((p) => p.slug === selectedSlug.value) ??
@@ -264,9 +266,17 @@ const showCaseStudyButton = computed(
   () => currentProject.value?.slug !== "accident-report-app",
 );
 
-const selectProject = (slug: string) => {
+const isMobileViewport = () =>
+  typeof window !== "undefined" && window.innerWidth < 768;
+
+const selectProject = async (slug: string) => {
   selectedSlug.value = slug;
   selectedImageIndex.value = 0;
+
+  if (isMobileViewport()) {
+    await nextTick();
+    detailPanel.value?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 };
 
 const prevImage = () => {
@@ -285,4 +295,3 @@ const openModal = () => {
   modalOpen.value = true;
 };
 </script>
-

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="open"
-    class="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+    class="fixed inset-0 z-[9999] flex items-end sm:items-center justify-center p-0 sm:p-4"
     role="dialog"
     aria-modal="true"
     :aria-label="projectTranslations.title"
@@ -10,11 +10,11 @@
     <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
 
     <div
-      class="relative max-w-4xl w-full max-h-[90vh] overflow-y-auto card-elevated bg-background-secondary border border-border-primary p-4 md:p-6"
+      class="relative max-w-4xl w-full max-h-[92vh] sm:max-h-[90vh] overflow-y-auto card-elevated bg-background-secondary border border-border-primary p-4 md:p-6 rounded-t-2xl sm:rounded-xl"
     >
       <button
         type="button"
-        class="absolute top-3 right-3 text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 rounded-full p-1"
+        class="absolute top-3 right-3 z-10 text-text-secondary hover:text-text-primary transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 rounded-full p-2 bg-background-secondary/80"
         @click="emitClose"
       >
         <span class="sr-only">Close</span>
@@ -30,11 +30,11 @@
       </button>
 
       <div class="space-y-4 md:space-y-6">
-        <header>
+        <header class="pr-10">
           <p class="text-xs uppercase tracking-wide text-accent-400 mb-1">
             Case Study
           </p>
-          <h2 class="text-2xl md:text-3xl font-bold text-text-primary">
+          <h2 class="text-xl sm:text-2xl md:text-3xl font-bold text-text-primary">
             {{ projectTranslations.title }}
           </h2>
           <p class="text-text-secondary mt-2 text-sm md:text-base">

@@ -17,15 +17,31 @@
             <p
               v-for="(paragraph, index) in messages.about.paragraphs"
               :key="index"
-              class="text-lg text-text-secondary leading-relaxed"
+              class="text-base md:text-lg text-text-secondary leading-relaxed"
             >
               {{ paragraph }}
             </p>
           </div>
 
-          <div class="flex flex-col items-center justify-center h-full">
-            <div class="tech-cube-scene">
-              <div class="tech-cube">
+          <div class="flex flex-col items-center justify-center w-full py-4">
+            <div
+              class="tech-cube-scene"
+              role="button"
+              tabindex="0"
+              :aria-pressed="isActive"
+              aria-label="Tech-Cube drehen"
+              @click="toggleCube"
+              @keydown.enter.prevent="toggleCube"
+              @keydown.space.prevent="toggleCube"
+              @mouseenter="onHoverStart"
+              @mouseleave="onHoverEnd"
+              @focus="onHoverStart"
+              @blur="onHoverEnd"
+            >
+              <div
+                class="tech-cube"
+                :class="{ 'tech-cube--active': isActive }"
+              >
                 <div class="tech-cube-face tech-cube-front">
                   <div class="tech-cube-content">
                     <h3>Tech focus</h3>
@@ -85,10 +101,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "~/composables/useI18n";
 
 const { messages: rawMessages } = useI18n();
 const messages = computed(() => rawMessages.value);
-</script>
 
+const flipped = ref(false);
+const hovered = ref(false);
+
+const isActive = computed(() => flipped.value || hovered.value);
+
+const toggleCube = () => {
+  flipped.value = !flipped.value;
+};
+
+const onHoverStart = () => {
+  hovered.value = true;
+};
+
+const onHoverEnd = () => {
+  hovered.value = false;
+};
+</script>

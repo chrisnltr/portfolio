@@ -18,11 +18,11 @@
               {{ messages.experience.workHeadline }}
             </h3>
             <div class="space-y-6">
-              <article class="border-l-4 border-accent-600 pl-6">
+              <article class="border-l-4 border-accent-600 pl-4 md:pl-6">
                 <div
-                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
+                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1"
                 >
-                  <h4 class="text-xl font-semibold text-text-primary">
+                  <h4 class="text-lg md:text-xl font-semibold text-text-primary">
                     {{ messages.experience.naueGroup.title }}
                   </h4>
                   <span class="text-sm text-accent-400 font-medium">
@@ -54,34 +54,34 @@
               {{ messages.experience.educationHeadline }}
             </h3>
             <div class="space-y-6">
-              <article class="border-l-4 border-accent-600 pl-6">
+              <article class="border-l-4 border-accent-600 pl-4 md:pl-6">
                 <div
-                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
+                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1"
                 >
-                  <h4 class="text-xl font-semibold text-text-primary">
+                  <h4 class="text-lg md:text-xl font-semibold text-text-primary">
                     {{ messages.experience.apprenticeship.title }}
                   </h4>
                   <span class="text-sm text-accent-400 font-medium">
                     {{ messages.experience.apprenticeship.dateRange }}
                   </span>
                 </div>
-                <p class="text-text-secondary">
+                <p class="text-text-secondary text-sm md:text-base">
                   {{ messages.experience.apprenticeship.description }}
                 </p>
               </article>
 
-              <article class="border-l-4 border-accent-600 pl-6">
+              <article class="border-l-4 border-accent-600 pl-4 md:pl-6">
                 <div
-                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2"
+                  class="flex flex-col md:flex-row md:items-center md:justify-between mb-2 gap-1"
                 >
-                  <h4 class="text-xl font-semibold text-text-primary">
+                  <h4 class="text-lg md:text-xl font-semibold text-text-primary">
                     {{ messages.experience.school.title }}
                   </h4>
                   <span class="text-sm text-accent-400 font-medium">
                     {{ messages.experience.school.dateRange }}
                   </span>
                 </div>
-                <p class="text-text-secondary">
+                <p class="text-text-secondary text-sm md:text-base">
                   {{ messages.experience.school.description }}
                 </p>
               </article>

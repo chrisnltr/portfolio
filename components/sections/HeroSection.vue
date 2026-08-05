@@ -5,7 +5,7 @@
   >
     <div class="container mx-auto text-center">
       <div class="animate-fade-in">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold animate-slide-up">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold animate-slide-up">
           <span
             class="gradient-text inline-block"
             style="
@@ -17,14 +17,14 @@
             {{ messages.hero.greeting }}
           </span>
           <span
-            class="hero-name block mt-1 animate-slide-up cursor-pointer transition-all duration-500 ease-out hover:opacity-90"
+            class="hero-name block mt-1 animate-slide-up cursor-pointer transition-all duration-500 ease-out hover:opacity-90 break-words"
             style="animation-delay: 0.15s"
           >
             {{ messages.hero.nameIntro }}
           </span>
         </h1>
         <h2
-          class="text-3xl md:text-5xl lg:text-6xl font-bold gradient-text mt-3 animate-slide-up"
+          class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold gradient-text mt-3 animate-slide-up"
           style="
             animation-delay: 0.3s;
             font-weight: 600;
@@ -35,7 +35,7 @@
           {{ messages.hero.roleHeadline }}
         </h2>
         <p
-          class="text-lg md:text-xl lg:text-2xl text-text-secondary mt-4 mb-6 mx-auto animate-slide-up px-4 whitespace-nowrap"
+          class="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary mt-4 mb-6 mx-auto max-w-3xl animate-slide-up px-2 text-balance"
           style="animation-delay: 0.45s"
         >
           {{ messages.hero.positioningLine }}

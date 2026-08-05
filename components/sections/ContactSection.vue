@@ -17,11 +17,15 @@
         </p>
 
         <form
-          class="space-y-4"
+          class="space-y-4 relative"
           @submit.prevent="submit"
         >
-          <!-- Honeypot: keep hidden from users, leave empty for spam protection -->
-          <div class="absolute -left-[9999px] opacity-0" aria-hidden="true">
+          <!-- Honeypot: visually hidden, leave empty for spam protection -->
+          <div
+            class="h-px w-px overflow-hidden whitespace-nowrap border-0 p-0"
+            style="clip: rect(0, 0, 0, 0); clip-path: inset(50%); position: absolute"
+            aria-hidden="true"
+          >
             <label :for="honeypotId">{{ messages.contact.spamProtectionLabel }}</label>
             <input
               :id="honeypotId"
