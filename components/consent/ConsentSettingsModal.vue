@@ -5,7 +5,7 @@
       class="fixed inset-0 z-[9100] flex items-end sm:items-center justify-center p-0 sm:p-4"
     >
       <div
-        class="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        class="absolute inset-0 bg-black/50"
         aria-hidden="true"
         @click="closeSettings"
       />
@@ -40,7 +40,6 @@
         </div>
 
         <div class="overflow-y-auto flex-1 px-4 sm:px-6 py-4 space-y-4">
-          <!-- Necessary -->
           <section class="rounded-lg border border-border-primary bg-background-tertiary/40 p-4">
             <div class="flex items-start justify-between gap-3">
               <div>
@@ -68,7 +67,6 @@
             </ul>
           </section>
 
-          <!-- Statistics -->
           <section class="rounded-lg border border-border-primary bg-background-tertiary/40 p-4">
             <div class="flex items-start justify-between gap-3">
               <div>
@@ -87,6 +85,46 @@
             <ul class="mt-3 space-y-3">
               <li
                 v-for="service in statisticsServices"
+                :key="service.id"
+                class="text-sm text-text-secondary border-t border-border-primary/60 pt-3"
+              >
+                <p class="text-text-primary font-medium">{{ serviceLabel(service) }}</p>
+                <p class="mt-1"><span class="text-text-primary">{{ t.provider }}:</span> {{ service.provider }}</p>
+                <p class="mt-1">{{ purpose(service) }}</p>
+                <p class="mt-1"><span class="text-text-primary">{{ t.storage }}:</span> {{ storage(service) }}</p>
+                <p class="mt-1"><span class="text-text-primary">{{ t.retention }}:</span> {{ retention(service) }}</p>
+                <p v-if="service.privacyUrl" class="mt-1">
+                  <a
+                    :href="service.privacyUrl"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="link focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 rounded"
+                  >
+                    {{ t.privacyHint }}
+                  </a>
+                </p>
+              </li>
+            </ul>
+          </section>
+
+          <section class="rounded-lg border border-border-primary bg-background-tertiary/40 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="font-semibold text-text-primary">{{ t.marketingTitle }}</h3>
+                <p class="text-sm text-text-secondary mt-1">{{ t.marketingDescription }}</p>
+              </div>
+              <label class="inline-flex items-center gap-2 cursor-pointer select-none min-h-[44px]">
+                <span class="sr-only">{{ t.marketingTitle }}</span>
+                <input
+                  v-model="draftMarketing"
+                  type="checkbox"
+                  class="h-5 w-5 rounded border-border-primary bg-background-primary text-accent-600 focus:ring-accent-400"
+                >
+              </label>
+            </div>
+            <ul class="mt-3 space-y-3">
+              <li
+                v-for="service in marketingServices"
                 :key="service.id"
                 class="text-sm text-text-secondary border-t border-border-primary/60 pt-3"
               >
@@ -164,7 +202,7 @@ import { useI18n } from "~/composables/useI18n";
 const titleId = "consent-settings-title";
 const descId = "consent-settings-desc";
 
-const { locale, messages } = useI18n();
+const { messages } = useI18n();
 const {
   settingsOpen,
   categories,
@@ -176,18 +214,16 @@ const {
 
 const dialogRef = ref<HTMLElement | null>(null);
 const draftStatistics = ref(false);
+const draftMarketing = ref(false);
 
 const t = computed(() => messages.value.consent.settings);
 
-const privacyLink = computed(() =>
-  locale.value === "de" ? "/de/datenschutz" : "/en/privacy",
-);
-const imprintLink = computed(() =>
-  locale.value === "de" ? "/de/impressum" : "/en/imprint",
-);
+const privacyLink = "/datenschutz";
+const imprintLink = "/impressum";
 
 const necessaryServices = CONSENT_SERVICES.filter((s) => s.category === "necessary");
 const statisticsServices = CONSENT_SERVICES.filter((s) => s.category === "statistics");
+const marketingServices = CONSENT_SERVICES.filter((s) => s.category === "marketing");
 
 function serviceLabel(service: (typeof CONSENT_SERVICES)[number]): string {
   switch (service.id) {
@@ -197,21 +233,27 @@ function serviceLabel(service: (typeof CONSENT_SERVICES)[number]): string {
       return t.value.serviceConsent;
     case "vercel-analytics":
       return t.value.serviceAnalytics;
+    case "google-analytics":
+      return t.value.serviceGa;
+    case "google-ads":
+      return t.value.serviceAds;
+    case "meta-pixel":
+      return t.value.serviceMeta;
     default:
       return "Service";
   }
 }
 
 function purpose(service: (typeof CONSENT_SERVICES)[number]) {
-  return locale.value === "de" ? service.purposeDe : service.purposeEn;
+  return service.purposeDe;
 }
 
 function storage(service: (typeof CONSENT_SERVICES)[number]) {
-  return locale.value === "de" ? service.storageDe : service.storageEn;
+  return service.storageDe;
 }
 
 function retention(service: (typeof CONSENT_SERVICES)[number]) {
-  return locale.value === "de" ? service.retentionDe : service.retentionEn;
+  return service.retentionDe;
 }
 
 function getFocusable(container: HTMLElement): HTMLElement[] {
@@ -252,22 +294,28 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onSave() {
-  savePreferences({ statistics: draftStatistics.value });
+  savePreferences({
+    statistics: draftStatistics.value,
+    marketing: draftMarketing.value,
+  });
 }
 
 function onAcceptAll() {
   draftStatistics.value = true;
+  draftMarketing.value = true;
   acceptAll();
 }
 
 function onRejectAll() {
   draftStatistics.value = false;
+  draftMarketing.value = false;
   rejectAll();
 }
 
 watch(settingsOpen, async (open) => {
   if (open) {
     draftStatistics.value = categories.value.statistics;
+    draftMarketing.value = categories.value.marketing;
     document.body.style.overflow = "hidden";
     await nextTick();
     dialogRef.value?.focus();

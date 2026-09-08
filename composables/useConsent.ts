@@ -8,14 +8,69 @@ import {
   writeConsentCookie,
 } from "~/utils/consentStorage";
 import type { ConsentDecisionInput, ConsentState } from "~/types/consent";
+import { readTrackingIds, hasAnyOptionalTrackingConfigured, hasGaConfigured, hasGoogleAdsConfigured, hasMetaConfigured } from "~/utils/analyticsConfig";
+import {
+  initGoogleConsentDefaults,
+  loadGoogleTag,
+  loadMetaPixel,
+  updateGoogleConsent,
+} from "~/utils/optionalTracking";
 
 let analyticsInjected = false;
+let googleDefaultsInitialized = false;
+let optionalScriptsInjected = false;
 
 async function injectVercelAnalytics(): Promise<void> {
   if (!import.meta.client || analyticsInjected) return;
   const { injectAnalytics } = await import("@vercel/analytics/nuxt/runtime");
   injectAnalytics();
   analyticsInjected = true;
+}
+
+function getIds() {
+  const config = useRuntimeConfig();
+  return readTrackingIds(config.public);
+}
+
+function syncOptionalTracking(categories: {
+  statistics: boolean;
+  marketing: boolean;
+}): void {
+  if (!import.meta.client) return;
+  const ids = getIds();
+
+  if (hasAnyOptionalTrackingConfigured(ids) && !googleDefaultsInitialized) {
+    if (hasGaConfigured(ids) || hasGoogleAdsConfigured(ids) || ids.googleAdsId) {
+      initGoogleConsentDefaults();
+      googleDefaultsInitialized = true;
+    }
+  }
+
+  const needsGtag =
+    (categories.statistics && hasGaConfigured(ids)) ||
+    (categories.marketing && (hasGoogleAdsConfigured(ids) || Boolean(ids.googleAdsId)));
+  const needsMeta = categories.marketing && hasMetaConfigured(ids);
+
+  if (needsGtag || needsMeta) {
+    if (googleDefaultsInitialized || hasGaConfigured(ids) || ids.googleAdsId) {
+      if (!googleDefaultsInitialized && (hasGaConfigured(ids) || ids.googleAdsId)) {
+        initGoogleConsentDefaults();
+        googleDefaultsInitialized = true;
+      }
+      updateGoogleConsent({
+        statistics: categories.statistics,
+        marketing: categories.marketing,
+      });
+    }
+    if (needsGtag) loadGoogleTag(ids);
+    if (needsMeta) loadMetaPixel(ids);
+    optionalScriptsInjected = true;
+    return;
+  }
+
+  if (optionalScriptsInjected || googleDefaultsInitialized) {
+    updateGoogleConsent({ statistics: false, marketing: false });
+  }
 }
 
 export function useConsent() {
@@ -33,7 +88,21 @@ export function useConsent() {
   );
 
   const hasStatisticsConsent = computed(
-    () => Boolean(consent.value && isConsentValid(consent.value) && consent.value.categories.statistics),
+    () =>
+      Boolean(
+        consent.value &&
+          isConsentValid(consent.value) &&
+          consent.value.categories.statistics,
+      ),
+  );
+
+  const hasMarketingConsent = computed(
+    () =>
+      Boolean(
+        consent.value &&
+          isConsentValid(consent.value) &&
+          consent.value.categories.marketing,
+      ),
   );
 
   const hasDecided = computed(() => isConsentValid(consent.value));
@@ -47,10 +116,17 @@ export function useConsent() {
     if (stored?.categories.statistics) {
       void injectVercelAnalytics();
     }
+    if (stored) {
+      syncOptionalTracking(stored.categories);
+    }
   }
 
-  function persist(decision: ConsentDecisionInput, options?: { reloadIfNeeded?: boolean }): void {
+  function persist(
+    decision: ConsentDecisionInput,
+    options?: { reloadIfNeeded?: boolean },
+  ): void {
     const previousStatistics = consent.value?.categories.statistics ?? false;
+    const previousMarketing = consent.value?.categories.marketing ?? false;
     const next = createConsentState(decision);
     consent.value = next;
     writeConsentCookie(next);
@@ -59,24 +135,39 @@ export function useConsent() {
 
     if (next.categories.statistics) {
       void injectVercelAnalytics();
-      return;
     }
 
-    if (previousStatistics || analyticsInjected) {
-      removeOptionalThirdPartyArtifacts();
-      analyticsInjected = false;
-      if (options?.reloadIfNeeded !== false && import.meta.client) {
-        window.location.reload();
+    syncOptionalTracking(next.categories);
+
+    const disabledOptional =
+      (previousStatistics && !next.categories.statistics) ||
+      (previousMarketing && !next.categories.marketing);
+
+    if (disabledOptional || (!next.categories.statistics && analyticsInjected)) {
+      if (!next.categories.statistics && !next.categories.marketing) {
+        removeOptionalThirdPartyArtifacts();
+        analyticsInjected = false;
+        optionalScriptsInjected = false;
+        if (options?.reloadIfNeeded !== false && import.meta.client) {
+          window.location.reload();
+        }
+      } else if (!next.categories.statistics && analyticsInjected) {
+        removeOptionalThirdPartyArtifacts();
+        analyticsInjected = false;
+        optionalScriptsInjected = false;
+        if (options?.reloadIfNeeded !== false && import.meta.client) {
+          window.location.reload();
+        }
       }
     }
   }
 
   function acceptAll(): void {
-    persist({ statistics: true });
+    persist({ statistics: true, marketing: true });
   }
 
   function rejectAll(): void {
-    persist({ statistics: false }, { reloadIfNeeded: true });
+    persist({ statistics: false, marketing: false }, { reloadIfNeeded: true });
   }
 
   function savePreferences(input: ConsentDecisionInput): void {
@@ -84,7 +175,8 @@ export function useConsent() {
   }
 
   function openSettings(trigger?: HTMLElement | null): void {
-    settingsReturnFocus.value = trigger ?? (document.activeElement as HTMLElement | null);
+    settingsReturnFocus.value =
+      trigger ?? (document.activeElement as HTMLElement | null);
     settingsOpen.value = true;
   }
 
@@ -103,9 +195,10 @@ export function useConsent() {
 
   if (import.meta.client) {
     watch(
-      hasStatisticsConsent,
-      (allowed) => {
-        if (allowed) void injectVercelAnalytics();
+      [hasStatisticsConsent, hasMarketingConsent],
+      ([stats, marketing]) => {
+        if (stats) void injectVercelAnalytics();
+        syncOptionalTracking({ statistics: stats, marketing });
       },
       { immediate: false },
     );
@@ -118,6 +211,7 @@ export function useConsent() {
     settingsOpen,
     categories,
     hasStatisticsConsent,
+    hasMarketingConsent,
     hasDecided,
     hydrateFromCookie,
     acceptAll,

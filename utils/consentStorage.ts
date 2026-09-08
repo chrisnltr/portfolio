@@ -6,6 +6,7 @@ import {
   type ConsentDecisionInput,
   type ConsentState,
 } from "~/types/consent";
+import { removeOptionalMarketingScripts } from "~/utils/optionalTracking";
 
 export function createConsentState(input: ConsentDecisionInput): ConsentState {
   return {
@@ -14,6 +15,7 @@ export function createConsentState(input: ConsentDecisionInput): ConsentState {
     categories: {
       necessary: true,
       statistics: Boolean(input.statistics),
+      marketing: Boolean(input.marketing),
     },
   };
 }
@@ -30,6 +32,7 @@ export function isConsentValid(state: ConsentState | null, now = Date.now()): bo
   if (typeof state.decidedAt !== "string") return false;
   if (!state.categories || state.categories.necessary !== true) return false;
   if (typeof state.categories.statistics !== "boolean") return false;
+  if (typeof state.categories.marketing !== "boolean") return false;
   if (isConsentExpired(state, now)) return false;
   return true;
 }
@@ -45,6 +48,7 @@ export function parseConsentCookieValue(raw: string | null | undefined): Consent
       categories: {
         necessary: true,
         statistics: Boolean(parsed.categories.statistics),
+        marketing: Boolean(parsed.categories.marketing),
       },
     };
   } catch {
@@ -59,6 +63,7 @@ export function serializeConsentState(state: ConsentState): string {
     categories: {
       necessary: true,
       statistics: Boolean(state.categories.statistics),
+      marketing: Boolean(state.categories.marketing),
     },
   });
 }
@@ -111,11 +116,15 @@ export function removeOptionalThirdPartyArtifacts(): void {
     'script[src*="/_vercel/insights/"]',
     'script[src*="va.vercel-scripts.com"]',
     'script[src*="vercel-scripts.com/v1/script"]',
+    'script[src*="googletagmanager.com/gtag"]',
+    'script[src*="connect.facebook.net"]',
   ];
 
   for (const selector of selectors) {
     document.querySelectorAll(selector).forEach((node) => node.remove());
   }
+
+  removeOptionalMarketingScripts();
 
   if (typeof window !== "undefined") {
     try {
