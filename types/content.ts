@@ -89,6 +89,8 @@ export type ProjectCaseStudy = {
   visibility: ProjectVisibility;
   homepageOrder?: number;
   status: ProjectStatusId;
+  /** Describes whether the case study is an own product, client work, or internal project. */
+  ownership: "own-product" | "client-work" | "internal-project";
   industry: ProjectIndustryId;
   visualKind: ProjectVisualKind;
   layout: CaseStudyLayout;

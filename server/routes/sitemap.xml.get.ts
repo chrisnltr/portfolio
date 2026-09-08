@@ -14,39 +14,19 @@ function getOrigin(event: H3Event) {
 function urlEntry(
   base: string,
   path: string,
-  lastmod: string,
-  changefreq: string,
-  priority: string,
 ) {
-  return `  <url>\n    <loc>${base}${path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  return `  <url>\n    <loc>${base}${path}</loc>\n  </url>`;
 }
 
 export default defineEventHandler((event) => {
   const base = getOrigin(event);
-  const lastmod = new Date().toISOString().slice(0, 10);
 
-  const staticPages = [
-    { path: "/", changefreq: "weekly", priority: "1.0" },
-    { path: "/datenschutz", changefreq: "monthly", priority: "0.5" },
-    { path: "/impressum", changefreq: "monthly", priority: "0.5" },
-    { path: "/agb", changefreq: "monthly", priority: "0.5" },
-    { path: "/lebenslauf", changefreq: "monthly", priority: "0.6" },
-  ]
-    .map((entry) =>
-      urlEntry(base, entry.path, lastmod, entry.changefreq, entry.priority),
-    )
+  const staticPages = ["/", "/datenschutz", "/impressum", "/agb", "/lebenslauf"]
+    .map((path) => urlEntry(base, path))
     .join("\n");
 
   const projectUrls = projects
-    .map((project) =>
-      urlEntry(
-        base,
-        `/projekte/${project.routeSlug}`,
-        lastmod,
-        "monthly",
-        "0.7",
-      ),
-    )
+    .map((project) => urlEntry(base, `/projekte/${project.routeSlug}`))
     .join("\n");
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

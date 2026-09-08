@@ -1,5 +1,9 @@
-﻿/** Default social preview (1200×630). Replace with branded art when available. */
-export const DEFAULT_OG_IMAGE = "/og-default.png";
+﻿import { de } from "~/data/i18n/de";
+import { projects } from "~/data/projects";
+import { profile } from "~/data/profile";
+
+/** Dedicated 1200×630 social preview; the square favicon remains unchanged. */
+export const DEFAULT_OG_IMAGE = "/og-default.svg";
 
 export type SeoCopy = {
   title: string;
@@ -47,69 +51,171 @@ export const thankYouSeo: SeoCopy = {
     "Ihre Anfrage wurde übermittelt. Ich melde mich persönlich bei Ihnen.",
 };
 
-export const projectSeo: Record<string, SeoCopy> = {
-  "cantus-halle": {
-    title: "Cantus-Halle | Case Study | Chris Leon Noltemeier",
-    description:
-      "Website und digitales Angebot für die Cantus-Halle: Struktur, Buchung und Auftritt für einen Veranstaltungsort.",
-  },
-  stallzentrale: {
-    title: "Stallzentrale | Case Study | Chris Leon Noltemeier",
-    description:
-      "Eigenständig entwickeltes SaaS-Produkt für Aktiv-, Offen- und Pensionsställe, vom realen Pilotbetrieb bis zur mandantenfähigen Plattform.",
-  },
-  "ls-aktivstall": {
-    title: "LS Aktivstall | Case Study | Chris Leon Noltemeier",
-    description:
-      "Live eingesetzte Kundenwebsite für einen Aktivstall in Stemwede mit Haltungskonzept, Anlage, Leistungen und gezielten Platzanfragen.",
-  },
-  "accident-report-app": {
-    title: "CrashReport | Case Study | Chris Leon Noltemeier",
-    description:
-      "Mobile App für die geführte Unfallaufnahme mit Fotos, Karten-Skizze und PDF-Export, entstanden aus eigener Erfahrung.",
-  },
-};
+const schemaContext = "https://schema.org";
 
-export function personJsonLd(origin: string) {
+function personId(origin: string) {
+  return `${origin}/#person`;
+}
+
+function websiteId(origin: string) {
+  return `${origin}/#website`;
+}
+
+function serviceId(origin: string, id: string) {
+  return `${origin}/#service-${id}`;
+}
+
+function personNode(origin: string) {
   return {
-    "@context": "https://schema.org",
     "@type": "Person",
-    name: "Chris Leon Noltemeier",
+    "@id": personId(origin),
+    name: profile.name,
     url: origin,
     jobTitle: "Web- und Softwareentwickler",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Bad Essen",
+      addressLocality: profile.location,
       addressCountry: "DE",
     },
-    sameAs: [
-      "https://github.com/chrisnltr",
-      "https://www.linkedin.com/in/chris-leon-noltemeier",
-    ],
+    sameAs: profile.socialLinks
+      .filter((link) => link.type !== "email")
+      .map((link) => link.url),
   };
 }
 
-export function professionalServiceJsonLd(origin: string) {
-  return {
-    "@context": "https://schema.org",
-    "@type": "ProfessionalService",
-    name: "Chris Leon Noltemeier",
-    url: origin,
-    description:
-      "Websites, Shopify-Shops, individuelle Software und Automatisierung für kleine Unternehmen.",
+function serviceNodes(origin: string) {
+  return Object.entries(de.services.items).map(([id, service]) => ({
+    "@type": "Service",
+    "@id": serviceId(origin, id),
+    name: service.title,
+    description: service.description,
+    provider: { "@id": personId(origin) },
     areaServed: {
       "@type": "Country",
       name: "Germany",
     },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bad Essen",
-      addressCountry: "DE",
-    },
-    founder: {
-      "@type": "Person",
-      name: "Chris Leon Noltemeier",
-    },
+  }));
+}
+
+function websiteNode(origin: string) {
+  return {
+    "@type": "WebSite",
+    "@id": websiteId(origin),
+    url: origin,
+    name: profile.name,
+    description: homeSeo.description,
+    inLanguage: "de-DE",
+    publisher: { "@id": personId(origin) },
+  };
+}
+
+function projectNode(origin: string, project: (typeof projects)[number]) {
+  const canonical = `${origin}/projekte/${project.routeSlug}`;
+  const type =
+    project.slug === "accident-report-app" ? "SoftwareApplication" : "CreativeWork";
+  const node: Record<string, unknown> = {
+    "@type": type,
+    "@id": `${canonical}#project`,
+    name: project.content.title,
+    description: project.content.shortDescription,
+    url: canonical,
+    image: project.images[0]?.src
+      ? `${origin}${project.images[0].src}`
+      : undefined,
+    keywords: project.technologies,
+    genre: project.content.platformLabel,
+  };
+
+  if (project.externalUrl) {
+    node.sameAs = project.externalUrl;
+  }
+  if (type === "SoftwareApplication") {
+    node.applicationCategory = "UtilitiesApplication";
+    node.operatingSystem = "Mobile";
+  }
+  if (project.ownership === "own-product") {
+    node.creator = { "@id": personId(origin) };
+  }
+  return node;
+}
+
+export function portfolioJsonLd(
+  origin: string,
+  path: string,
+  pageName = homeSeo.title,
+) {
+  const pageId = `${origin}${path}#webpage`;
+  return {
+    "@context": schemaContext,
+    "@graph": [
+      personNode(origin),
+      websiteNode(origin),
+      ...serviceNodes(origin),
+      {
+        "@type": "ProfessionalService",
+        "@id": `${origin}/#professional-service`,
+        name: profile.name,
+        url: origin,
+        description: homeSeo.description,
+        provider: { "@id": personId(origin) },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: profile.location,
+          addressCountry: "DE",
+        },
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Leistungen",
+          itemListElement: serviceNodes(origin).map((service) => ({
+            "@type": "Offer",
+            itemOffered: { "@id": service["@id"] },
+          })),
+        },
+      },
+      {
+        "@type": "WebPage",
+        "@id": pageId,
+        url: `${origin}${path}`,
+        name: pageName,
+        isPartOf: { "@id": websiteId(origin) },
+        about: { "@id": personId(origin) },
+        inLanguage: "de-DE",
+      },
+    ],
+  };
+}
+
+export function projectPortfolioJsonLd(
+  origin: string,
+  path: string,
+  project: (typeof projects)[number],
+) {
+  const pageId = `${origin}${path}#webpage`;
+  const projectId = `${origin}${path}#project`;
+  return {
+    "@context": schemaContext,
+    "@graph": [
+      personNode(origin),
+      websiteNode(origin),
+      projectNode(origin, project),
+      {
+        "@type": "WebPage",
+        "@id": pageId,
+        url: `${origin}${path}`,
+        name: project.content.seoTitle,
+        description: project.content.seoDescription,
+        isPartOf: { "@id": websiteId(origin) },
+        author: { "@id": personId(origin) },
+        about: { "@id": projectId },
+        mainEntity: { "@id": projectId },
+        inLanguage: "de-DE",
+      },
+      breadcrumbNode(origin, [
+        { name: "Startseite", path: "/" },
+        { name: "Projekte", path: "/#projects" },
+        { name: project.content.title, path },
+      ]),
+    ],
   };
 }
 
@@ -118,7 +224,16 @@ export function breadcrumbJsonLd(
   items: Array<{ name: string; path: string }>,
 ) {
   return {
-    "@context": "https://schema.org",
+    "@context": schemaContext,
+    ...breadcrumbNode(origin, items),
+  };
+}
+
+function breadcrumbNode(
+  origin: string,
+  items: Array<{ name: string; path: string }>,
+) {
+  return {
     "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",

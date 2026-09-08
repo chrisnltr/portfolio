@@ -4,6 +4,9 @@ export type PageSeoInput = {
   path: string;
   /** Absolute or site-relative path to social preview image */
   ogImage?: string;
+  ogImageAlt?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
   ogType?: "website" | "article" | "profile";
   robots?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
@@ -71,6 +74,9 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoInput>) {
     ogType: () => resolved.value.ogType || "website",
     ogUrl: () => canonical.value,
     ogImage: () => ogImage.value,
+    ogImageAlt: () => resolved.value.ogImageAlt || resolved.value.title,
+    ogImageWidth: () => resolved.value.ogImageWidth || 1200,
+    ogImageHeight: () => resolved.value.ogImageHeight || 630,
     ogLocale: "de_DE",
     twitterCard: "summary_large_image",
     twitterTitle: () => resolved.value.title,

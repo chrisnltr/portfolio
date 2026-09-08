@@ -60,13 +60,11 @@ import ProjectHighlights from "~/components/projects/ProjectHighlights.vue";
 import TechnicalInsight from "~/components/projects/TechnicalInsight.vue";
 import CaseStudyClosing from "~/components/projects/CaseStudyClosing.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
-import { useI18n } from "~/composables/useI18n";
 import { usePageSeo } from "~/composables/usePageSeo";
 import { projectDetailPath } from "~/data/navigation";
 import {
-  breadcrumbJsonLd,
   DEFAULT_OG_IMAGE,
-  projectSeo,
+  projectPortfolioJsonLd,
 } from "~/data/seo";
 import type { ProjectCaseStudy } from "~/types/content";
 
@@ -74,13 +72,11 @@ const props = defineProps<{
   project: ProjectCaseStudy;
 }>();
 
-const { messages } = useI18n();
 const requestURL = useRequestURL();
 const config = useRuntimeConfig();
 const { track } = useAnalytics();
 
 const t = computed(() => props.project.content);
-const homePath = "/";
 const layout = computed(() => props.project.layout || "default");
 
 const pagePath = computed(() =>
@@ -92,40 +88,21 @@ const siteOrigin = computed(() => {
   return configured || requestURL.origin;
 });
 
-const seoCopy = computed(() => {
-  const bySlug = projectSeo[props.project.slug];
-  if (bySlug) return bySlug;
-  return {
-    title: t.value.seoTitle,
-    description: t.value.seoDescription,
-  };
-});
-
 const ogImage = computed(() => {
-  const first = props.project.images[0] || props.project.previewImage;
-  return first?.src || DEFAULT_OG_IMAGE;
+  return DEFAULT_OG_IMAGE;
 });
 
 usePageSeo(() => ({
-  title: seoCopy.value.title,
-  description: seoCopy.value.description,
+  title: t.value.seoTitle,
+  description: t.value.seoDescription,
   path: pagePath.value,
   ogImage: ogImage.value,
   ogType: "article",
-  jsonLd: breadcrumbJsonLd(siteOrigin.value, [
-    {
-      name: messages.value.projects.breadcrumbHome,
-      path: homePath,
-    },
-    {
-      name: messages.value.projects.breadcrumbProjects,
-      path: `${homePath}#projects`,
-    },
-    {
-      name: t.value.title,
-      path: pagePath.value,
-    },
-  ]),
+  jsonLd: projectPortfolioJsonLd(
+    siteOrigin.value,
+    pagePath.value,
+    props.project,
+  ),
 }));
 
 onMounted(() => {

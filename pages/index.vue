@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainHeader />
-    <main class="min-h-full overflow-x-hidden" id="main-content">
+    <main class="min-h-full" id="main-content">
       <HeroSection />
       <ServicesSection />
       <ProjectsSection />
@@ -28,8 +28,7 @@ import { usePageSeo } from "~/composables/usePageSeo";
 import {
   DEFAULT_OG_IMAGE,
   homeSeo,
-  personJsonLd,
-  professionalServiceJsonLd,
+  portfolioJsonLd,
 } from "~/data/seo";
 
 const requestURL = useRequestURL();
@@ -45,9 +44,6 @@ usePageSeo(() => ({
   description: homeSeo.description,
   path: "/",
   ogImage: DEFAULT_OG_IMAGE,
-  jsonLd: [
-    personJsonLd(siteOrigin.value),
-    professionalServiceJsonLd(siteOrigin.value),
-  ],
+  jsonLd: portfolioJsonLd(siteOrigin.value, "/", homeSeo.title),
 }));
 </script>
