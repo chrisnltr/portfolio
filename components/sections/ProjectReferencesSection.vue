@@ -27,8 +27,6 @@
           >
             <ProjectBrowserShowcase
               :title="ref.copy.title"
-              :label="copy.statusLabel"
-              :meta="ref.copy.status"
               :images="ref.project.images"
               :scroll-image="ref.project.previewImage || null"
               :preview-id="`ref-scroll-${ref.project.slug}`"
@@ -40,8 +38,10 @@
             />
           </div>
           <div class="reference-row__copy">
-            <span class="status-label">{{ ref.copy.status }}</span>
-            <h3 class="reference-row__title">{{ ref.copy.title }}</h3>
+            <div class="reference-row__heading">
+              <span class="status-label">{{ ref.copy.status }}</span>
+              <h3 class="reference-row__title">{{ ref.copy.title }}</h3>
+            </div>
             <div>
               <p class="reference-row__label">{{ copy.situationLabel }}</p>
               <p class="reference-row__text">{{ ref.copy.situation }}</p>
@@ -205,6 +205,16 @@ onMounted(() => {
   min-width: 0;
 }
 
+.reference-row__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reference-row__heading .status-label {
+  margin-bottom: 0;
+}
+
 .reference-row__title {
   margin: 0;
   font-family: var(--font-display);
@@ -212,7 +222,7 @@ onMounted(() => {
   font-weight: 700;
   letter-spacing: -0.025em;
   color: var(--color-text);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .reference-row__label {
@@ -302,6 +312,82 @@ onMounted(() => {
 
 .reveal--delay-2 {
   transition-delay: 140ms;
+}
+
+@media (max-width: 767px) {
+  .references__intro {
+    margin-bottom: 1.15rem;
+  }
+
+  .references__intro .section-heading {
+    text-wrap: balance;
+  }
+
+  .reference-row {
+    gap: 0.95rem;
+    padding-block: 1.65rem;
+  }
+
+  .reference-row:first-child {
+    padding-top: 0.15rem;
+  }
+
+  .reference-row__copy {
+    gap: 0.85rem;
+  }
+
+  .reference-row__heading {
+    gap: 0.15rem;
+  }
+
+  .reference-row__title {
+    font-size: clamp(1.25rem, 5.4vw, 1.45rem);
+    line-height: 1.25;
+  }
+
+  .reference-row__label {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
+  .reference-row__text {
+    margin-top: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .reference-row__tags {
+    gap: 0.4rem 0.45rem;
+    margin-top: 0.4rem;
+  }
+
+  .reference-row__tags li {
+    border-radius: 6px;
+    border-color: rgba(47, 102, 255, 0.28);
+    background: rgba(47, 102, 255, 0.08);
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    padding: 0.28rem 0.55rem;
+  }
+
+  .reference-row__link {
+    color: var(--color-accent);
+    font-size: 0.95rem;
+    margin-top: 0.1rem;
+  }
+
+  .reference-row__link:hover {
+    color: var(--color-accent-hover);
+  }
+
+  .reference-row__visual :deep(.showcase__frame) {
+    border-radius: 12px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+  }
+
+  .reference-row__visual :deep(.showcase__glow) {
+    opacity: 0.45;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

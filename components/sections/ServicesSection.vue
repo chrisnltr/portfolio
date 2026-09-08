@@ -152,4 +152,54 @@ const resolvedItems = computed<NumberedColumnItem[]>(() => {
 .services--alt {
   border-block: 0;
 }
+
+@media (max-width: 899px) {
+  .services__header {
+    margin-bottom: 1.35rem;
+  }
+
+  .services__col {
+    display: grid;
+    grid-template-columns: 2.35rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+    row-gap: 0;
+    padding-block: 1.45rem;
+    align-items: start;
+  }
+
+  .services__col:first-child {
+    padding-top: 0.35rem;
+  }
+
+  .services__num {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    padding-top: 0.28rem;
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .services__title {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: clamp(1.25rem, 5vw, 1.4rem);
+    line-height: 1.25;
+    overflow-wrap: break-word;
+  }
+
+  .services__desc {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0.55rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 767px) {
+  .services__col {
+    padding-block: 1.5rem;
+  }
+}
 </style>

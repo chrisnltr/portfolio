@@ -55,6 +55,9 @@
 	--font-display: "Manrope Variable", Manrope, system-ui, sans-serif;
 	--font-body: "Inter Variable", Inter, system-ui, sans-serif;
 	--header-height: 4.5rem;
+	--page-gutter: clamp(1.25rem, 5vw, 4rem);
+	--section-space: clamp(3rem, 8vw, 7rem);
+	--section-space-compact: clamp(2.75rem, 6vw, 5.5rem);
 	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 	--duration-fast: 140ms;
 	--duration: 180ms;
@@ -199,32 +202,77 @@ select:focus-visible,
 	}
 }
 
-.site-shell > * {
+/* Stack page content above decorative shell layers — not overlays/portals. */
+.site-content,
+.site-shell > header,
+.site-shell > main,
+.site-shell > footer {
 	position: relative;
 	z-index: 1;
 }
 
 .section-pad {
-	padding-block: clamp(3rem, 8vw, 7rem);
+	padding-block: var(--section-space);
 }
 
 .section-pad--compact {
-	padding-block: clamp(2.75rem, 6vw, 5.5rem);
+	padding-block: var(--section-space-compact);
 }
 
 .container-page {
-	width: min(1280px, calc(100% - clamp(1.25rem, 5vw, 4rem)));
+	width: min(1280px, calc(100% - var(--page-gutter) * 2));
 	margin-inline: auto;
 }
 
-@media (max-width: 374px) {
-	.container-page {
-		width: min(1280px, calc(100% - 1rem));
+@media (max-width: 767px) {
+	:root {
+		--header-height: 3.875rem;
+		--page-gutter: 1.25rem;
+		--section-space: 3.25rem;
+		--section-space-compact: 3rem;
+	}
+
+	body {
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.section-label {
+		font-size: 0.75rem;
+		letter-spacing: 0.1em;
+		margin-bottom: 0.55rem;
 	}
 
 	.section-heading {
-		font-size: clamp(1.45rem, 8vw, 2.45rem);
-		overflow-wrap: anywhere;
+		font-size: clamp(1.625rem, 7vw, 1.875rem);
+		line-height: 1.2;
+		overflow-wrap: break-word;
+	}
+
+	.section-lead {
+		margin-top: 0.7rem;
+		font-size: 1rem;
+		line-height: 1.6;
+	}
+
+	.status-label {
+		font-size: 0.72rem;
+		margin-bottom: 0.35rem;
+	}
+
+	.tech-tag {
+		font-size: 0.75rem;
+	}
+}
+
+@media (max-width: 374px) {
+	:root {
+		--page-gutter: 1rem;
+	}
+
+	.section-heading {
+		font-size: clamp(1.5rem, 7.5vw, 1.75rem);
+		overflow-wrap: break-word;
 	}
 }
 

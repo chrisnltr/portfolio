@@ -1007,6 +1007,10 @@ async function submit() {
 }
 
 .contact-form__status {
+  min-height: 0;
+}
+
+.contact-form__status:has(> :not(:empty)) {
   min-height: 1.25rem;
 }
 
@@ -1064,9 +1068,24 @@ async function submit() {
 }
 
 @media (max-width: 639px) {
+  .contact {
+    padding-block: 3.25rem;
+  }
+
+  .contact__title {
+    max-width: none;
+    font-size: clamp(1.625rem, 7vw, 1.875rem);
+    overflow-wrap: break-word;
+  }
+
+  .contact__body {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
   .contact-form {
-    padding: 1.15rem 1.05rem;
-    gap: 0.95rem;
+    padding: 1.05rem 1rem;
+    gap: 0.9rem;
   }
 
   .field {
@@ -1074,8 +1093,39 @@ async function submit() {
     font-size: 1rem;
   }
 
+  .contact-form__privacy {
+    align-items: flex-start;
+    gap: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .contact-form__checkbox-field {
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: -0.35rem;
+    margin-left: -0.45rem;
+    display: grid;
+    place-items: center;
+  }
+
+  .contact-form__checkbox {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .contact-form__checkbox-ui {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  .contact-form__status:not(:has(> *)) {
+    display: none;
+  }
+
   .contact-form__submit {
     min-height: 48px;
+    margin-top: 0;
   }
 }
 

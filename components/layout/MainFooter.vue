@@ -129,6 +129,12 @@ const brandHomeLabel = computed(
 
   .footer-legal {
     gap: 0.15rem 1rem;
+    width: 100%;
+  }
+
+  .footer-legal a {
+    min-height: 2.75rem;
+    padding-inline: 0.1rem;
   }
 }
 </style>

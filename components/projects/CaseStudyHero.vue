@@ -165,7 +165,7 @@ const imageStyle = computed(() => {
   line-height: 1.1;
   color: #fff;
   max-width: 14ch;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .case-hero__title-crispy,
@@ -194,7 +194,7 @@ const imageStyle = computed(() => {
   line-height: 1.45;
   color: var(--color-text);
   max-width: 32rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .case-hero__lead {
@@ -203,7 +203,7 @@ const imageStyle = computed(() => {
   line-height: 1.6;
   color: var(--color-text-muted);
   max-width: 34rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 @media (min-width: 960px) {
@@ -265,5 +265,37 @@ const imageStyle = computed(() => {
   margin: 0.65rem 0 0;
   font-size: 0.88rem;
   color: var(--color-text-subtle);
+}
+
+@media (max-width: 767px) {
+  .case-hero {
+    gap: 1.15rem;
+    padding-top: calc(var(--header-height) + 1rem);
+    padding-bottom: 1.75rem;
+  }
+
+  .case-hero__back {
+    margin-bottom: 0.55rem;
+  }
+
+  .case-hero__title {
+    max-width: none;
+    font-size: clamp(1.75rem, 8vw, 2.15rem);
+    line-height: 1.15;
+  }
+
+  .case-hero__subtitle {
+    margin-top: 0.65rem;
+    font-size: 1.05rem;
+  }
+
+  .case-hero__lead {
+    margin-top: 0.7rem;
+  }
+
+  .case-hero__frame {
+    border-radius: 12px;
+    max-height: none;
+  }
 }
 </style>

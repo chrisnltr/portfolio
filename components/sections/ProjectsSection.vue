@@ -19,7 +19,10 @@
           v-for="(project, index) in displayProjects"
           :key="project.slug"
           class="project-card"
-          :class="{ 'project-card--static': !cardLink }"
+          :class="{
+            'project-card--static': !cardLink,
+            [`project-card--${project.slug}`]: true,
+          }"
           :style="cardAccentStyle(project)"
         >
           <div
@@ -33,6 +36,8 @@
               :alt="previewAlt(project)"
               :priority="index < 2"
               :preview-id="`card-cycle-${project.slug}`"
+              :fit="previewFitFor(project)"
+              :object-position="previewPositionFor(project)"
             />
             <ScrollingProjectPreview
               v-else
@@ -42,6 +47,13 @@
               :priority="index < 2"
               :preview-id="`card-scroll-${project.slug}`"
             />
+            <p
+              v-if="showPreviewHint(project)"
+              class="project-card__preview-hint"
+              aria-hidden="true"
+            >
+              Vorschau antippen
+            </p>
           </div>
 
           <component
@@ -70,6 +82,12 @@
             <ul v-if="tagsFor(project).length" class="project-card__tags">
               <li v-for="tag in tagsFor(project)" :key="tag">{{ tag }}</li>
             </ul>
+            <span
+              v-if="cardLink"
+              class="project-card__cta"
+            >
+              Projekt ansehen →
+            </span>
           </component>
         </article>
       </div>
@@ -143,6 +161,24 @@ function previewAlt(project: ProjectCaseStudy) {
 function tagsFor(project: ProjectCaseStudy) {
   if (project.cardTags?.length) return project.cardTags.slice(0, 3);
   return project.technologies.slice(0, 3);
+}
+
+function previewFitFor(project: ProjectCaseStudy): "cover" | "contain" {
+  if (project.visualKind === "phone" || project.slug === "accident-report-app") {
+    return "contain";
+  }
+  return "cover";
+}
+
+function previewPositionFor(project: ProjectCaseStudy): string {
+  if (project.slug === "crispy-billiards") return "center 42%";
+  if (project.slug === "hardware-management") return "center 22%";
+  if (project.slug === "accident-report-app") return "center center";
+  return "center center";
+}
+
+function showPreviewHint(project: ProjectCaseStudy) {
+  return Boolean(cycleImagesFor(project) || previewFor(project));
 }
 
 function cardAccentStyle(project: ProjectCaseStudy) {
@@ -257,6 +293,10 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   min-width: 0;
 }
 
+.project-card__preview-hint {
+  display: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .project-card:not(.project-card--static) .project-card__media {
     cursor: pointer;
@@ -270,6 +310,10 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   aspect-ratio: 16 / 10;
   max-height: none;
   width: 100%;
+}
+
+.project-card--accident-report-app :deep(.cycle) {
+  background: #05070b;
 }
 
 .project-card--static {
@@ -297,7 +341,7 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   letter-spacing: -0.02em;
   color: var(--text);
   margin: 0 0 0.35rem;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
@@ -314,7 +358,7 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   font-size: 0.9rem;
   color: var(--text-muted);
   line-height: 1.45;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .project-card__tags {
@@ -328,6 +372,10 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.project-card__cta {
+  display: none;
 }
 
 .project-card:hover .project-card__title:not(.project-card__title--crispy) {
@@ -344,5 +392,87 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   color: #e0b24a;
   font-weight: 700;
   font-style: italic;
+}
+
+@media (max-width: 767px) {
+  .projects-intro {
+    margin-bottom: 1.5rem;
+  }
+
+  .project-grid {
+    gap: 2.25rem;
+  }
+
+  .project-card :deep(.preview),
+  .project-card :deep(.cycle) {
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+  }
+
+  .project-card--accident-report-app :deep(.cycle) {
+    aspect-ratio: 16 / 11;
+  }
+
+  .project-card--crispy-billiards :deep(.cycle__image) {
+    object-position: center 42%;
+  }
+
+  .project-card--hardware-management :deep(.cycle__image) {
+    object-position: center 22%;
+  }
+
+  .project-card__body {
+    padding-top: 1rem;
+  }
+
+  .project-card__title {
+    margin-bottom: 0.4rem;
+    font-size: clamp(1.25rem, 5.2vw, 1.4rem);
+    line-height: 1.25;
+  }
+
+  .project-card__type {
+    font-size: 0.875rem;
+  }
+
+  .project-card__tags {
+    margin-top: 0.7rem;
+    gap: 0.35rem 0.65rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+  }
+
+  .project-card__cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+    font-weight: 550;
+    color: var(--color-accent);
+  }
+
+  .project-card__preview-hint {
+    display: none;
+    position: absolute;
+    right: 0.65rem;
+    bottom: 0.65rem;
+    z-index: 2;
+    margin: 0;
+    padding: 0.28rem 0.55rem;
+    border-radius: 6px;
+    background: rgba(5, 7, 11, 0.72);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--color-text-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+    pointer-events: none;
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .project-card__preview-hint {
+      display: inline-flex;
+    }
+  }
 }
 </style>

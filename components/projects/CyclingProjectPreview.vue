@@ -30,6 +30,7 @@
         :height="slide.height"
         class="cycle__image"
         :class="{ 'is-active': index === activeIndex }"
+        :style="imageStyle"
         :loading="priority && index === 0 ? 'eager' : 'lazy'"
         :fetchpriority="priority && index === 0 ? 'high' : undefined"
         decoding="async"
@@ -65,6 +66,8 @@ const props = withDefaults(
     intervalMs?: number;
     /** Stable id so only one preview stays active at a time. */
     previewId?: string;
+    fit?: "cover" | "contain";
+    objectPosition?: string;
   }>(),
   {
     images: () => [],
@@ -73,6 +76,8 @@ const props = withDefaults(
     firstSwitchMs: 220,
     intervalMs: 2600,
     previewId: undefined,
+    fit: "cover",
+    objectPosition: "center",
   },
 );
 
@@ -101,6 +106,11 @@ const previewLabel = computed(() =>
     ? `Weitere Vorschau von ${props.title} anzeigen`
     : `Alternative Vorschau von ${props.title} anzeigen`,
 );
+
+const imageStyle = computed(() => ({
+  objectFit: props.fit,
+  objectPosition: props.objectPosition,
+}));
 
 function canHoverCycle() {
   if (!import.meta.client) return false;

@@ -5,7 +5,18 @@
   >
     <div class="container-page hero__inner">
       <div class="hero__copy">
-        <p class="section-label">{{ resolvedEyebrow }}</p>
+        <p class="section-label hero__eyebrow">
+          <span class="hero__eyebrow-name">{{ eyebrowParts.name }}</span>
+          <span
+            v-if="eyebrowParts.role"
+            class="hero__eyebrow-sep"
+            aria-hidden="true"
+          > · </span>
+          <span
+            v-if="eyebrowParts.role"
+            class="hero__eyebrow-role"
+          >{{ eyebrowParts.role }}</span>
+        </p>
         <h1 class="hero__title">
           <span
             v-for="(line, index) in headlineLines"
@@ -18,28 +29,29 @@
         <div class="hero__actions">
           <a
             :href="primaryHref"
-            class="btn-primary"
+            class="btn-primary hero__cta"
             @click="onCta('hero-primary')"
           >
             {{ resolvedPrimaryCta }}
           </a>
           <a
             :href="secondaryHref"
-            class="text-link"
+            class="text-link hero__secondary"
             @click="onCta('hero-secondary')"
           >
             {{ resolvedSecondaryCta }} →
           </a>
         </div>
 
-        <p class="hero__trust">
-          <span
-            v-for="(item, index) in trustItems"
+        <ul class="hero__trust" aria-label="Vertrauensaussagen">
+          <li
+            v-for="item in trustItems"
             :key="item"
+            class="hero__trust-item"
           >
-            {{ item }}<template v-if="index < trustItems.length - 1"><span class="hero__trust-sep" aria-hidden="true"> · </span></template>
-          </span>
-        </p>
+            {{ item }}
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -86,6 +98,18 @@ const resolvedPrimaryCta = computed(
 const resolvedSecondaryCta = computed(
   () => props.secondaryCta ?? messages.value.hero.secondaryCta,
 );
+
+const eyebrowParts = computed(() => {
+  const raw = resolvedEyebrow.value;
+  const parts = raw.split(" · ").map((s) => s.trim()).filter(Boolean);
+  if (parts.length < 2) {
+    return { name: raw, role: "" };
+  }
+  return {
+    name: parts[0],
+    role: parts.slice(1).join(" · "),
+  };
+});
 
 const headlineLines = computed(() => {
   if (props.headline) return [props.headline];
@@ -143,6 +167,15 @@ function onCta(location: string) {
   max-width: 40rem;
 }
 
+.hero__eyebrow {
+  max-width: 36rem;
+}
+
+.hero__eyebrow-name,
+.hero__eyebrow-role {
+  display: inline;
+}
+
 .hero__title {
   margin: 0;
   font-family: var(--font-display);
@@ -153,7 +186,7 @@ function onCta(location: string) {
   color: #fff;
   max-width: 11.5em;
   text-wrap: balance;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .hero__title-line {
@@ -166,7 +199,7 @@ function onCta(location: string) {
   font-size: clamp(0.98rem, 2.8vw, 1.05rem);
   line-height: 1.65;
   color: var(--color-text-muted);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .hero__actions {
@@ -183,6 +216,28 @@ function onCta(location: string) {
   justify-content: center;
 }
 
+.hero__trust {
+  list-style: none;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text-subtle);
+  max-width: 36rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0;
+}
+
+.hero__trust-item {
+  display: inline;
+}
+
+.hero__trust-item:not(:last-child)::after {
+  content: " · ";
+  color: var(--color-text-subtle);
+}
+
 @media (min-width: 480px) {
   .hero__actions {
     flex-direction: row;
@@ -197,15 +252,104 @@ function onCta(location: string) {
   }
 }
 
-.hero__trust {
-  margin: 1.35rem 0 0;
-  font-size: 0.88rem;
-  line-height: 1.55;
-  color: var(--color-text-subtle);
-  max-width: 36rem;
-}
+@media (max-width: 767px) {
+  .hero {
+    padding-top: calc(var(--header-height) + 1.25rem);
+    padding-bottom: 2.75rem;
+  }
 
-.hero__trust-sep {
-  color: var(--color-text-subtle);
+  .hero::before {
+    opacity: 0.55;
+    width: min(78vw, 420px);
+    height: min(58vw, 320px);
+    right: -18%;
+    top: 6%;
+  }
+
+  .hero__eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+    font-weight: 600;
+  }
+
+  .hero__eyebrow-name {
+    display: block;
+  }
+
+  .hero__eyebrow-sep {
+    display: none;
+  }
+
+  .hero__eyebrow-role {
+    display: block;
+    margin-top: 0.2rem;
+    letter-spacing: 0.04em;
+    text-transform: none;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text-subtle);
+  }
+
+  .hero__title {
+    margin-top: 0.55rem;
+    font-size: clamp(1.875rem, 8.2vw, 2.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.028em;
+    max-width: none;
+  }
+
+  .hero__title-line {
+    display: inline;
+  }
+
+  .hero__title-line + .hero__title-line::before {
+    content: " ";
+  }
+
+  .hero__body {
+    margin-top: 1.1rem;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero__actions {
+    margin-top: 1.5rem;
+    gap: 0.65rem;
+  }
+
+  .hero__cta {
+    width: 100%;
+    min-height: 3.125rem;
+    max-height: none;
+    padding-inline: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+    white-space: normal;
+    line-height: 1.3;
+  }
+
+  .hero__secondary {
+    width: 100%;
+    min-height: 2.75rem;
+    justify-content: center;
+    font-size: 0.95rem;
+  }
+
+  .hero__trust {
+    margin-top: 1.25rem;
+    display: grid;
+    gap: 0.35rem;
+    font-size: 0.8125rem;
+    line-height: 1.45;
+  }
+
+  .hero__trust-item {
+    display: block;
+  }
+
+  .hero__trust-item:not(:last-child)::after {
+    content: none;
+  }
 }
 </style>

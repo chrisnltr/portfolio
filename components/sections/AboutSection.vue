@@ -130,4 +130,38 @@ const resolvedTrustItems = computed(
   text-transform: uppercase;
   color: var(--color-text-subtle);
 }
+
+@media (max-width: 767px) {
+  .about__copy {
+    width: 100%;
+    text-align: left;
+    align-items: flex-start;
+  }
+
+  .about__paragraphs {
+    margin-top: 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .about__paragraphs p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .about__trust {
+    margin: 0.95rem 0 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+  }
+
+  .about__tech {
+    margin-top: 0.25rem;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .about__tech-label {
+    margin-bottom: 0.55rem;
+  }
+}
 </style>

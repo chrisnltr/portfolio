@@ -42,7 +42,7 @@
         class="showcase__editorial"
       >
         <p class="showcase__badge">{{ pendingBadge }}</p>
-        <h3 class="showcase__title">{{ title }}</h3>
+        <h3 v-if="!compact" class="showcase__title">{{ title }}</h3>
       </div>
     </div>
   </div>

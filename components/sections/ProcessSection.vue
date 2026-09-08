@@ -192,4 +192,50 @@ const resolvedSteps = computed<ProcessStepContent[]>(() => {
   line-height: 1.6;
   color: var(--color-text-muted);
 }
+
+@media (max-width: 767px) {
+  .process {
+    padding-block: 3.25rem;
+  }
+
+  .process__grid {
+    gap: 1.5rem;
+  }
+
+  .process__label {
+    margin-bottom: 0.55rem;
+  }
+
+  .process__title {
+    font-size: clamp(1.625rem, 7vw, 1.875rem);
+    max-width: none;
+    line-height: 1.2;
+  }
+
+  .process__body {
+    margin-top: 0.7rem;
+    font-size: 1rem;
+  }
+
+  .process__step {
+    grid-template-columns: 2.35rem minmax(0, 1fr);
+    gap: 0.55rem 0.75rem;
+    padding-block: 1.15rem;
+  }
+
+  .process__num {
+    font-size: 0.85rem;
+    padding-top: 0.2rem;
+  }
+
+  .process__step-title {
+    font-size: clamp(1.2rem, 4.8vw, 1.35rem);
+    line-height: 1.25;
+  }
+
+  .process__step-desc {
+    margin-top: 0.45rem;
+    font-size: 1rem;
+  }
+}
 </style>
