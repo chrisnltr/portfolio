@@ -185,7 +185,13 @@ export function useConsent() {
     const el = settingsReturnFocus.value;
     settingsReturnFocus.value = null;
     if (el && typeof el.focus === "function") {
-      requestAnimationFrame(() => el.focus());
+      requestAnimationFrame(() => {
+        try {
+          el.focus({ preventScroll: true });
+        } catch {
+          el.focus();
+        }
+      });
     }
   }
 

@@ -83,6 +83,11 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import GooeyNav from "~/components/effects/GooeyNav.vue";
 import { useI18n } from "~/composables/useI18n";
+import {
+  focusWithoutScroll,
+  lockBodyScroll,
+  unlockBodyScroll,
+} from "~/composables/useScrollLock";
 import { contactNavHash, mainNavItems } from "~/data/navigation";
 
 const mobileMenuOpen = ref(false);
@@ -150,9 +155,19 @@ const trackedHashes = computed(() => [
   contactNavHash,
 ]);
 
+const menuScrollLocked = ref(false);
+
 const setBodyScrollLock = (locked: boolean) => {
-  if (typeof document === "undefined") return;
-  document.body.style.overflow = locked ? "hidden" : "";
+  if (!import.meta.client) return;
+  if (locked && !menuScrollLocked.value) {
+    lockBodyScroll();
+    menuScrollLocked.value = true;
+    return;
+  }
+  if (!locked && menuScrollLocked.value) {
+    unlockBodyScroll();
+    menuScrollLocked.value = false;
+  }
 };
 
 const toggleMobileMenu = () => {
@@ -163,7 +178,7 @@ const closeMobileMenu = (returnFocus = false) => {
   if (!mobileMenuOpen.value) return;
   mobileMenuOpen.value = false;
   if (returnFocus) {
-    nextTick(() => menuToggleRef.value?.focus());
+    nextTick(() => focusWithoutScroll(menuToggleRef.value));
   }
 };
 
@@ -284,7 +299,7 @@ watch(mobileMenuOpen, async (open) => {
   setBodyScrollLock(open);
   if (open) {
     await nextTick();
-    mobileNavRef.value?.querySelector<HTMLElement>("a")?.focus();
+    focusWithoutScroll(mobileNavRef.value?.querySelector<HTMLElement>("a"));
   }
 });
 
@@ -327,6 +342,7 @@ onUnmounted(() => {
   line-height: 1;
   padding: 0.35rem 0;
   border-radius: 4px;
+  min-height: 2.75rem;
 }
 
 .brand-mark__sigil {
@@ -355,6 +371,8 @@ onUnmounted(() => {
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   padding: 0;
   border: 0;
   border-radius: 8px;
@@ -384,6 +402,25 @@ onUnmounted(() => {
   .header-menu-btn,
   .header-mobile {
     display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .header-inner {
+    min-height: var(--header-height);
+  }
+
+  .header-nav {
+    min-height: var(--header-height);
+  }
+
+  .header-mobile {
+    padding: 0.5rem 0 0.85rem;
+  }
+
+  .header-mobile-cta {
+    min-height: 2.75rem;
+    height: auto;
   }
 }
 

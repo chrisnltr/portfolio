@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div
       v-if="settingsOpen"
-      class="fixed inset-0 z-[9100] flex items-end sm:items-center justify-center p-0 sm:p-4"
+      class="fixed inset-0 z-[9100] flex items-end sm:items-center justify-center p-0 sm:p-4 consent-settings"
     >
       <div
         class="absolute inset-0 bg-black/50"
@@ -17,7 +17,7 @@
         :aria-labelledby="titleId"
         :aria-describedby="descId"
         tabindex="-1"
-        class="relative w-full sm:max-w-2xl max-h-[min(92vh,880px)] overflow-hidden rounded-t-xl sm:rounded-xl border border-border-primary bg-background-secondary shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col"
+        class="relative w-full sm:max-w-2xl max-h-[min(92dvh,92vh,880px)] overflow-hidden rounded-t-xl sm:rounded-xl border border-border-primary bg-background-secondary shadow-[0_20px_50px_rgba(0,0,0,0.55)] flex flex-col consent-settings__dialog"
         @keydown="onKeydown"
       >
         <div class="flex items-start justify-between gap-3 px-4 sm:px-6 pt-4 sm:pt-5 pb-3 border-b border-border-primary">
@@ -194,10 +194,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, watch } from "vue";
 import { CONSENT_SERVICES } from "~/types/consent";
 import { useConsent } from "~/composables/useConsent";
 import { useI18n } from "~/composables/useI18n";
+import {
+  focusWithoutScroll,
+  lockBodyScroll,
+  unlockBodyScroll,
+} from "~/composables/useScrollLock";
 
 const titleId = "consent-settings-title";
 const descId = "consent-settings-desc";
@@ -286,10 +291,10 @@ function onKeydown(event: KeyboardEvent) {
 
   if (event.shiftKey && active === first) {
     event.preventDefault();
-    last.focus();
+    focusWithoutScroll(last);
   } else if (!event.shiftKey && active === last) {
     event.preventDefault();
-    first.focus();
+    focusWithoutScroll(first);
   }
 }
 
@@ -312,21 +317,46 @@ function onRejectAll() {
   rejectAll();
 }
 
+const scrollLocked = ref(false);
+
 watch(settingsOpen, async (open) => {
   if (open) {
     draftStatistics.value = categories.value.statistics;
     draftMarketing.value = categories.value.marketing;
-    document.body.style.overflow = "hidden";
+    if (!scrollLocked.value) {
+      lockBodyScroll();
+      scrollLocked.value = true;
+    }
     await nextTick();
-    dialogRef.value?.focus();
+    focusWithoutScroll(dialogRef.value);
     return;
   }
 
-  document.body.style.overflow = "";
+  if (scrollLocked.value) {
+    unlockBodyScroll();
+    scrollLocked.value = false;
+  }
+});
+
+onBeforeUnmount(() => {
+  if (scrollLocked.value) {
+    unlockBodyScroll();
+    scrollLocked.value = false;
+  }
 });
 </script>
 
 <style scoped>
+.consent-settings {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@media (max-width: 639px) {
+  .consent-settings__dialog {
+    max-height: min(90dvh, 90vh);
+  }
+}
+
 .sr-only {
   position: absolute;
   width: 1px;

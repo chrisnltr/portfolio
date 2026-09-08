@@ -4,9 +4,11 @@
       <a href="#main-content" class="skip-link">
         Zum Hauptinhalt springen
       </a>
-      <NuxtPage />
-      <ConsentRoot />
+      <div class="site-content">
+        <NuxtPage />
+      </div>
     </div>
+    <ConsentRoot />
     <ClientOnly>
       <CursorFollower />
     </ClientOnly>
@@ -17,6 +19,17 @@
 import ConsentRoot from "~/components/consent/ConsentRoot.vue";
 import CursorFollower from "~/components/effects/CursorFollower.vue";
 import { useHashScroll } from "~/composables/useHashScroll";
+
+useHead({
+  link: [
+    {
+      rel: "alternate",
+      type: "text/markdown",
+      href: "/llms.txt",
+      title: "LLM-readable site summary",
+    },
+  ],
+});
 
 useHashScroll();
 </script>
