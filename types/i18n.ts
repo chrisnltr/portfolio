@@ -1,39 +1,56 @@
-export type AppLocale = "en" | "de";
+/** Site is German-only; kept for a few API payloads that still send language. */
+export type AppLocale = "de";
 
 export type NavSection = {
   home: string;
-  about: string;
-  experience: string;
   projects: string;
   contact: string;
+  resume: string;
+  brandName: string;
+  brandMark: string;
   ariaLabel: string;
   menuToggle: string;
-  langSwitchDe: string;
-  langSwitchEn: string;
+  menuClose: string;
 };
+
+
 
 export type HeroSection = {
-  greeting: string;
-  nameIntro: string;
-  roleHeadline: string;
-  positioningLine: string;
-  openToWorkBadge: string;
-  locationLabel: string;
+  eyebrow: string;
+  headlineLine1: string;
+  headlineLine2: string;
+  description: string;
+  primaryCta: string;
+  secondaryCta: string;
+  trustLine: string;
 };
 
-export type ImpactItem = {
+export type TrustStripSection = {
+  items: string[];
+};
+
+export type ServiceCopy = {
   title: string;
   description: string;
 };
 
-export type ImpactSection = {
+export type ServicesSection = {
+  eyebrow: string;
   title: string;
-  items: ImpactItem[];
+  subtitle: string;
+  items: Record<string, ServiceCopy>;
 };
 
 export type AboutSection = {
+  eyebrow: string;
   title: string;
   paragraphs: string[];
+  trustItems: string[];
+  techLoopLabel: string;
+  profileRole: string;
+  ctaLabel: string;
+  photoLabel: string;
+  photoHint: string;
 };
 
 export type ExperienceBullet = {
@@ -57,56 +74,119 @@ export type ExperienceSection = {
   title: string;
   workHeadline: string;
   educationHeadline: string;
+  intro: string;
+  freelance: ExperienceEntryTranslation;
   naueGroup: ExperienceEntryTranslation;
   apprenticeship: ExperienceEducationEntryTranslation;
   school: ExperienceEducationEntryTranslation;
 };
 
-export type ProjectTranslations = {
-  title: string;
-  subtitle: string;
-  shortDescription: string;
-  problem: string;
-  solution: string;
-  outcome: string;
-  featuresTitle: string;
-  techStackTitle: string;
-  myContributionTitle: string;
-  myContribution: string;
-  biggestChallengeTitle: string;
-  biggestChallenge: string;
-  linksTitle: string;
-  liveDemoLabel: string;
-  githubLabel: string;
-  codeOnRequestLabel: string;
-  caseStudyCta: string;
-};
-
 export type ProjectsSectionTranslations = {
   title: string;
-  caseStudyModalClose: string;
+  subtitle: string;
+  featuredTitle: string;
+  secondaryTitle: string;
+  archiveTitle: string;
+  viewDetails: string;
+  previewLabel: string;
+  previewHint: string;
+  coverMetaFallback: string;
+  situationLabel: string;
+  goalLabel: string;
+  solutionLabel: string;
+  storyTitle: string;
+  highlightsTitle: string;
+  technicalTitle: string;
+  moreTechnologies: string;
+  servicesLabel: string;
+  implementationLabel: string;
+  featuresLabel: string;
+  techLabel: string;
+  statusLabel: string;
+  industryLabel: string;
+  roleFactLabel: string;
+  platformFactLabel: string;
   galleryLabel: string;
-  prevImage: string;
-  nextImage: string;
+  backToProjects: string;
+  allProjects: string;
+  breadcrumbHome: string;
+  breadcrumbProjects: string;
+  nextProject: string;
+  requestProject: string;
+  discussProject: string;
+  closingCtaPrompt: string;
+  visitLive: string;
+  noImagesHint: string;
 };
 
-export type AutomationUseCase = {
+export type ProcessStepCopy = {
   title: string;
   description: string;
 };
 
-export type AutomationAiSection = {
+export type ProcessSection = {
+  label: string;
+  title: string;
+  body: string;
+  steps: Record<string, ProcessStepCopy>;
+};
+
+export type ClosingCtaSection = {
+  title: string;
+  body: string;
+  primaryCta: string;
+  emailCta: string;
+};
+
+export type ProjectReferenceId =
+  | "cantus-halle"
+  | "ls-aktivstall"
+  | "stallzentrale";
+
+export type ProjectReferencesSection = {
   title: string;
   subtitle: string;
-  useCases: AutomationUseCase[];
+  situationLabel: string;
+  areasLabel: string;
+  statusLabel: string;
+  viewCaseStudy: string;
+  inDevelopmentBadge: string;
+  items: Record<
+    ProjectReferenceId,
+    {
+      title: string;
+      situation: string;
+      areas: string[];
+      status: string;
+    }
+  >;
+};
+
+export type ThankYouPage = {
+  title: string;
+  body: string;
+  backHome: string;
+  projectsLink: string;
+};
+
+export type ResumePage = {
+  title: string;
+  subtitle: string;
+  backHome: string;
+  seoTitle: string;
+  seoDescription: string;
 };
 
 export type ContactSection = {
+  label: string;
   title: string;
   intro: string;
+  roleLine: string;
+  personalReply: string;
   nameLabel: string;
   emailLabel: string;
   phoneLabel: string;
+  optionalHint: string;
   messageLabel: string;
   submitLabel: string;
   submittingLabel: string;
@@ -122,6 +202,8 @@ export type ContactSection = {
   validationMessageRequired: string;
   validationTurnstileRequired: string;
   spamProtectionLabel: string;
+  privacyConsentLabel: string;
+  validationPrivacyRequired: string;
 };
 
 export type SeoSection = {
@@ -129,7 +211,6 @@ export type SeoSection = {
   description: string;
   ogTitle: string;
   ogDescription: string;
-  /** Optional absolute URL for social share image (e.g. /og-image.png). */
   ogImage?: string;
 };
 
@@ -141,10 +222,10 @@ export type SocialTranslations = {
 
 export type FooterSection = {
   datenschutz: string;
-  privacy: string;
   impressum: string;
-  imprint: string;
+  agb: string;
   consentSettings: string;
+  legalNavLabel: string;
 };
 
 export type ConsentBannerTranslations = {
@@ -167,6 +248,8 @@ export type ConsentSettingsTranslations = {
   alwaysOn: string;
   statisticsTitle: string;
   statisticsDescription: string;
+  marketingTitle: string;
+  marketingDescription: string;
   provider: string;
   storage: string;
   retention: string;
@@ -179,6 +262,9 @@ export type ConsentSettingsTranslations = {
   serviceLocale: string;
   serviceConsent: string;
   serviceAnalytics: string;
+  serviceGa: string;
+  serviceAds: string;
+  serviceMeta: string;
 };
 
 export type ConsentTranslations = {
@@ -189,15 +275,19 @@ export type ConsentTranslations = {
 export type AppTranslations = {
   nav: NavSection;
   hero: HeroSection;
+  trustStrip: TrustStripSection;
+  services: ServicesSection;
   about: AboutSection;
-  impact: ImpactSection;
   experience: ExperienceSection;
   projects: ProjectsSectionTranslations;
-  automationAi: AutomationAiSection;
+  process: ProcessSection;
+  closingCta: ClosingCtaSection;
+  projectReferences: ProjectReferencesSection;
+  thankYou: ThankYouPage;
+  resume: ResumePage;
   contact: ContactSection;
   seo: SeoSection;
   social: SocialTranslations;
   footer: FooterSection;
   consent: ConsentTranslations;
 };
-

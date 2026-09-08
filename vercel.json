@@ -1,5 +1,53 @@
 {
   "framework": "nuxtjs",
-  "buildCommand": "npm run build"
+  "buildCommand": "npm run build",
+  "redirects": [
+    { "source": "/de", "destination": "/", "permanent": true },
+    { "source": "/en", "destination": "/", "permanent": true },
+    { "source": "/de/impressum", "destination": "/impressum", "permanent": true },
+    { "source": "/en/imprint", "destination": "/impressum", "permanent": true },
+    { "source": "/de/datenschutz", "destination": "/datenschutz", "permanent": true },
+    { "source": "/en/privacy", "destination": "/datenschutz", "permanent": true },
+    { "source": "/de/lebenslauf", "destination": "/lebenslauf", "permanent": true },
+    { "source": "/en/resume", "destination": "/lebenslauf", "permanent": true },
+    { "source": "/de/danke", "destination": "/danke", "permanent": true },
+    { "source": "/en/thanks", "destination": "/danke", "permanent": true },
+    {
+      "source": "/de/webseiten-pferdebetriebe",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/websites-equestrian",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/websites-fuer-pferdebetriebe",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/webdesign-pferdebetriebe",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/projekte/billiard-battle",
+      "destination": "/projekte/crispy-billiards",
+      "permanent": true
+    },
+    {
+      "source": "/de/projekte/:slug",
+      "destination": "/projekte/:slug",
+      "permanent": true
+    },
+    {
+      "source": "/en/projects/:slug",
+      "destination": "/projekte/:slug",
+      "permanent": true
+    },
+    { "source": "/de/:path*", "destination": "/:path*", "permanent": true },
+    { "source": "/en/:path*", "destination": "/", "permanent": true }
+  ]
 }
-

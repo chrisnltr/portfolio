@@ -1,41 +1,58 @@
 import { setResponseHeader } from "h3";
+import type { H3Event } from "h3";
+import { projects } from "~/data/projects";
 
-const LOCALES = ["de", "en"] as const;
-
-function getOrigin(event: { node: { req: { headers: { [key: string]: string | undefined } } } }) {
+function getOrigin(event: H3Event) {
   const envUrl = process.env.NUXT_PUBLIC_SITE_URL;
   if (envUrl) return envUrl.replace(/\/$/, "");
   const host = event.node.req.headers.host || "localhost:3000";
-  const proto = event.node.req.headers["x-forwarded-proto"] || "http";
+  const protoHeader = event.node.req.headers["x-forwarded-proto"];
+  const proto = Array.isArray(protoHeader) ? protoHeader[0] : protoHeader || "http";
   return `${proto}://${host}`;
+}
+
+function urlEntry(
+  base: string,
+  path: string,
+  lastmod: string,
+  changefreq: string,
+  priority: string,
+) {
+  return `  <url>\n    <loc>${base}${path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${changefreq}</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }
 
 export default defineEventHandler((event) => {
   const base = getOrigin(event);
   const lastmod = new Date().toISOString().slice(0, 10);
 
-  const localeUrls = LOCALES.map(
-    (locale) =>
-      `  <url>\n    <loc>${base}/${locale}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>1.0</priority>\n  </url>`,
-  ).join("\n");
-
-  const legalUrls = [
-    { path: "/de/datenschutz", changefreq: "monthly" as const },
-    { path: "/en/privacy", changefreq: "monthly" as const },
-    { path: "/de/impressum", changefreq: "monthly" as const },
-    { path: "/en/imprint", changefreq: "monthly" as const },
+  const staticPages = [
+    { path: "/", changefreq: "weekly", priority: "1.0" },
+    { path: "/datenschutz", changefreq: "monthly", priority: "0.5" },
+    { path: "/impressum", changefreq: "monthly", priority: "0.5" },
+    { path: "/agb", changefreq: "monthly", priority: "0.5" },
+    { path: "/lebenslauf", changefreq: "monthly", priority: "0.6" },
   ]
-    .map(
-      (entry) =>
-        `  <url>\n    <loc>${base}${entry.path}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>${entry.changefreq}</changefreq>\n    <priority>0.5</priority>\n  </url>`,
+    .map((entry) =>
+      urlEntry(base, entry.path, lastmod, entry.changefreq, entry.priority),
     )
     .join("\n");
 
-  const urls = [localeUrls, legalUrls].join("\n");
+  const projectUrls = projects
+    .map((project) =>
+      urlEntry(
+        base,
+        `/projekte/${project.routeSlug}`,
+        lastmod,
+        "monthly",
+        "0.7",
+      ),
+    )
+    .join("\n");
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls}
+${staticPages}
+${projectUrls}
 </urlset>`;
 
   setResponseHeader(event, "Content-Type", "application/xml");

@@ -1,73 +1,16 @@
 import { computed } from "vue";
-import { useRoute, useRouter } from "#app";
-import { en } from "~/data/i18n/en";
 import { de } from "~/data/i18n/de";
-import type { AppLocale, AppTranslations } from "~/types/i18n";
+import type { AppTranslations } from "~/types/i18n";
 
-const SUPPORTED_LOCALES: AppLocale[] = ["en", "de"];
-const DEFAULT_LOCALE: AppLocale = "de";
-
-const translationsByLocale: Record<AppLocale, AppTranslations> = {
-  en,
-  de,
-};
-
+/**
+ * Site content is German-only. Kept as useI18n for existing call sites.
+ */
 export const useI18n = () => {
-  const route = useRoute();
-  const router = useRouter();
-
-  const locale = computed<AppLocale>(() => {
-    const param = route.params.locale;
-    if (typeof param === "string" && SUPPORTED_LOCALES.includes(param as AppLocale)) {
-      return param as AppLocale;
-    }
-    // Legal pages: /de/datenschutz, /en/privacy (no [locale] param)
-    const path = route.path;
-    if (path.startsWith("/en")) return "en";
-    if (path.startsWith("/de")) return "de";
-    return DEFAULT_LOCALE;
-  });
-
-  const messages = computed<AppTranslations>(() => {
-    return translationsByLocale[locale.value];
-  });
-
-  const setLocale = async (newLocale: AppLocale) => {
-    if (!SUPPORTED_LOCALES.includes(newLocale)) return;
-    if (process.client) {
-      localStorage.setItem("preferred_locale", newLocale);
-    }
-    if (newLocale === locale.value) return;
-
-    const path = route.path;
-    const legalMap: Record<string, { de: string; en: string }> = {
-      datenschutz: { de: "/de/datenschutz", en: "/en/privacy" },
-      privacy: { de: "/de/datenschutz", en: "/en/privacy" },
-      impressum: { de: "/de/impressum", en: "/en/imprint" },
-      imprint: { de: "/de/impressum", en: "/en/imprint" },
-    };
-    for (const [key, routes] of Object.entries(legalMap)) {
-      if (path.includes(`/${key}`)) {
-        await router.push(routes[newLocale]);
-        return;
-      }
-    }
-
-    await router.push({
-      name: route.name as string | undefined,
-      params: {
-        ...route.params,
-        locale: newLocale,
-      },
-      query: route.query,
-      hash: route.hash,
-    });
-  };
+  const locale = computed(() => "de" as const);
+  const messages = computed<AppTranslations>(() => de);
 
   return {
     locale,
     messages,
-    setLocale,
   };
 };
-
