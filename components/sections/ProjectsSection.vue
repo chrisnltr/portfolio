@@ -1,297 +1,348 @@
 <template>
   <section
-    id="projects"
-    class="modern-section flex items-center py-14 md:py-20 transition-all duration-700 ease-out"
+    :id="sectionId"
+    class="section-pad projects-section"
   >
-    <div class="container mx-auto px-4">
-      <div
-        class="grid md:grid-cols-[2fr_3fr] gap-6 md:gap-8 max-w-7xl mx-auto md:min-h-[560px] items-start"
-      >
-        <div class="flex flex-col h-full justify-start mt-4 md:mt-8">
-          <h2
-            class="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text text-center mb-6 md:mb-8"
-          >
-            {{ messages.projects.title }}
-          </h2>
-
-          <div
-            class="space-y-3 pr-0 md:pr-4 flex-1 flex flex-col justify-start"
-          >
-            <article
-              v-for="project in localizedProjects"
-              :key="project.slug"
-              role="button"
-              tabindex="0"
-              class="card-elevated group hover:glow hover:scale-[1.02] transition-all duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0a0a0a]"
-              :class="{
-                'bg-accent-600/10 border-accent-600/40':
-                  project.slug === selectedSlug,
-              }"
-              @click="selectProject(project.slug)"
-              @keydown.enter="selectProject(project.slug)"
-              @keydown.space.prevent="selectProject(project.slug)"
-            >
-              <div class="flex gap-3 md:gap-4 p-3 md:p-4">
-                <div class="flex-shrink-0">
-                  <div
-                    class="w-20 h-12 md:w-24 md:h-16 bg-background-tertiary rounded-lg overflow-hidden image-hover"
-                  >
-                    <img
-                      :src="project.images[0]"
-                      :alt="project.translations.title + ' – screenshot'"
-                      class="w-full h-full object-cover transition-transform duration-300"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                </div>
-
-                <div class="flex-1 min-w-0">
-                  <h3
-                    class="text-base md:text-lg font-bold mb-1.5 text-text-primary truncate"
-                  >
-                    {{ project.translations.title }}
-                  </h3>
-                  <p
-                    class="text-text-secondary mb-2 text-xs md:text-sm line-clamp-2"
-                  >
-                    {{ project.translations.shortDescription }}
-                  </p>
-                  <div class="flex gap-1 flex-wrap">
-                    <span
-                      v-for="tech in project.techStack.slice(0, 3)"
-                      :key="tech"
-                      class="tech-tag text-[10px] md:text-xs px-2 py-0.5"
-                    >
-                      {{ tech }}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
-
-        <div
-          ref="detailPanel"
-          class="bg-background-secondary border border-border-primary rounded-xl p-4 md:p-6 h-full flex flex-col justify-start mt-2 md:mt-8 md:max-h-[calc(100vh-6rem)] md:overflow-y-auto"
-        >
-          <div v-if="currentProject" class="flex flex-col h-full">
-            <div
-              class="aspect-video bg-background-tertiary rounded-lg mb-3 overflow-hidden relative group"
-            >
-              <img
-                :src="currentProject.images[selectedImageIndex]"
-                :alt="currentProject.translations.title + ' – screenshot ' + (selectedImageIndex + 1)"
-                class="w-full h-full object-cover transition-opacity duration-300"
-                loading="lazy"
-                decoding="async"
-              />
-              <template v-if="currentProject.images.length > 1">
-                <button
-                  type="button"
-                  class="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
-                  :aria-label="messages.projects.prevImage"
-                  @click="prevImage"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                  </svg>
-                </button>
-                <button
-                  type="button"
-                  class="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/60 hover:bg-black/80 text-white flex items-center justify-center transition-opacity focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
-                  :aria-label="messages.projects.nextImage"
-                  @click="nextImage"
-                >
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </template>
-            </div>
-            <div
-              v-if="currentProject.images.length > 1"
-              class="flex gap-2 mb-4 flex-wrap"
-              role="tablist"
-              :aria-label="messages.projects.galleryLabel"
-            >
-              <button
-                v-for="(img, idx) in currentProject.images"
-                :key="idx"
-                type="button"
-                role="tab"
-                :aria-selected="selectedImageIndex === idx"
-                :tabindex="selectedImageIndex === idx ? 0 : -1"
-                class="w-14 h-10 md:w-16 md:h-11 rounded-lg overflow-hidden border-2 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400"
-                :class="selectedImageIndex === idx ? 'border-accent-500 opacity-100' : 'border-border-primary opacity-70 hover:opacity-90'"
-                @click="selectedImageIndex = idx"
-              >
-                <img
-                  :src="img"
-                  :alt="currentProject.translations.title + ' – Vorschaubild ' + (idx + 1)"
-                  class="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </button>
-            </div>
-
-            <h3 class="text-xl md:text-2xl font-bold text-text-primary mb-1">
-              {{ currentProject.translations.title }}
-            </h3>
-            <p class="text-text-secondary text-sm md:text-base mb-2">
-              {{ currentProject.translations.subtitle }}
-            </p>
-            <p class="text-text-secondary text-xs md:text-sm mb-4 line-clamp-3">
-              {{ currentProject.translations.shortDescription }}
-            </p>
-
-            <div class="mb-4 flex-1 md:overflow-y-auto">
-              <h4
-                class="text-sm md:text-base font-semibold text-text-primary mb-2"
-              >
-                {{ currentProject.translations.featuresTitle }}
-              </h4>
-              <ul
-                class="text-text-secondary space-y-1.5 text-xs md:text-sm md:max-h-40 md:overflow-y-auto pr-1"
-              >
-                <li
-                  v-for="feature in currentProject.translations.features"
-                  :key="feature"
-                  class="flex gap-2 items-start"
-                >
-                  <span class="mt-1 text-accent-400">•</span>
-                  <span>{{ feature }}</span>
-                </li>
-              </ul>
-            </div>
-
-            <div class="mb-4">
-              <h4
-                class="text-sm md:text-base font-semibold text-text-primary mb-2"
-              >
-                {{ currentProject.translations.techStackTitle }}
-              </h4>
-              <div class="flex flex-wrap gap-1.5 md:gap-2">
-                <span
-                  v-for="tech in currentProject.techStack"
-                  :key="tech"
-                  class="px-2 md:px-3 py-0.5 bg-accent-600/20 text-accent-400 rounded-full text-[10px] md:text-xs"
-                >
-                  {{ tech }}
-                </span>
-              </div>
-            </div>
-
-            <div class="mt-auto flex flex-wrap items-center gap-3">
-              <button
-                v-if="showCaseStudyButton"
-                type="button"
-                class="btn-primary text-xs md:text-sm px-4 py-2"
-                @click="openModal"
-              >
-                {{ currentProject.translations.caseStudyCta }}
-              </button>
-              <a
-                v-if="currentProject.links.liveUrl"
-                :href="currentProject.links.liveUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="btn-primary text-xs md:text-sm px-4 py-2 inline-flex items-center"
-              >
-                {{ currentProject.translations.liveDemoLabel }}
-              </a>
-              <a
-                v-if="currentProject.links.githubUrl"
-                :href="currentProject.links.githubUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-xs md:text-sm text-accent-400 hover:text-accent-300 underline-offset-4 hover:underline"
-              >
-                {{ currentProject.translations.githubLabel }}
-              </a>
-            </div>
-          </div>
-        </div>
+    <div class="container-page">
+      <div class="projects-intro">
+        <h2 class="section-heading">{{ resolvedTitle }}</h2>
+        <p v-if="resolvedSubtitle" class="section-lead">
+          {{ resolvedSubtitle }}
+        </p>
       </div>
 
-      <ProjectCaseStudyModal
-        v-if="currentProject"
-        :open="modalOpen"
-        :project-translations="currentProject.translations"
-        :tech-stack="currentProject.techStack"
-        :links="currentProject.links"
-        @close="modalOpen = false"
-      />
+      <div
+        class="project-grid"
+        :class="{ 'project-grid--two': maxColumns === 2 }"
+      >
+        <article
+          v-for="(project, index) in displayProjects"
+          :key="project.slug"
+          class="project-card"
+          :class="{ 'project-card--static': !cardLink }"
+          :style="cardAccentStyle(project)"
+        >
+          <div
+            class="project-card__media"
+            @click="onMediaClick($event, project)"
+          >
+            <CyclingProjectPreview
+              v-if="cycleImagesFor(project)"
+              :images="cycleImagesFor(project) || []"
+              :title="project.content.title"
+              :alt="previewAlt(project)"
+              :priority="index < 2"
+              :preview-id="`card-cycle-${project.slug}`"
+            />
+            <ScrollingProjectPreview
+              v-else
+              :image="previewFor(project)"
+              :title="project.content.title"
+              :alt="previewAlt(project)"
+              :priority="index < 2"
+              :preview-id="`card-scroll-${project.slug}`"
+            />
+          </div>
+
+          <component
+            :is="cardLink ? cardComponent(project) : 'div'"
+            class="project-card__body"
+            :to="cardTo(project)"
+            :href="cardHref(project)"
+            :target="cardTarget(project)"
+            :rel="cardRel(project)"
+          >
+            <h3
+              class="project-card__title"
+              :class="{ 'project-card__title--crispy': isCrispy(project) }"
+            >
+              <template v-if="isCrispy(project)">
+                <span class="project-card__title-crispy">Crispy</span>
+                <span class="project-card__title-billiards"> Billiards</span>
+              </template>
+              <template v-else>
+                {{ project.content.title }}
+              </template>
+            </h3>
+            <p class="project-card__type">
+              {{ project.content.platformLabel }}
+            </p>
+            <ul v-if="tagsFor(project).length" class="project-card__tags">
+              <li v-for="tag in tagsFor(project)" :key="tag">{{ tag }}</li>
+            </ul>
+          </component>
+        </article>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref } from "vue";
+import { computed } from "vue";
+import { NuxtLink } from "#components";
+import CyclingProjectPreview from "~/components/projects/CyclingProjectPreview.vue";
+import ScrollingProjectPreview from "~/components/projects/ScrollingProjectPreview.vue";
+import { isFinePointerHover } from "~/composables/usePreviewInteraction";
 import { useI18n } from "~/composables/useI18n";
-import { projects } from "~/data/projects";
-import ProjectCaseStudyModal from "~/components/projects/ProjectCaseStudyModal.vue";
-import type { AppLocale } from "~/types/i18n";
+import { projectDetailPath } from "~/data/navigation";
+import { getPreviewProjects, getProjectBySlug } from "~/data/projects";
+import type { ProjectCaseStudy, ProjectImage } from "~/types/content";
 
-const { locale, messages: rawMessages } = useI18n();
-const messages = computed(() => rawMessages.value);
+const props = withDefaults(
+  defineProps<{
+    sectionId?: string;
+    title?: string;
+    subtitle?: string;
+    projectSlugs?: string[];
+    maxColumns?: 2 | 3;
+    cardLink?: boolean;
+  }>(),
+  {
+    sectionId: "projects",
+    maxColumns: 3,
+    cardLink: true,
+  },
+);
 
-const localizedProjects = computed(() => {
-  const currentLocale = locale.value as AppLocale;
-  return projects.map((project) => ({
-    slug: project.slug,
-    images: project.images,
-    techStack: project.techStack,
-    links: project.links,
-    translations: project.translations[currentLocale],
-  }));
+const { messages } = useI18n();
+
+const resolvedTitle = computed(
+  () => props.title ?? messages.value.projects.title,
+);
+const resolvedSubtitle = computed(
+  () => props.subtitle ?? messages.value.projects.subtitle,
+);
+
+const displayProjects = computed(() => {
+  if (props.projectSlugs?.length) {
+    return props.projectSlugs
+      .map((slug) => getProjectBySlug(slug))
+      .filter(Boolean) as ProjectCaseStudy[];
+  }
+  return getPreviewProjects();
 });
 
-const selectedSlug = ref<string | null>(
-  localizedProjects.value.length > 0 ? localizedProjects.value[0].slug : null,
-);
-const modalOpen = ref(false);
-const detailPanel = ref<HTMLElement | null>(null);
+function previewFor(project: ProjectCaseStudy): ProjectImage | null {
+  return project.previewImage || project.images[0] || null;
+}
 
-const currentProject = computed(() =>
-  localizedProjects.value.find((p) => p.slug === selectedSlug.value) ??
-  localizedProjects.value[0] ??
-  null,
-);
+function cycleImagesFor(project: ProjectCaseStudy): ProjectImage[] | null {
+  const images = project.cardCycleImages;
+  if (!images || images.length < 2) return null;
+  return images;
+}
 
-const selectedImageIndex = ref(0);
+function previewAlt(project: ProjectCaseStudy) {
+  const cycle = cycleImagesFor(project);
+  if (cycle?.[0]) return cycle[0].alt;
+  const image = previewFor(project);
+  if (image) return image.alt;
+  return project.content.title;
+}
 
-const showCaseStudyButton = computed(
-  () => currentProject.value?.slug !== "accident-report-app",
-);
+function tagsFor(project: ProjectCaseStudy) {
+  if (project.cardTags?.length) return project.cardTags.slice(0, 3);
+  return project.technologies.slice(0, 3);
+}
 
-const isMobileViewport = () =>
-  typeof window !== "undefined" && window.innerWidth < 768;
+function cardAccentStyle(project: ProjectCaseStudy) {
+  if (!project.accent) return undefined;
+  return { "--card-accent": project.accent } as Record<string, string>;
+}
 
-const selectProject = async (slug: string) => {
-  selectedSlug.value = slug;
-  selectedImageIndex.value = 0;
+function isCrispy(project: ProjectCaseStudy) {
+  return project.slug === "crispy-billiards";
+}
 
-  if (isMobileViewport()) {
-    await nextTick();
-    detailPanel.value?.scrollIntoView({ behavior: "smooth", block: "start" });
+function cardComponent(project: ProjectCaseStudy) {
+  if (!props.cardLink) return "div";
+  if (project.homepageExternalUrl) return "a";
+  return NuxtLink;
+}
+
+function cardTo(project: ProjectCaseStudy) {
+  if (!props.cardLink || project.homepageExternalUrl) return undefined;
+  return projectDetailPath(project.routeSlug);
+}
+
+function cardHref(project: ProjectCaseStudy) {
+  if (!props.cardLink || !project.homepageExternalUrl) return undefined;
+  return project.homepageExternalUrl;
+}
+
+function cardTarget(project: ProjectCaseStudy) {
+  if (!props.cardLink || !project.homepageExternalUrl) return undefined;
+  return "_blank";
+}
+
+function cardRel(project: ProjectCaseStudy) {
+  if (!props.cardLink || !project.homepageExternalUrl) return undefined;
+  return "noopener noreferrer";
+}
+
+function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
+  if (!props.cardLink) return;
+  // Touch devices use the preview controls; body/CTA remains the nav target.
+  if (!isFinePointerHover()) return;
+  if (event.defaultPrevented) return;
+
+  if (project.homepageExternalUrl) {
+    window.open(project.homepageExternalUrl, "_blank", "noopener,noreferrer");
+    return;
   }
-};
 
-const prevImage = () => {
-  if (!currentProject.value) return;
-  const len = currentProject.value.images.length;
-  selectedImageIndex.value = (selectedImageIndex.value - 1 + len) % len;
-};
-
-const nextImage = () => {
-  if (!currentProject.value) return;
-  const len = currentProject.value.images.length;
-  selectedImageIndex.value = (selectedImageIndex.value + 1) % len;
-};
-
-const openModal = () => {
-  modalOpen.value = true;
-};
+  navigateTo(projectDetailPath(project.routeSlug));
+}
 </script>
+
+<style scoped>
+.projects-section {
+  position: relative;
+  background: var(--color-surface);
+  border-block: 1px solid var(--color-border);
+}
+
+.projects-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 70% 45% at 80% 20%,
+    rgba(47, 102, 255, 0.07) 0%,
+    transparent 70%
+  );
+}
+
+.projects-intro {
+  position: relative;
+  z-index: 1;
+  max-width: 40rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  min-width: 0;
+}
+
+.project-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .project-grid--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1100px) {
+  .project-grid:not(.project-grid--two) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.project-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card__media {
+  position: relative;
+  min-width: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-card:not(.project-card--static) .project-card__media {
+    cursor: pointer;
+  }
+}
+
+.project-card :deep(.preview),
+.project-card :deep(.cycle) {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 10;
+  max-height: none;
+  width: 100%;
+}
+
+.project-card--static {
+  cursor: default;
+}
+
+.project-card__body {
+  display: block;
+  padding-top: 1rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+}
+
+.project-card__body:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.project-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.8vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 0.35rem;
+  overflow-wrap: anywhere;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.project-card__title-crispy,
+.project-card__title-billiards {
+  transition:
+    color var(--duration-fast) var(--ease-out),
+    font-weight var(--duration-fast) var(--ease-out),
+    font-style var(--duration-fast) var(--ease-out);
+}
+
+.project-card__type {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  list-style: none;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.project-card:hover .project-card__title:not(.project-card__title--crispy) {
+  color: var(--card-accent, var(--accent-hover));
+}
+
+.project-card:hover .project-card__title--crispy .project-card__title-crispy {
+  color: #c8d0dc;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.project-card:hover .project-card__title--crispy .project-card__title-billiards {
+  color: #e0b24a;
+  font-weight: 700;
+  font-style: italic;
+}
+</style>
