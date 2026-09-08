@@ -56,4 +56,12 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+
+  // Keep Nuxt's SSR runtime helpers inside the Nitro bundle. This avoids
+  // invalid `default: default` external stubs in the Node 22 production build.
+  nitro: {
+    externals: {
+      inline: ["@nuxt/vite-builder"],
+    },
+  },
 });
