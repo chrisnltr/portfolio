@@ -57,6 +57,7 @@ interface ContactBody {
   turnstileToken?: string;
   honeypot?: string;
   locale?: string;
+  formType?: string;
 }
 
 interface TurnstileVerifyResponse {
@@ -96,14 +97,12 @@ function buildEmailContent(input: {
   phone: string;
   message: string;
   locale: string;
-}): { text: string; html: string } {
-  const safeName = escapeHtml(input.name);
-  const safeEmail = escapeHtml(input.email);
-  const safePhone = escapeHtml(input.phone || "(none)");
-  const safeLocale = escapeHtml(input.locale);
-  const safeMessage = escapeHtml(input.message).replace(/\n/g, "<br />");
+  formType: string;
+}): { subject: string; text: string; html: string } {
+  const subject = `Portfolio-Anfrage von ${input.name}`;
 
   const text = [
+    `Form: ${input.formType}`,
     `Name: ${input.name}`,
     `Email: ${input.email}`,
     `Phone: ${input.phone || "(none)"}`,
@@ -118,16 +117,16 @@ function buildEmailContent(input: {
 <html>
   <body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; color: #111;">
     <h2 style="margin: 0 0 16px;">Portfolio contact form</h2>
-    <p style="margin: 0 0 8px;"><strong>Name:</strong> ${safeName}</p>
-    <p style="margin: 0 0 8px;"><strong>Email:</strong> ${safeEmail}</p>
-    <p style="margin: 0 0 8px;"><strong>Phone:</strong> ${safePhone}</p>
-    <p style="margin: 0 0 16px;"><strong>Locale:</strong> ${safeLocale}</p>
-    <p style="margin: 0 0 8px;"><strong>Message:</strong></p>
-    <p style="margin: 0; white-space: pre-wrap;">${safeMessage}</p>
+    <p style="margin: 0 0 8px;"><strong>Name:</strong> ${escapeHtml(input.name)}</p>
+    <p style="margin: 0 0 8px;"><strong>Email:</strong> ${escapeHtml(input.email)}</p>
+    <p style="margin: 0 0 8px;"><strong>Phone:</strong> ${escapeHtml(input.phone || "(none)")}</p>
+    <p style="margin: 0 0 8px;"><strong>Locale:</strong> ${escapeHtml(input.locale)}</p>
+    <p style="margin: 16px 0 8px;"><strong>Message:</strong></p>
+    <p style="margin: 0; white-space: pre-wrap;">${escapeHtml(input.message).replace(/\n/g, "<br />")}</p>
   </body>
 </html>`.trim();
 
-  return { text, html };
+  return { subject, text, html };
 }
 
 export default defineEventHandler(async (event) => {
@@ -153,7 +152,6 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Honeypot: pretend success so bots do not learn the trap.
   if (body.honeypot && String(body.honeypot).trim() !== "") {
     return { ok: true };
   }
@@ -168,30 +166,22 @@ export default defineEventHandler(async (event) => {
     typeof body.locale === "string" && body.locale.trim()
       ? body.locale.trim()
       : "de";
+  const formType =
+    typeof body.formType === "string" && body.formType.trim()
+      ? body.formType.trim()
+      : "general";
 
   if (!name || name.length > MAX_NAME) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Invalid name",
-    });
+    throw createError({ statusCode: 400, statusMessage: "Invalid name" });
   }
   if (!email || email.length > MAX_EMAIL || !EMAIL_REGEX.test(email)) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Invalid email",
-    });
+    throw createError({ statusCode: 400, statusMessage: "Invalid email" });
   }
   if (phone.length > MAX_PHONE) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Invalid phone",
-    });
+    throw createError({ statusCode: 400, statusMessage: "Invalid phone" });
   }
   if (!message || message.length > MAX_MESSAGE) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: "Invalid message",
-    });
+    throw createError({ statusCode: 400, statusMessage: "Invalid message" });
   }
 
   const config = useRuntimeConfig(event);
@@ -247,13 +237,13 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  const emailSubject = `Portfolio-Anfrage von ${name}`;
-  const { text, html } = buildEmailContent({
+  const { subject, text, html } = buildEmailContent({
     name,
     email,
     phone,
     message,
     locale,
+    formType,
   });
 
   try {
@@ -262,7 +252,7 @@ export default defineEventHandler(async (event) => {
       from: fromEmail,
       to: toEmail,
       replyTo: email,
-      subject: emailSubject,
+      subject,
       text,
       html,
     });
