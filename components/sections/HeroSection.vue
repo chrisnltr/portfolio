@@ -1,122 +1,45 @@
 <template>
   <section
-    id="home"
-    class="min-h-screen flex items-center justify-center animated-bg px-4"
+    :id="sectionId"
+    class="hero"
   >
-    <div class="container mx-auto text-center">
-      <div class="animate-fade-in">
-        <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold animate-slide-up">
+    <div class="container-page hero__inner">
+      <div class="hero__copy">
+        <p class="section-label">{{ resolvedEyebrow }}</p>
+        <h1 class="hero__title">
           <span
-            class="gradient-text inline-block"
-            style="
-              font-weight: 600;
-              background-size: 200% 200%;
-              animation: gradientShift 3s ease-in-out infinite;
-            "
-          >
-            {{ messages.hero.greeting }}
-          </span>
-          <span
-            class="hero-name block mt-1 animate-slide-up cursor-pointer transition-all duration-500 ease-out hover:opacity-90 break-words"
-            style="animation-delay: 0.15s"
-          >
-            {{ messages.hero.nameIntro }}
-          </span>
+            v-for="(line, index) in headlineLines"
+            :key="index"
+            class="hero__title-line"
+          >{{ line }}</span>
         </h1>
-        <h2
-          class="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold gradient-text mt-3 animate-slide-up"
-          style="
-            animation-delay: 0.3s;
-            font-weight: 600;
-            background-size: 200% 200%;
-            animation: gradientShift 3s ease-in-out infinite;
-          "
-        >
-          {{ messages.hero.roleHeadline }}
-        </h2>
-        <p
-          class="text-base sm:text-lg md:text-xl lg:text-2xl text-text-secondary mt-4 mb-6 mx-auto max-w-3xl animate-slide-up px-2 text-balance"
-          style="animation-delay: 0.45s"
-        >
-          {{ messages.hero.positioningLine }}
-        </p>
+        <p class="hero__body">{{ resolvedDescription }}</p>
 
-        <div
-          class="flex flex-col sm:flex-row items-center gap-3 justify-center mb-6 animate-slide-up"
-          style="animation-delay: 0.55s"
-        >
-          <span
-            class="inline-flex items-center gap-2 rounded-full border border-accent-600/60 bg-accent-600/10 px-3 py-1 text-xs md:text-sm text-accent-400"
-          >
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{{ messages.hero.openToWorkBadge }}</span>
-            <span class="hidden sm:inline text-text-secondary/80">
-              · {{ messages.hero.locationLabel }}
-            </span>
-          </span>
-        </div>
-
-        <div
-          class="flex items-center justify-center gap-4 animate-slide-up"
-          style="animation-delay: 0.65s"
-        >
+        <div class="hero__actions">
           <a
-            v-for="link in profile.socialLinks"
-            :key="link.id"
-            :href="link.url"
-            class="text-text-secondary hover:text-accent-400 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-400 rounded-full p-2"
-            target="_blank"
-            rel="noopener noreferrer"
-            :aria-label="socialAriaLabel(link.type)"
+            :href="primaryHref"
+            class="btn-primary"
+            @click="onCta('hero-primary')"
           >
-            <span v-if="link.type === 'github'" aria-hidden="true">
-              <!-- Minimal GitHub icon -->
-              <svg
-                class="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M12 2C6.477 2 2 6.486 2 12.021c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.218.682-.486 0-.24-.01-1.038-.014-1.884-2.782.606-3.37-1.194-3.37-1.194-.454-1.155-1.11-1.463-1.11-1.463-.908-.622.069-.61.069-.61 1.004.071 1.532 1.037 1.532 1.037.892 1.53 2.341 1.088 2.91.832.091-.648.35-1.088.636-1.338-2.22-.253-4.555-1.115-4.555-4.962 0-1.096.39-1.993 1.029-2.694-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.029A9.45 9.45 0 0 1 12 6.844a9.43 9.43 0 0 1 2.504.337c1.909-1.3 2.748-1.029 2.748-1.029.546 1.378.203 2.397.1 2.65.64.701 1.028 1.598 1.028 2.694 0 3.857-2.339 4.706-4.566 4.955.359.31.678.923.678 1.861 0 1.344-.012 2.427-.012 2.756 0 .27.18.582.688.484A9.52 9.52 0 0 0 22 12.021C22 6.486 17.523 2 12 2Z"
-                />
-              </svg>
-            </span>
-            <span v-else-if="link.type === 'linkedin'" aria-hidden="true">
-              <!-- Minimal LinkedIn icon -->
-              <svg
-                class="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path
-                  d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM.22 8.29H4.7V24H.22V8.29zM8.44 8.29h4.29v2.13h.06c.6-1.14 2.08-2.34 4.29-2.34 4.59 0 5.44 3.02 5.44 6.95V24h-4.48v-7.4c0-1.77-.03-4.05-2.47-4.05-2.47 0-2.85 1.93-2.85 3.93V24H8.44V8.29z"
-                />
-              </svg>
-            </span>
-            <span v-else aria-hidden="true">
-              <!-- Minimal email icon -->
-              <svg
-                class="w-5 h-5"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.8"
-              >
-                <rect
-                  x="3"
-                  y="5"
-                  width="18"
-                  height="14"
-                  rx="2"
-                  ry="2"
-                ></rect>
-                <polyline points="3 7 12 13 21 7"></polyline>
-              </svg>
-            </span>
+            {{ resolvedPrimaryCta }}
+          </a>
+          <a
+            :href="secondaryHref"
+            class="text-link"
+            @click="onCta('hero-secondary')"
+          >
+            {{ resolvedSecondaryCta }} →
           </a>
         </div>
+
+        <p class="hero__trust">
+          <span
+            v-for="(item, index) in trustItems"
+            :key="item"
+          >
+            {{ item }}<template v-if="index < trustItems.length - 1"><span class="hero__trust-sep" aria-hidden="true"> · </span></template>
+          </span>
+        </p>
       </div>
     </div>
   </section>
@@ -124,18 +47,165 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
-import { profile } from "~/data/profile";
 
-const { messages: rawMessages } = useI18n();
+const props = withDefaults(
+  defineProps<{
+    sectionId?: string;
+    eyebrow?: string;
+    headline?: string;
+    description?: string;
+    primaryCta?: string;
+    secondaryCta?: string;
+    primaryHref?: string;
+    secondaryHref?: string;
+    trustLine?: string;
+    analyticsService?: string;
+  }>(),
+  {
+    sectionId: "home",
+    primaryHref: "#contact",
+    secondaryHref: "#projects",
+    analyticsService: "contact",
+  },
+);
 
-const messages = computed(() => rawMessages.value);
+const { messages } = useI18n();
+const { track } = useAnalytics();
 
-const socialAriaLabel = (type: "github" | "linkedin" | "email") => {
-  const social = messages.value.social;
-  if (type === "github") return social.githubLabel;
-  if (type === "linkedin") return social.linkedinLabel;
-  return social.emailLabel;
-};
+const resolvedEyebrow = computed(
+  () => props.eyebrow ?? messages.value.hero.eyebrow,
+);
+const resolvedDescription = computed(
+  () => props.description ?? messages.value.hero.description,
+);
+const resolvedPrimaryCta = computed(
+  () => props.primaryCta ?? messages.value.hero.primaryCta,
+);
+const resolvedSecondaryCta = computed(
+  () => props.secondaryCta ?? messages.value.hero.secondaryCta,
+);
+
+const headlineLines = computed(() => {
+  if (props.headline) return [props.headline];
+  return [
+    messages.value.hero.headlineLine1,
+    messages.value.hero.headlineLine2,
+  ];
+});
+
+const trustItems = computed(() => {
+  const line = props.trustLine ?? messages.value.hero.trustLine;
+  return line.split(" · ").map((s) => s.trim()).filter(Boolean);
+});
+
+function onCta(location: string) {
+  track("cta_click", {
+    location,
+    service: location === "hero-primary" ? props.analyticsService : "projects",
+  });
+}
 </script>
 
+<style scoped>
+.hero {
+  position: relative;
+  padding-top: calc(var(--header-height) + clamp(1.75rem, 4vw, 3rem));
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  background: transparent;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  right: -10%;
+  top: 10%;
+  width: min(55vw, 640px);
+  height: min(55vw, 520px);
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    closest-side,
+    rgba(47, 102, 255, 0.12) 0%,
+    rgba(47, 102, 255, 0.04) 42%,
+    rgba(5, 7, 11, 0) 78%
+  );
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.hero__copy {
+  max-width: 40rem;
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.85rem, 8vw, 4.25rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: #fff;
+  max-width: 11.5em;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+.hero__title-line {
+  display: block;
+}
+
+.hero__body {
+  margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+  max-width: 34rem;
+  font-size: clamp(0.98rem, 2.8vw, 1.05rem);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.hero__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.85rem;
+}
+
+.hero__actions .btn-primary,
+.hero__actions .text-link {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (min-width: 480px) {
+  .hero__actions {
+    flex-direction: row;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hero__actions .btn-primary,
+  .hero__actions .text-link {
+    width: auto;
+    justify-content: flex-start;
+  }
+}
+
+.hero__trust {
+  margin: 1.35rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text-subtle);
+  max-width: 36rem;
+}
+
+.hero__trust-sep {
+  color: var(--color-text-subtle);
+}
+</style>

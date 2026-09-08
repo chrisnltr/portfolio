@@ -2,8 +2,12 @@ import type { Profile } from "~/types/content";
 
 export const profile: Profile = {
   name: "Chris Leon Noltemeier",
-  location: "Bad Essen / Remote",
-  openToWork: true,
+  shortName: "Chris Leon Noltemeier",
+  location: "Bad Essen",
+  email: "chris.noltemeier@gmail.com",
+  openToWork: false,
+  /** Place file at: public/images/chris-portrait.webp */
+  portraitSrc: "/images/chris-portrait.webp",
   socialLinks: [
     {
       id: "github",
@@ -22,4 +26,3 @@ export const profile: Profile = {
     },
   ],
 };
-
