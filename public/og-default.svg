@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Chris Leon Noltemeier  Websites, Software und Automatisierung</title>
+  <title id="title">Chris Leon Noltemeier â€“ Websites, Software und Automatisierung</title>
   <desc id="desc">Web- und Softwareentwicklung aus Bad Essen.</desc>
   <defs>
     <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
@@ -17,7 +17,7 @@
   <rect x="76" y="76" width="1048" height="478" rx="28" fill="none" stroke="#ffffff" stroke-opacity=".12"/>
   <text x="126" y="184" fill="#9ec5ff" font-family="Arial, sans-serif" font-size="26" font-weight="700" letter-spacing="5">CHRIS LEON NOLTEMEIER</text>
   <text x="126" y="300" fill="#ffffff" font-family="Arial, sans-serif" font-size="64" font-weight="700">Websites und Software.</text>
-  <text x="126" y="382" fill="url(#accent)" font-family="Arial, sans-serif" font-size="64" font-weight="700">Persönlich umgesetzt.</text>
-  <text x="126" y="470" fill="#c4cad8" font-family="Arial, sans-serif" font-size="28">Websites · Shopify-Shops · Webanwendungen · Automatisierung</text>
-  <text x="126" y="515" fill="#8e98ad" font-family="Arial, sans-serif" font-size="24">Bad Essen · chrisnoltemeier.de</text>
+  <text x="126" y="382" fill="url(#accent)" font-family="Arial, sans-serif" font-size="64" font-weight="700">PersÃ¶nlich umgesetzt.</text>
+  <text x="126" y="470" fill="#c4cad8" font-family="Arial, sans-serif" font-size="28">Websites Â· Shopify-Shops Â· Webanwendungen Â· Automatisierung</text>
+  <text x="126" y="515" fill="#8e98ad" font-family="Arial, sans-serif" font-size="24">Bad Essen Â· chrisnoltemeier.de</text>
 </svg>

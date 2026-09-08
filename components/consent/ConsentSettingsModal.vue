@@ -232,8 +232,6 @@ const marketingServices = CONSENT_SERVICES.filter((s) => s.category === "marketi
 
 function serviceLabel(service: (typeof CONSENT_SERVICES)[number]): string {
   switch (service.id) {
-    case "locale-preference":
-      return t.value.serviceLocale;
     case "consent-storage":
       return t.value.serviceConsent;
     case "vercel-analytics":

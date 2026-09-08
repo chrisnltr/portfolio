@@ -30,20 +30,6 @@ export const DEFAULT_CATEGORIES: ConsentCategories = {
 
 export const CONSENT_SERVICES = [
   {
-    id: "locale-preference",
-    category: "necessary" as const,
-    provider: "First-Party (diese Website)",
-    purposeDe:
-      "Speichert die vom Nutzer gewählte Sprache (Deutsch/Englisch), damit die bevorzugte Locale beim nächsten Besuch wiederhergestellt werden kann.",
-    purposeEn:
-      "Stores the language selected by the user (German/English) so the preferred locale can be restored on the next visit.",
-    storageDe: "localStorage-Schlüssel „preferred_locale“",
-    storageEn: "localStorage key “preferred_locale”",
-    retentionDe: "Bis zur Löschung durch den Nutzer oder Leeren des Browser-Speichers",
-    retentionEn: "Until deleted by the user or the browser storage is cleared",
-    privacyUrl: null as string | null,
-  },
-  {
     id: "consent-storage",
     category: "necessary" as const,
     provider: "First-Party (diese Website)",
@@ -70,7 +56,7 @@ export const CONSENT_SERVICES = [
     storageEn:
       "Script `/_vercel/insights/script.js` (production) or `va.vercel-scripts.com` (development); typically cookieless, usage data transmitted to Vercel",
     retentionDe:
-      "Siehe aktuelle Vercel-Datenschutzerklärung; Angabe wird bei Bedarf hier präzisiert",
+      "Keine projektseitig festgelegte Dauer; maßgeblich sind die aktuelle Vercel-Datenschutzerklärung und die Betreiber-Konfiguration",
     retentionEn:
       "See current Vercel privacy policy; details will be refined here as needed",
     privacyUrl: "https://vercel.com/legal/privacy-policy",
@@ -85,10 +71,10 @@ export const CONSENT_SERVICES = [
     purposeEn:
       "Optional: web analytics (e.g. page views, events) when a measurement ID is configured. Loaded only after statistics consent and only if an ID is set.",
     storageDe:
-      "Details zu Cookies und Speicher werden ergänzt, sobald eine Measurement-ID produktiv genutzt wird",
+      "Nur bei Aktivierung: Cookies und Speicher richten sich nach der tatsächlich eingesetzten Google-Konfiguration",
     storageEn:
       "Cookie and storage details will be added once a measurement ID is used in production",
-    retentionDe: "Angabe folgt bei produktiver Aktivierung",
+    retentionDe: "Nur bei Aktivierung: abhängig von der tatsächlich eingesetzten Google-Konfiguration",
     retentionEn: "To be documented when activated in production",
     privacyUrl: "https://policies.google.com/privacy",
   },
@@ -102,10 +88,10 @@ export const CONSENT_SERVICES = [
     purposeEn:
       "Optional: ad conversion measurement and remarketing when Ads IDs are configured. Loaded only after marketing consent and only if IDs are set.",
     storageDe:
-      "Details zu Cookies und Speicher werden ergänzt, sobald Ads-IDs produktiv genutzt werden",
+      "Nur bei Aktivierung: Cookies und Speicher richten sich nach der tatsächlich eingesetzten Ads-Konfiguration",
     storageEn:
       "Cookie and storage details will be added once Ads IDs are used in production",
-    retentionDe: "Angabe folgt bei produktiver Aktivierung",
+    retentionDe: "Nur bei Aktivierung: abhängig von der tatsächlich eingesetzten Ads-Konfiguration",
     retentionEn: "To be documented when activated in production",
     privacyUrl: "https://policies.google.com/privacy",
   },
@@ -118,10 +104,10 @@ export const CONSENT_SERVICES = [
     purposeEn:
       "Optional: marketing event measurement (pixel) when a pixel ID is configured. Loaded only after marketing consent and only if an ID is set.",
     storageDe:
-      "Details zu Cookies und Speicher werden ergänzt, sobald eine Pixel-ID produktiv genutzt wird",
+      "Nur bei Aktivierung: Cookies und Speicher richten sich nach der tatsächlich eingesetzten Pixel-Konfiguration",
     storageEn:
       "Cookie and storage details will be added once a pixel ID is used in production",
-    retentionDe: "Angabe folgt bei produktiver Aktivierung",
+    retentionDe: "Nur bei Aktivierung: abhängig von der tatsächlich eingesetzten Pixel-Konfiguration",
     retentionEn: "To be documented when activated in production",
     privacyUrl: "https://www.facebook.com/privacy/policy/",
   },

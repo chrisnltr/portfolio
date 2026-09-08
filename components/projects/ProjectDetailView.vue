@@ -63,7 +63,10 @@ import { useAnalytics } from "~/composables/useAnalytics";
 import { usePageSeo } from "~/composables/usePageSeo";
 import { projectDetailPath } from "~/data/navigation";
 import {
-  DEFAULT_OG_IMAGE,
+  getProjectSocialImage,
+  OG_IMAGE_HEIGHT,
+  OG_IMAGE_TYPE,
+  OG_IMAGE_WIDTH,
   projectPortfolioJsonLd,
 } from "~/data/seo";
 import type { ProjectCaseStudy } from "~/types/content";
@@ -89,7 +92,7 @@ const siteOrigin = computed(() => {
 });
 
 const ogImage = computed(() => {
-  return DEFAULT_OG_IMAGE;
+  return getProjectSocialImage(props.project);
 });
 
 usePageSeo(() => ({
@@ -97,6 +100,10 @@ usePageSeo(() => ({
   description: t.value.seoDescription,
   path: pagePath.value,
   ogImage: ogImage.value,
+  ogImageAlt: `${t.value.title}: Projektvorschau`,
+  ogImageWidth: OG_IMAGE_WIDTH,
+  ogImageHeight: OG_IMAGE_HEIGHT,
+  ogImageType: OG_IMAGE_TYPE,
   ogType: "article",
   jsonLd: projectPortfolioJsonLd(
     siteOrigin.value,

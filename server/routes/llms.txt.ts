@@ -31,7 +31,7 @@ export default defineEventHandler((event) => {
     "",
     ...projects.map(
       (project) =>
-        `- [${project.content.title}](${origin}/projekte/${project.routeSlug}): ${project.content.shortDescription} (${project.ownership === "client-work" ? "Kundenarbeit" : project.ownership === "own-product" ? "eigenes Produkt" : "internes Projekt"})`,
+        `- [${project.content.title}](${origin}/projekte/${project.routeSlug}): ${project.content.shortDescription} (${project.ownership === "client-work" ? "Kundenarbeit" : project.ownership === "own-product" ? "eigenes Produkt" : "eigenes internes Projekt"})`,
     ),
     "",
     "## Kontakt und weitere Informationen",

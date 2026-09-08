@@ -3,7 +3,14 @@ import { projects } from "~/data/projects";
 import { profile } from "~/data/profile";
 
 /** Dedicated 1200×630 social preview; the square favicon remains unchanged. */
-export const DEFAULT_OG_IMAGE = "/og-default.svg";
+export const DEFAULT_OG_IMAGE = "/og-default.png";
+export const OG_IMAGE_WIDTH = 1200;
+export const OG_IMAGE_HEIGHT = 630;
+export const OG_IMAGE_TYPE = "image/png";
+
+export function getProjectSocialImage(project: (typeof projects)[number]): string {
+  return project.socialImage || DEFAULT_OG_IMAGE;
+}
 
 export type SeoCopy = {
   title: string;
@@ -157,7 +164,6 @@ export function portfolioJsonLd(
         name: profile.name,
         url: origin,
         description: homeSeo.description,
-        provider: { "@id": personId(origin) },
         address: {
           "@type": "PostalAddress",
           addressLocality: profile.location,

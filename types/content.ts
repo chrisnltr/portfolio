@@ -110,6 +110,8 @@ export type ProjectCaseStudy = {
    * When set, the card uses CyclingProjectPreview instead of scroll preview.
    */
   cardCycleImages?: ProjectImage[];
+  /** Dedicated 1200×630 social preview, generated from an approved project image. */
+  socialImage?: string;
   /** Short category chips on homepage cards (max 3). Defaults to technologies. */
   cardTags?: string[];
   externalUrl?: string;

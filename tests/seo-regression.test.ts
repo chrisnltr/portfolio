@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { projects } from "~/data/projects";
 import {
+  DEFAULT_OG_IMAGE,
+  getProjectSocialImage,
   portfolioJsonLd,
   projectPortfolioJsonLd,
 } from "~/data/seo";
@@ -38,5 +40,18 @@ describe("SEO regression data", () => {
       `${origin}/projekte/cantus-halle#project`,
     );
     expect(JSON.stringify(project)).not.toContain("Veranstaltungsort");
+  });
+
+  it("keeps the ProfessionalService relationship semantic and social images addressable", () => {
+    const origin = "https://chrisnoltemeier.de";
+    const home = portfolioJsonLd(origin, "/");
+    const professionalService = home["@graph"].find(
+      (node) => node["@type"] === "ProfessionalService",
+    );
+
+    expect(professionalService).toBeDefined();
+    expect(professionalService).not.toHaveProperty("provider");
+    expect(getProjectSocialImage(projects[0])).toBe(DEFAULT_OG_IMAGE);
+    expect(projects.slice(1).every((project) => Boolean(project.socialImage))).toBe(true);
   });
 });

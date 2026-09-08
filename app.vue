@@ -23,8 +23,8 @@ import { useHashScroll } from "~/composables/useHashScroll";
 useHead({
   link: [
     {
-      rel: "alternate",
-      type: "text/markdown",
+      rel: "describedby",
+      type: "text/plain",
       href: "/llms.txt",
       title: "LLM-readable site summary",
     },

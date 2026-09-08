@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
     <div
-      v-if="bannerVisible"
+      v-if="bannerVisible && !settingsOpen"
       class="consent-banner"
       role="presentation"
     >

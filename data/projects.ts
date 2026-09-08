@@ -117,6 +117,7 @@ export const projects: ProjectCaseStudy[] = [
       kind: "desktop",
       alt: "LS Aktivstall: vollständige Startseite von Hero bis Footer",
     },
+    socialImage: "/images/social/ls-aktivstall.png",
     images: [
       {
         src: "/images/previews/ls-aktivstall-hero.webp",
@@ -210,6 +211,7 @@ export const projects: ProjectCaseStudy[] = [
       kind: "desktop",
       alt: "Stallzentrale: vollständige Produktseite von Hero bis Footer",
     },
+    socialImage: "/images/social/stallzentrale.png",
     images: [
       {
         src: "/images/previews/portfolio-fullpage-stallzentrale.png",
@@ -308,6 +310,7 @@ export const projects: ProjectCaseStudy[] = [
       kind: "mobile",
       alt: "CrashReport: Website- und App-Vorschau",
     },
+    socialImage: "/images/social/crashreport.png",
     cardCycleImages: [
       {
         src: "/images/UnfallApp1.png",
@@ -446,6 +449,7 @@ export const projects: ProjectCaseStudy[] = [
       kind: "desktop",
       alt: "Hardware Management System: Oberflächenvorschau",
     },
+    socialImage: "/images/social/hardware-management.png",
     cardCycleImages: [
       {
         src: "/images/HardwareManager1.png",
@@ -578,6 +582,7 @@ export const projects: ProjectCaseStudy[] = [
       kind: "desktop",
       alt: "Crispy Billiards: Hauptmenü mit Billardtisch",
     },
+    socialImage: "/images/social/crispy-billiards.png",
     cardCycleImages: [
       {
         src: "/images/Crispy-Billiards-MainMenu.png",

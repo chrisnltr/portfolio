@@ -7,6 +7,7 @@ export type PageSeoInput = {
   ogImageAlt?: string;
   ogImageWidth?: number;
   ogImageHeight?: number;
+  ogImageType?: "image/png" | "image/jpeg" | "image/gif";
   ogType?: "website" | "article" | "profile";
   robots?: string;
   jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
@@ -77,11 +78,16 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoInput>) {
     ogImageAlt: () => resolved.value.ogImageAlt || resolved.value.title,
     ogImageWidth: () => resolved.value.ogImageWidth || 1200,
     ogImageHeight: () => resolved.value.ogImageHeight || 630,
+    ogImageType: () => resolved.value.ogImageType || "image/png",
     ogLocale: "de_DE",
     twitterCard: "summary_large_image",
     twitterTitle: () => resolved.value.title,
     twitterDescription: () => resolved.value.description,
     twitterImage: () => ogImage.value,
+    twitterImageAlt: () => resolved.value.ogImageAlt || resolved.value.title,
+    twitterImageType: () => resolved.value.ogImageType || "image/png",
+    twitterImageWidth: () => resolved.value.ogImageWidth || 1200,
+    twitterImageHeight: () => resolved.value.ogImageHeight || 630,
     robots: () => resolved.value.robots,
   });
 

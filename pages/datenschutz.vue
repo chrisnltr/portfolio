@@ -22,9 +22,6 @@
                 Bad Essen, Deutschland<br>
                 E-Mail: chris.noltemeier@gmail.com
               </p>
-              <p class="text-text-secondary leading-relaxed mt-2 text-sm">
-                Die vollständige Anschrift (Straße, Hausnummer, PLZ) wird hier ergänzt.
-              </p>
             </section>
 
             <section>
@@ -46,9 +43,9 @@
                 <li><strong class="text-text-primary">Anbieter:</strong> Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, USA</li>
                 <li><strong class="text-text-primary">Zweck:</strong> Bereitstellung und Auslieferung der Website</li>
                 <li><strong class="text-text-primary">Verarbeitete Daten:</strong> u.&nbsp;a. IP-Adresse, Zeitpunkt des Abrufs, angeforderte Datei/URL, User-Agent und vergleichbare Server-Log-Daten (soweit vom Hosting-Anbieter verarbeitet)</li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO (berechtigtes Interesse an sicherem und effizientem Betrieb), Rechtsgrundlage und AVV/SCC durch Betreiber bestätigen</li>
-                <li><strong class="text-text-primary">Speicherdauer:</strong> Angabe zur Log-Aufbewahrung bei Vercel folgt</li>
-                <li><strong class="text-text-primary">Empfänger / Drittland:</strong> Vercel; mögliche Übermittlung in die USA, Angabe zum Transfermechanismus folgt</li>
+                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> vom Betreiber für den konkreten Betrieb festzulegen</li>
+                <li><strong class="text-text-primary">Speicherdauer:</strong> abhängig von der Vercel-Konfiguration und noch vom Betreiber zu dokumentieren</li>
+                <li><strong class="text-text-primary">Empfänger / Drittland:</strong> Vercel; konkrete Transfergrundlage und Konfiguration noch vom Betreiber zu dokumentieren</li>
               </ul>
               <p class="text-text-secondary leading-relaxed mt-2">
                 Datenschutzhinweis des Anbieters:
@@ -82,22 +79,12 @@
                 </button>
               </p>
 
-              <h3 class="text-lg font-semibold text-text-primary mt-4 mb-2">4.1 Spracheinstellung (notwendig)</h3>
-              <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
-                <li><strong class="text-text-primary">Anbieter:</strong> First-Party (diese Website)</li>
-                <li><strong class="text-text-primary">Zweck:</strong> Speicherung der gewählten Sprache (Deutsch/Englisch)</li>
-                <li><strong class="text-text-primary">Daten / Mechanismus:</strong> localStorage-Schlüssel <code class="text-accent-400">preferred_locale</code></li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;f DSGVO und §&nbsp;25 Abs.&nbsp;2 TDDDG (technisch erforderlich für die vom Nutzer gewünschte Darstellung), rechtlich bestätigen</li>
-                <li><strong class="text-text-primary">Speicherdauer:</strong> bis zur Löschung durch den Nutzer oder Leeren des Browser-Speichers</li>
-                <li><strong class="text-text-primary">Empfänger:</strong> keine Übermittlung an Dritte über diesen Speicher</li>
-              </ul>
-
-              <h3 class="text-lg font-semibold text-text-primary mt-4 mb-2">4.2 Einwilligungsspeicher (notwendig)</h3>
+              <h3 class="text-lg font-semibold text-text-primary mt-4 mb-2">4.1 Einwilligungsspeicher (notwendig)</h3>
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
                 <li><strong class="text-text-primary">Anbieter:</strong> First-Party (diese Website)</li>
                 <li><strong class="text-text-primary">Zweck:</strong> Speicherung Ihrer Consent-Entscheidung (Version, Zeitpunkt, Kategorien)</li>
                 <li><strong class="text-text-primary">Daten / Mechanismus:</strong> First-Party-Cookie <code class="text-accent-400">portfolio_consent</code> (keine IP-Adresse, kein vollständiger User-Agent)</li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;c / lit.&nbsp;f DSGVO und §&nbsp;25 Abs.&nbsp;2 TDDDG, rechtlich bestätigen</li>
+                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> vom Betreiber für den konkreten Einsatz festzulegen</li>
                 <li><strong class="text-text-primary">Speicherdauer:</strong> 12 Monate</li>
                 <li><strong class="text-text-primary">Widerruf:</strong> über „Datenschutzeinstellungen“; danach erscheint der Hinweis erneut, sofern erforderlich</li>
               </ul>
@@ -109,30 +96,30 @@
                 <li><strong class="text-text-primary">Verarbeitete Daten:</strong> technische Nutzungsinformationen (z.&nbsp;B. aufgerufene Pfade); Details siehe Vercel-Datenschutzhinweise, konkrete Datenkategorien anhand aktueller Vercel-Doku bestätigen</li>
                 <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Einwilligung nach Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO und §&nbsp;25 Abs.&nbsp;1 TDDDG</li>
                 <li><strong class="text-text-primary">Speichermechanismus:</strong> Skript wird erst nach Zustimmung geladen (<code class="text-accent-400">/_vercel/insights/script.js</code> in Produktion)</li>
-                <li><strong class="text-text-primary">Speicherdauer:</strong> Angabe zur Aufbewahrung bei Vercel folgt</li>
-                <li><strong class="text-text-primary">Empfänger / Drittland:</strong> Vercel; mögliche USA-Übermittlung; Angabe folgt</li>
+                <li><strong class="text-text-primary">Speicherdauer:</strong> gemäß Vercel-Konfiguration; konkrete Angabe noch vom Betreiber zu dokumentieren</li>
+                <li><strong class="text-text-primary">Empfänger / Drittland:</strong> Vercel; konkrete Transfergrundlage noch vom Betreiber zu dokumentieren</li>
                 <li><strong class="text-text-primary">Widerruf:</strong> jederzeit über „Datenschutzeinstellungen“ (Kategorie Statistik deaktivieren)</li>
               </ul>
 
               <h3 class="text-lg font-semibold text-text-primary mt-4 mb-2">4.4 Google Analytics (optional, Statistik, nur bei konfigurierter ID)</h3>
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
-                <li><strong class="text-text-primary">Anbieter:</strong> Google Ireland Limited (ggf. Google LLC, USA), genaue Vertragspartnerangabe folgt bei Aktivierung</li>
+                <li><strong class="text-text-primary">Anbieter:</strong> Google Ireland Limited (ggf. Google LLC, USA); die konkrete Vertragspartnerangabe richtet sich nach der tatsächlich aktivierten Google-Konfiguration</li>
                 <li><strong class="text-text-primary">Zweck:</strong> Webanalyse und Ereignismessung, sofern eine Measurement-ID gesetzt ist</li>
                 <li><strong class="text-text-primary">Aktivierung:</strong> Nur nach Statistik-Einwilligung und nur, wenn eine ID in der Umgebung konfiguriert ist. Ohne ID wird kein Google-Skript geladen.</li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Einwilligung (Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;a DSGVO / §&nbsp;25 Abs.&nbsp;1 TDDDG), rechtliche Prüfung folgt bei Bedarf</li>
+                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Einwilligung; konkrete rechtliche Einordnung noch vom Betreiber festzulegen</li>
                 <li><strong class="text-text-primary">Consent Mode:</strong> Technisch können Standard-Zustände „denied“ gesetzt werden; dies ersetzt keine Einwilligung über den Banner.</li>
-                <li><strong class="text-text-primary">Speicher / Cookies / Speicherdauer:</strong> Angabe folgt bei Aktivierung laut aktueller Google-Dokumentation</li>
+                <li><strong class="text-text-primary">Speicher / Cookies / Speicherdauer:</strong> bei Aktivierung anhand der tatsächlich eingesetzten Google-Konfiguration zu dokumentieren</li>
                 <li><strong class="text-text-primary">Widerruf:</strong> über „Datenschutzeinstellungen“ (Statistik)</li>
               </ul>
 
               <h3 class="text-lg font-semibold text-text-primary mt-4 mb-2">4.5 Google Ads / Meta Pixel (optional, Marketing, nur bei konfigurierten IDs)</h3>
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
-                <li><strong class="text-text-primary">Anbieter:</strong> Google bzw. Meta, vollständige Anbieterangaben folgen bei produktiver Nutzung</li>
+                <li><strong class="text-text-primary">Anbieter:</strong> Google bzw. Meta; nur der jeweils tatsächlich konfigurierte Dienst wird eingesetzt</li>
                 <li><strong class="text-text-primary">Zweck:</strong> Conversion-Messung und ggf. Remarketing für bezahlte Werbung</li>
                 <li><strong class="text-text-primary">Aktivierung:</strong> Nur nach Marketing-Einwilligung und nur bei gesetzten IDs. Ohne IDs werden keine Ads-/Pixel-Skripte geladen.</li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Einwilligung, rechtliche Prüfung folgt bei Bedarf</li>
+                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Einwilligung; konkrete rechtliche Einordnung noch vom Betreiber festzulegen</li>
                 <li><strong class="text-text-primary">Datenminimierung:</strong> Es werden keine Nachrichteninhalte, E-Mail-Adressen oder Telefonnummern aus Formularen an Werbeplattformen übermittelt.</li>
-                <li><strong class="text-text-primary">Speicher / Cookies / Speicherdauer:</strong> nach Aktivierung dokumentieren</li>
+                <li><strong class="text-text-primary">Speicher / Cookies / Speicherdauer:</strong> bei Aktivierung anhand der tatsächlich eingesetzten Dienstkonfiguration zu dokumentieren</li>
                 <li><strong class="text-text-primary">Widerruf:</strong> über „Datenschutzeinstellungen“ (Marketing)</li>
               </ul>
             </section>
@@ -147,12 +134,12 @@
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
                 <li><strong class="text-text-primary">Anbieter (E-Mail-Versand):</strong> Resend (sofern konfiguriert) und/oder Formspree als Fallback</li>
                 <li><strong class="text-text-primary">Zweck:</strong> Bearbeitung Ihrer Kontaktanfrage</li>
-                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> Art.&nbsp;6 Abs.&nbsp;1 lit.&nbsp;b DSGVO (vorvertragliche/anfragebezogene Kommunikation) bzw. lit.&nbsp;f, passende Rechtsgrundlage und Auftragsverarbeitung werden bei Bedarf ergänzt</li>
-                <li><strong class="text-text-primary">Speicherdauer:</strong> Aufbewahrungsdauer der E-Mails/Anfragen wird festgelegt (z.&nbsp;B. bis Abschluss der Korrespondenz, gesetzliche Fristen)</li>
+                <li><strong class="text-text-primary">Rechtsgrundlage:</strong> vom Betreiber für die konkrete Anfragebearbeitung festzulegen</li>
+                <li><strong class="text-text-primary">Speicherdauer:</strong> vom Betreiber anhand der tatsächlichen E-Mail- und Aufbewahrungsprozesse festzulegen</li>
                 <li><strong class="text-text-primary">Hinweis:</strong> Formulardaten werden nicht im Consent-Cookie und nicht dauerhaft im Browser gespeichert</li>
               </ul>
               <p class="text-text-secondary leading-relaxed mt-2 text-sm">
-                Konkrete Anbieter-Links (Resend/Formspree Datenschutz) und AV-Verträge werden dokumentiert, sobald produktiv genutzt.
+                Der tatsächlich produktiv verwendete Versanddienst, seine Datenschutzinformationen und ein etwaiger Auftragsverarbeitungsvertrag sind vom Betreiber einzutragen. Nicht konfigurierte Fallbacks werden nicht eingesetzt.
               </p>
             </section>
 
@@ -164,6 +151,17 @@
                 Optionale Marketing-Pixel (z.&nbsp;B. Meta) werden nur nach Marketing-Einwilligung und nur bei
                 konfigurierter ID geladen (siehe Abschnitt 4.5).
               </p>
+            </section>
+
+            <section class="rounded-lg border border-accent-400/30 bg-background-tertiary/30 p-4 md:p-5">
+              <h2 class="text-xl font-semibold text-text-primary mb-2">Noch vom Betreiber zu vervollständigen</h2>
+              <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
+                <li>ladungsfähige Anschrift für Impressum und Datenschutz</li>
+                <li>konkrete Vercel-Logaufbewahrung und Transfergrundlage</li>
+                <li>tatsächlich produktiv aktivierte Statistik- oder Marketing-IDs samt Dienstkonfiguration</li>
+                <li>Aufbewahrungsdauer und Versanddienst für Kontaktanfragen einschließlich AV-Vertrag, sofern erforderlich</li>
+                <li>konkrete Rechtsgrundlagen und rechtliche Endprüfung der veröffentlichten Hinweise</li>
+              </ul>
             </section>
 
             <section>
