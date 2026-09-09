@@ -21,6 +21,7 @@ export type HeroSection = {
   headlineLine2: string;
   description: string;
   primaryCta: string;
+  primaryCtaHint: string;
   secondaryCta: string;
   trustLine: string;
 };

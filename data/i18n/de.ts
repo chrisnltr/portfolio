@@ -3,7 +3,7 @@
 export const de: AppTranslations = {
   nav: {
     home: "Startseite",
-    projects: "Unsere Projekte",
+    projects: "Meine Projekte",
     contact: "Kontakt",
     resume: "Lebenslauf",
     brandName: "Chris Leon Noltemeier",
@@ -19,7 +19,8 @@ export const de: AppTranslations = {
     headlineLine2: "Persönlich umgesetzt.",
     description:
       "Ich entwickle moderne Websites, Shopify-Shops und individuelle Webanwendungen für kleine Unternehmen.",
-    primaryCta: "Projekt unverbindlich besprechen",
+    primaryCta: "Projekt besprechen",
+    primaryCtaHint: "Unverbindlich",
     secondaryCta: "Projekte ansehen",
     trustLine:
       "Ausgebildeter Fachinformatiker · Direkte Zusammenarbeit · Von der Idee bis zum Livegang",

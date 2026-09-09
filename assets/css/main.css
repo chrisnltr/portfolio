@@ -227,7 +227,7 @@ select:focus-visible,
 @media (max-width: 767px) {
 	:root {
 		--header-height: 3.875rem;
-		--page-gutter: 1.25rem;
+		--page-gutter: 1.5rem;
 		--section-space: 3.25rem;
 		--section-space-compact: 3rem;
 	}
@@ -267,7 +267,7 @@ select:focus-visible,
 
 @media (max-width: 374px) {
 	:root {
-		--page-gutter: 1rem;
+		--page-gutter: 1.25rem;
 	}
 
 	.section-heading {
