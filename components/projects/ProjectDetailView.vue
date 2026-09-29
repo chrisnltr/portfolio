@@ -70,6 +70,7 @@ import {
   projectPortfolioJsonLd,
 } from "~/data/seo";
 import type { ProjectCaseStudy } from "~/types/content";
+import { resolveSiteOrigin } from "~/utils/siteOrigin";
 
 const props = defineProps<{
   project: ProjectCaseStudy;
@@ -87,8 +88,8 @@ const pagePath = computed(() =>
 );
 
 const siteOrigin = computed(() => {
-  const configured = String(config.public.siteUrl || "").replace(/\/$/, "");
-  return configured || requestURL.origin;
+  const configured = String(config.public.siteUrl || "").trim();
+  return resolveSiteOrigin(configured || requestURL.origin);
 });
 
 const ogImage = computed(() => {

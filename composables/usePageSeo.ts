@@ -1,3 +1,5 @@
+import { resolveSiteOrigin } from "~/utils/siteOrigin";
+
 export type PageSeoInput = {
   title: string;
   description: string;
@@ -31,11 +33,10 @@ export function usePageSeo(input: MaybeRefOrGetter<PageSeoInput>) {
   const resolved = computed(() => toValue(input));
 
   const origin = computed(() => {
-    const configured = (config.public.siteUrl as string | undefined)?.replace(
-      /\/$/,
-      "",
-    );
-    return configured || requestURL.origin;
+    const configured = String(config.public.siteUrl || "").trim();
+    // Prefer configured site URL; otherwise normalize the request origin
+    // so www.chrisnoltemeier.de never becomes a canonical.
+    return resolveSiteOrigin(configured || requestURL.origin);
   });
 
   const canonical = computed(() =>

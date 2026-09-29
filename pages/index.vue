@@ -30,13 +30,14 @@ import {
   homeSeo,
   portfolioJsonLd,
 } from "~/data/seo";
+import { resolveSiteOrigin } from "~/utils/siteOrigin";
 
 const requestURL = useRequestURL();
 const config = useRuntimeConfig();
 
 const siteOrigin = computed(() => {
-  const configured = String(config.public.siteUrl || "").replace(/\/$/, "");
-  return configured || requestURL.origin;
+  const configured = String(config.public.siteUrl || "").trim();
+  return resolveSiteOrigin(configured || requestURL.origin);
 });
 
 usePageSeo(() => ({
