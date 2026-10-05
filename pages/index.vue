@@ -5,9 +5,9 @@
       <HeroSection />
       <TrustStripSection />
       <ProjectReferencesSection />
+      <AboutSection />
       <ProjectsSection />
       <ServicesSection />
-      <AboutSection />
       <ClosingCtaSection />
     </main>
     <MainFooter />

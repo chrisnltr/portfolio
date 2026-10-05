@@ -87,8 +87,8 @@ const copy = computed(() => messages.value.projectReferences);
 
 const referenceOrder: ProjectReferenceId[] = [
   "stallzentrale",
-  "ls-aktivstall",
   "cantus-halle",
+  "ls-aktivstall",
 ];
 
 const cards = computed(() =>
