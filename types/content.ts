@@ -131,6 +131,8 @@ export type ServiceId =
 export type ServiceItem = {
   id: ServiceId;
   href?: string;
+  imageSrc: string;
+  imageAlt: string;
 };
 
 export type ProcessStepId = "understand" | "build" | "launch";

@@ -23,21 +23,8 @@
       <TestimonialsSection />
       <WebsiteProcessSection />
       <FirstConsultationSection />
-
-      <section
-        class="website-landing-plan website-landing-plan--compact website-landing-plan--bottom"
-        aria-label="Späterer Abschlussabschnitt in Planung"
-      >
-        <div class="container-page">
-          <UiVisualPlaceholder
-            type="section"
-            compact
-            badge="SPÄTERER ABSCHLUSS"
-            title="FAQ und finale Abschluss-CTA"
-            description="Hier folgen später Antworten zu Kosten, Dauer, Inhalten, Domain, Pflege und Zusammenarbeit sowie der abschließende Weg in den Erstgespräch-Funnel."
-          />
-        </div>
-      </section>
+      <WebsiteFaqSection />
+      <WebsiteFinalCta />
     </main>
     <MainFooter />
   </div>
@@ -48,6 +35,8 @@ import FirstConsultationSection from "~/components/landing/FirstConsultationSect
 import MainFooter from "~/components/layout/MainFooter.vue";
 import MainHeader from "~/components/layout/MainHeader.vue";
 import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
+import WebsiteFaqSection from "~/components/landing/WebsiteFaqSection.vue";
+import WebsiteFinalCta from "~/components/landing/WebsiteFinalCta.vue";
 import WebsiteLandingHero from "~/components/landing/WebsiteLandingHero.vue";
 import WebsiteProcessSection from "~/components/landing/WebsiteProcessSection.vue";
 import WebsiteProjectsSection from "~/components/landing/WebsiteProjectsSection.vue";
@@ -84,9 +73,5 @@ usePageSeo(() => ({
 <style scoped>
 .website-landing-plan {
   padding-block: clamp(1.25rem, 3vw, 2rem);
-}
-
-.website-landing-plan--bottom {
-  padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
 }
 </style>

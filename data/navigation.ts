@@ -13,12 +13,36 @@ export const mainNavItems: NavItem[] = [
 export const contactPath = "/kontakt" as const;
 
 export const services: ServiceItem[] = [
-  { id: "consulting" },
-  { id: "concept" },
-  { id: "design" },
-  { id: "websitesShops" },
-  { id: "webapps" },
-  { id: "automation" },
+  {
+    id: "consulting",
+    imageSrc: "/images/cards/consulting.png",
+    imageAlt: "Vom offenen Projekt zum klaren Ziel",
+  },
+  {
+    id: "concept",
+    imageSrc: "/images/cards/concept.png",
+    imageAlt: "Hierarchische Website-Struktur als 3D-Komposition",
+  },
+  {
+    id: "design",
+    imageSrc: "/images/cards/design.png",
+    imageAlt: "Dreistufige Webführung zum blauen Aktionsbutton",
+  },
+  {
+    id: "websitesShops",
+    imageSrc: "/images/cards/websites-shops.png",
+    imageAlt: "Responsives E-Commerce auf Desktop und Smartphone",
+  },
+  {
+    id: "webapps",
+    imageSrc: "/images/cards/webapps.png",
+    imageAlt: "Vernetztes Dashboard für individuelle Webanwendungen",
+  },
+  {
+    id: "automation",
+    imageSrc: "/images/cards/automation.png",
+    imageAlt: "Automatisierter Workflow zum Website-Launch",
+  },
 ];
 
 export const processSteps: ProcessStep[] = [

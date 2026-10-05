@@ -241,3 +241,60 @@ export const websiteLandingTrustNotes = [
   "Persönliches Gespräch direkt mit Chris",
   "Keine automatische Vertragsbindung",
 ] as const;
+
+export type WebsiteLandingFaqItem = {
+  id: string;
+  question: string;
+  answer: string;
+};
+
+export const websiteLandingFaqItems: WebsiteLandingFaqItem[] = [
+  {
+    id: "cost",
+    question: "Was kostet eine professionelle Website?",
+    answer:
+      "Die Kosten hängen vom Umfang, den gewünschten Funktionen und den vorhandenen Inhalten ab. Nach dem Erstgespräch erhalten Sie ein transparentes, individuelles Angebot. Zusätzliche oder laufende Kosten werden vor Projektbeginn klar benannt.",
+  },
+  {
+    id: "duration",
+    question: "Wie lange dauert die Erstellung einer Website?",
+    answer:
+      "Eine kleinere Unternehmenswebsite kann in der Regel innerhalb weniger Wochen umgesetzt werden. Der genaue Zeitrahmen hängt unter anderem vom Umfang, der Bereitstellung der Inhalte und den Feedbackrunden ab. Vor dem Projektstart erhalten Sie einen realistischen Ablaufplan.",
+  },
+  {
+    id: "content",
+    question: "Müssen Texte und Bilder bereits fertig sein?",
+    answer:
+      "Nein. Für den Start reichen zunächst die wichtigsten Informationen zu Ihrem Unternehmen, Ihrem Angebot und Ihrer Zielgruppe. Gemeinsam klären wir, welche Inhalte bereits vorhanden sind und welche Texte, Bilder oder Grafiken noch benötigt werden.",
+  },
+  {
+    id: "domain",
+    question: "Kann meine bestehende Domain weiterverwendet werden?",
+    answer:
+      "In den meisten Fällen ja. Vor der Umsetzung werden der aktuelle Anbieter, die vorhandenen Zugänge und die technische Ausgangslage geprüft. Anschließend kann die neue Website mit der bestehenden Domain verbunden werden.",
+  },
+  {
+    id: "editing",
+    question: "Kann ich Inhalte später selbst bearbeiten?",
+    answer:
+      "Das hängt vom gewählten System und dem gewünschten Aufbau ab. Häufig benötigte Inhalte können auf Wunsch so vorbereitet werden, dass sie später selbst gepflegt werden können. Alternativ können zukünftige Änderungen auch übernommen werden.",
+  },
+  {
+    id: "shops",
+    question: "Erstellst du auch Onlineshops?",
+    answer:
+      "Ja. Neben Unternehmenswebsites können auch Shopify-Shops geplant und umgesetzt werden. Im Erstgespräch klären wir, welche Produkte, Zahlungsarten, Versandregeln und weiteren Funktionen benötigt werden.",
+  },
+  {
+    id: "consultation",
+    question: "Ist das Erstgespräch kostenlos und unverbindlich?",
+    answer:
+      "Ja. Im ersten Gespräch geht es darum, Ihr Vorhaben, Ihre Ziele und die wichtigsten Anforderungen kennenzulernen. Das Gespräch ist kostenlos und unverbindlich. Danach entscheiden Sie in Ruhe, ob Sie ein Angebot erhalten möchten.",
+  },
+];
+
+export const websiteLandingFinalCtaTrustPoints = [
+  "Direkter persönlicher Kontakt",
+  "Keine fertige Projektbeschreibung nötig",
+  "Transparente nächste Schritte",
+] as const;
