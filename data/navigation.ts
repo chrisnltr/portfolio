@@ -45,6 +45,20 @@ export const services: ServiceItem[] = [
   },
 ];
 
+/** Primary offerings shown as large cards on the homepage services section. */
+export const serviceOfferingIds = [
+  "websitesShops",
+  "webapps",
+  "automation",
+] as const satisfies readonly ServiceItem["id"][];
+
+/** Process visuals paired with the compact collaboration flow. */
+export const serviceFlowIds = [
+  "consulting",
+  "concept",
+  "design",
+] as const satisfies readonly ServiceItem["id"][];
+
 export const processSteps: ProcessStep[] = [
   { id: "understand", step: 1 },
   { id: "build", step: 2 },

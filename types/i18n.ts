@@ -35,10 +35,25 @@ export type ServiceCopy = {
   description: string;
 };
 
+export type ServiceFlowStepCopy = {
+  number: string;
+  title: string;
+  description: string;
+};
+
 export type ServicesSection = {
+  eyebrow: string;
   title: string;
   titleAccent: string;
+  titleAfter: string;
   subtitle: string;
+  processEyebrow: string;
+  processLabel: string;
+  flow: {
+    clarify: ServiceFlowStepCopy;
+    structure: ServiceFlowStepCopy;
+    delivery: ServiceFlowStepCopy;
+  };
   items: Record<string, ServiceCopy>;
 };
 
@@ -134,9 +149,7 @@ export type ProcessSection = {
 
 export type ClosingCtaSection = {
   title: string;
-  body: string;
   primaryCta: string;
-  emailCta: string;
 };
 
 export type ProjectReferenceId =

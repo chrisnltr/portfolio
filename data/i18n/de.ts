@@ -34,39 +34,59 @@ export const de: AppTranslations = {
     ],
   },
   services: {
-    title: "So setze ich Websites und Software um,",
-    titleAccent: "die klar funktionieren.",
-    subtitle: "",
+    eyebrow: "Leistungen & Ablauf",
+    title: "Websites und Software, ",
+    titleAccent: "klar geplant",
+    titleAfter: " und sauber umgesetzt.",
+    subtitle:
+      "Von der ersten Idee bis zum Livegang begleite ich Ihr Projekt persönlich und strukturiert.",
+    processEyebrow: "In drei Schritten",
+    processLabel: "So läuft die Zusammenarbeit ab",
+    flow: {
+      clarify: {
+        number: "01",
+        title: "Ziel klären",
+        description: "Ziele, Umfang und Prioritäten gemeinsam abstimmen.",
+      },
+      structure: {
+        number: "02",
+        title: "Struktur & Design",
+        description: "Inhalte ordnen und eine klare Nutzerführung entwickeln.",
+      },
+      delivery: {
+        number: "03",
+        title: "Umsetzung & Livegang",
+        description: "Sauber entwickeln, testen und gemeinsam veröffentlichen.",
+      },
+    },
     items: {
       consulting: {
         title: "Beratung & Zielklärung",
         description:
-          "Bevor ich starte, klären wir Ziel, Umfang und den sinnvollen nächsten Schritt. Sie wissen genau, was entstehen soll.",
+          "Ziele, Umfang und Prioritäten gemeinsam abstimmen.",
       },
       concept: {
         title: "Konzept & Seitenstruktur",
         description:
-          "Ich strukturiere Inhalte und Abläufe so, dass Besucher sofort verstehen, worum es geht – und zum nächsten Schritt geführt werden.",
+          "Inhalte ordnen und eine klare Nutzerführung entwickeln.",
       },
       design: {
         title: "Design & Nutzerführung",
         description:
-          "Ein klarer Aufbau, der Vertrauen schafft. Weniger Ablenkung, mehr Orientierung – abgestimmt auf Ihr Angebot.",
+          "Klarer Aufbau und verständliche Nutzerführung für Ihr Angebot.",
       },
       websitesShops: {
-        title: "Websites & Shopify-Shops",
-        description:
-          "Moderne Auftritte und Shops, mobil stark und technisch sauber. Mit den richtigen Informationen und einfachen Anfragewegen.",
+        title: "Websites & Shops",
+        description: "Professionelle Auftritte, die auf jedem Gerät überzeugen.",
       },
       webapps: {
         title: "Individuelle Webanwendungen",
         description:
-          "Systeme, die zu Ihren betrieblichen Abläufen passen – von Verwaltung und Buchung bis zu internen Tools.",
+          "Passende Funktionen für Ihre Abläufe und internen Prozesse.",
       },
       automation: {
-        title: "Automatisierung & Livegang",
-        description:
-          "Schnittstellen verbinden, wiederkehrende Schritte automatisieren und gemeinsam sauber live gehen.",
+        title: "Automatisierung & Schnittstellen",
+        description: "Weniger Handarbeit durch sinnvoll verbundene Systeme.",
       },
     },
   },
@@ -195,10 +215,8 @@ export const de: AppTranslations = {
     },
   },
   closingCta: {
-    title: "Bereit für Ihr Projekt?",
-    body: "Schreiben Sie direkt an Chris – ich melde mich persönlich.",
-    primaryCta: "Erstgespräch vereinbaren",
-    emailCta: "E-Mail",
+    title: "Starten wir Ihr Projekt.",
+    primaryCta: "Kostenloses Erstgespräch starten",
   },
   projectReferences: {
     title: "Referenzen aus dem Pferdebereich",
