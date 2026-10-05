@@ -177,6 +177,9 @@ onBeforeUnmount(() => {
   display: grid;
   gap: 1rem;
   max-width: 40rem;
+  margin-inline: auto;
+  justify-items: center;
+  text-align: center;
 }
 
 .wl-final__eyebrow {
@@ -210,11 +213,13 @@ onBeforeUnmount(() => {
   display: grid;
   gap: 0.85rem;
   margin-top: 0.35rem;
+  justify-items: center;
 }
 
 .wl-final__primary-group {
   display: grid;
   gap: 0.5rem;
+  justify-items: center;
 }
 
 .wl-final__cta {
@@ -299,23 +304,28 @@ onBeforeUnmount(() => {
   padding: 0;
   display: grid;
   gap: 0.45rem;
+  width: 100%;
+  justify-items: center;
 }
 
 .wl-final__trust li {
   position: relative;
-  padding-left: 1.15rem;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding-left: 0;
   font-size: 0.92rem;
   font-weight: 550;
   color: rgba(248, 250, 252, 0.9);
+  text-align: left;
 }
 
 .wl-final__trust li::before {
   content: "";
-  position: absolute;
-  left: 0;
-  top: 0.55em;
+  flex-shrink: 0;
   width: 0.5rem;
   height: 0.5rem;
+  margin-top: 0.45em;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.85);
 }
@@ -323,19 +333,21 @@ onBeforeUnmount(() => {
 @media (min-width: 640px) {
   .wl-final__cta {
     width: auto;
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .wl-final__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
     gap: 0.85rem 1.35rem;
   }
 
   .wl-final__trust {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.65rem 1.1rem;
+    justify-items: center;
   }
 }
 
