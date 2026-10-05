@@ -2,7 +2,15 @@
   <footer
     class="site-footer"
     role="contentinfo"
+    :style="glowStyle"
+    @pointermove="onPointerMove"
+    @pointerleave="onPointerLeave"
   >
+    <div
+      class="site-footer__glow"
+      aria-hidden="true"
+    />
+
     <div class="container-page footer-inner">
       <div class="footer-brand">
         <NuxtLink
@@ -35,11 +43,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useBottomGlow } from "~/composables/useBottomGlow";
 import { useConsent } from "~/composables/useConsent";
 import { useI18n } from "~/composables/useI18n";
 
 const { messages } = useI18n();
 const { openSettings } = useConsent();
+const { glowStyle, onPointerMove, onPointerLeave } = useBottomGlow();
 
 function onOpenConsentSettings(event: MouseEvent) {
   openSettings(event.currentTarget as HTMLElement);
@@ -52,9 +62,40 @@ const brandHomeLabel = computed(
 
 <style scoped>
 .site-footer {
+  --glow-boost: 0;
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
   background: transparent;
   color: var(--color-text-subtle);
   border-top: 1px solid var(--color-border);
+}
+
+.site-footer__glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 70% 140% at 50% 0%,
+    rgba(56, 103, 255, 0.28) 0%,
+    rgba(47, 102, 255, 0.1) 42%,
+    transparent 76%
+  );
+  opacity: var(--glow-boost);
+  transition: opacity 0.2s var(--ease-out);
+}
+
+.site-footer .footer-inner {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__glow {
+    transition: none;
+    opacity: 0;
+  }
 }
 
 .footer-inner {
