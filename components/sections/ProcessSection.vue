@@ -77,10 +77,9 @@ const resolvedSteps = computed<ProcessStepContent[]>(() => {
 
 <style scoped>
 .process {
-  background: var(--color-surface);
+  background: transparent;
   color: var(--color-text);
   padding-block: clamp(3.5rem, 7vw, 6rem);
-  border-block: 1px solid var(--color-border);
 }
 
 .process__grid {
@@ -113,7 +112,7 @@ const resolvedSteps = computed<ProcessStepContent[]>(() => {
   font-weight: 650;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-text-subtle);
+  color: var(--color-accent);
 }
 
 .process__title {
@@ -124,7 +123,7 @@ const resolvedSteps = computed<ProcessStepContent[]>(() => {
   letter-spacing: -0.03em;
   line-height: 1.12;
   max-width: 12ch;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .process__body {
@@ -182,7 +181,7 @@ const resolvedSteps = computed<ProcessStepContent[]>(() => {
   font-size: clamp(1.2rem, 2.2vw, 1.5rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .process__step-desc {

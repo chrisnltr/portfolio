@@ -51,7 +51,7 @@ const accentStyle = computed(() =>
   font-size: clamp(1.35rem, 2.4vw, 1.75rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .project-highlights__grid {

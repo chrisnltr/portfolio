@@ -1,28 +1,28 @@
 <template>
-  <div>
+  <div class="page-shell">
     <MainHeader />
-    <main class="min-h-full" id="main-content">
+    <main id="main-content">
       <HeroSection />
-      <ServicesSection />
-      <ProjectsSection />
+      <TrustStripSection />
       <ProjectReferencesSection />
-      <ProcessSection />
+      <ProjectsSection />
+      <ServicesSection />
       <AboutSection />
-      <ContactSection />
-      <MainFooter />
+      <ClosingCtaSection />
     </main>
+    <MainFooter />
   </div>
 </template>
 
 <script setup lang="ts">
 import MainHeader from "~/components/layout/MainHeader.vue";
 import HeroSection from "~/components/sections/HeroSection.vue";
+import TrustStripSection from "~/components/sections/TrustStripSection.vue";
 import ServicesSection from "~/components/sections/ServicesSection.vue";
 import ProjectsSection from "~/components/sections/ProjectsSection.vue";
 import ProjectReferencesSection from "~/components/sections/ProjectReferencesSection.vue";
-import ProcessSection from "~/components/sections/ProcessSection.vue";
 import AboutSection from "~/components/sections/AboutSection.vue";
-import ContactSection from "~/components/sections/ContactSection.vue";
+import ClosingCtaSection from "~/components/sections/ClosingCtaSection.vue";
 import MainFooter from "~/components/layout/MainFooter.vue";
 import { usePageSeo } from "~/composables/usePageSeo";
 import {

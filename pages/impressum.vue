@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page-shell">
     <LegalHeader />
-    <main class="pt-24 pb-14 md:pt-28 md:pb-20 min-h-screen">
+    <main class="pt-24 pb-14 md:pt-28 md:pb-20">
       <div class="container mx-auto px-4 md:px-6">
         <article class="max-w-3xl mx-auto modern-section rounded-xl p-6 md:p-10 card-elevated">
           <h1 class="text-3xl md:text-4xl font-bold gradient-text mb-2">

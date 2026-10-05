@@ -11,12 +11,90 @@
         </p>
       </div>
 
+      <article
+        v-if="featuredProject"
+        class="project-feature"
+        :class="{
+          'project-feature--static': !cardLink,
+          [`project-feature--${featuredProject.slug}`]: true,
+        }"
+        :style="cardAccentStyle(featuredProject)"
+      >
+        <div
+          class="project-feature__media"
+          @click="onMediaClick($event, featuredProject)"
+        >
+          <CyclingProjectPreview
+            v-if="cycleImagesFor(featuredProject)"
+            :images="cycleImagesFor(featuredProject) || []"
+            :title="featuredProject.content.title"
+            :alt="previewAlt(featuredProject)"
+            :priority="true"
+            :preview-id="`feature-cycle-${featuredProject.slug}`"
+            fit="cover"
+            :object-position="previewPositionFor(featuredProject)"
+          />
+          <ScrollingProjectPreview
+            v-else
+            :image="previewFor(featuredProject)"
+            :title="featuredProject.content.title"
+            :alt="previewAlt(featuredProject)"
+            :priority="true"
+            :preview-id="`feature-scroll-${featuredProject.slug}`"
+          />
+        </div>
+
+        <component
+          :is="cardLink ? cardComponent(featuredProject) : 'div'"
+          class="project-feature__body"
+          :to="cardTo(featuredProject)"
+          :href="cardHref(featuredProject)"
+          :target="cardTarget(featuredProject)"
+          :rel="cardRel(featuredProject)"
+        >
+          <p class="project-feature__label">{{ featuredLabel }}</p>
+          <h3
+            class="project-feature__title"
+            :class="{ 'project-feature__title--crispy': isCrispy(featuredProject) }"
+          >
+            <template v-if="isCrispy(featuredProject)">
+              <span class="project-card__title-crispy">Crispy</span>
+              <span class="project-card__title-billiards"> Billiards</span>
+            </template>
+            <template v-else>
+              {{ featuredProject.content.title }}
+            </template>
+          </h3>
+          <p class="project-feature__type">
+            {{ featuredProject.content.platformLabel }}
+          </p>
+          <ul
+            v-if="tagsFor(featuredProject).length"
+            class="project-card__tags project-feature__tags"
+          >
+            <li
+              v-for="tag in tagsFor(featuredProject)"
+              :key="tag"
+            >
+              {{ tag }}
+            </li>
+          </ul>
+          <span
+            v-if="cardLink"
+            class="project-feature__cta"
+          >
+            Projekt ansehen →
+          </span>
+        </component>
+      </article>
+
       <div
+        v-if="gridProjects.length"
         class="project-grid"
-        :class="{ 'project-grid--two': maxColumns === 2 }"
+        :class="{ 'project-grid--two': maxColumns === 2 || gridProjects.length < 3 }"
       >
         <article
-          v-for="(project, index) in displayProjects"
+          v-for="(project, index) in gridProjects"
           :key="project.slug"
           class="project-card"
           :class="{
@@ -130,6 +208,9 @@ const resolvedTitle = computed(
 const resolvedSubtitle = computed(
   () => props.subtitle ?? messages.value.projects.subtitle,
 );
+const featuredLabel = computed(
+  () => messages.value.projects.featuredTitle ?? "Aktuell",
+);
 
 const displayProjects = computed(() => {
   if (props.projectSlugs?.length) {
@@ -139,6 +220,9 @@ const displayProjects = computed(() => {
   }
   return getPreviewProjects();
 });
+
+const featuredProject = computed(() => displayProjects.value[0] ?? null);
+const gridProjects = computed(() => displayProjects.value.slice(1));
 
 function previewFor(project: ProjectCaseStudy): ProjectImage | null {
   return project.previewImage || project.images[0] || null;
@@ -218,7 +302,6 @@ function cardRel(project: ProjectCaseStudy) {
 
 function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   if (!props.cardLink) return;
-  // Touch devices use the preview controls; body/CTA remains the nav target.
   if (!isFinePointerHover()) return;
   if (event.defaultPrevented) return;
 
@@ -234,28 +317,148 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 <style scoped>
 .projects-section {
   position: relative;
-  background: var(--color-surface);
-  border-block: 1px solid var(--color-border);
-}
-
-.projects-section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 70% 45% at 80% 20%,
-    rgba(47, 102, 255, 0.07) 0%,
-    transparent 70%
-  );
+  padding-block: clamp(1.35rem, 3.2vw, 2.5rem);
+  background: transparent;
 }
 
 .projects-intro {
   position: relative;
   z-index: 1;
-  max-width: 40rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  max-width: 36rem;
+  margin-bottom: clamp(1rem, 2.2vw, 1.5rem);
   min-width: 0;
+}
+
+.projects-intro .section-lead {
+  margin-top: 0.55rem;
+  max-width: 32rem;
+}
+
+.project-feature {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 1.25rem;
+  margin-bottom: clamp(1.75rem, 3.5vw, 2.75rem);
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .project-feature {
+    grid-template-columns: minmax(0, 1.55fr) minmax(15rem, 0.8fr);
+    gap: clamp(1.35rem, 2.5vw, 2.25rem);
+    align-items: center;
+  }
+
+  .project-feature :deep(.preview),
+  .project-feature :deep(.cycle) {
+    aspect-ratio: 16 / 9.4;
+  }
+}
+
+.project-feature__media {
+  position: relative;
+  min-width: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 18px 48px rgba(18, 26, 38, 0.08);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .project-feature:not(.project-feature--static) .project-feature__media {
+    cursor: pointer;
+  }
+}
+
+.project-feature :deep(.preview),
+.project-feature :deep(.cycle) {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 16 / 10;
+  max-height: none;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+}
+
+.project-feature :deep(.cycle__image),
+.project-feature :deep(.preview__image) {
+  object-fit: cover;
+}
+
+.project-feature__body {
+  display: grid;
+  align-content: center;
+  gap: 0.55rem;
+  min-width: 0;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+}
+
+.project-feature__body:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.project-feature__label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.project-feature__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.55rem, 3.4vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: var(--color-text);
+  overflow-wrap: break-word;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.project-feature__type {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  line-height: 1.45;
+}
+
+.project-feature__tags {
+  margin-top: 0.35rem;
+}
+
+.project-feature__cta {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.35rem;
+  min-height: 2.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.project-feature:hover .project-feature__title:not(.project-feature__title--crispy) {
+  color: var(--card-accent, var(--accent-hover));
+}
+
+.project-feature:hover .project-feature__title--crispy .project-card__title-crispy {
+  color: #c8d0dc;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.project-feature:hover .project-feature__title--crispy .project-card__title-billiards {
+  color: #e0b24a;
+  font-weight: 700;
+  font-style: italic;
 }
 
 .project-grid {
@@ -267,18 +470,9 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 }
 
 @media (min-width: 768px) {
-  .project-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
+  .project-grid,
   .project-grid--two {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (min-width: 1100px) {
-  .project-grid:not(.project-grid--two) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -291,6 +485,9 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 .project-card__media {
   position: relative;
   min-width: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 14px 36px rgba(18, 26, 38, 0.06);
 }
 
 .project-card__preview-hint {
@@ -310,10 +507,11 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
   aspect-ratio: 16 / 10;
   max-height: none;
   width: 100%;
+  border-radius: 16px;
 }
 
 .project-card--accident-report-app :deep(.cycle) {
-  background: #05070b;
+  background: #e8eef6;
 }
 
 .project-card--static {
@@ -322,7 +520,7 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 
 .project-card__body {
   display: block;
-  padding-top: 1rem;
+  padding-top: 0.95rem;
   min-width: 0;
   text-decoration: none;
   color: inherit;
@@ -336,7 +534,7 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 
 .project-card__title {
   font-family: var(--font-display);
-  font-size: clamp(1.1rem, 2.8vw, 1.25rem);
+  font-size: clamp(1.15rem, 2.8vw, 1.3rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -396,33 +594,19 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
 
 @media (max-width: 767px) {
   .projects-intro {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.15rem;
+  }
+
+  .project-feature {
+    margin-bottom: 2rem;
   }
 
   .project-grid {
-    gap: 2.25rem;
-  }
-
-  .project-card :deep(.preview),
-  .project-card :deep(.cycle) {
-    aspect-ratio: 16 / 10;
-    border-radius: 12px;
-  }
-
-  .project-card--accident-report-app :deep(.cycle) {
-    aspect-ratio: 16 / 11;
-  }
-
-  .project-card--crispy-billiards :deep(.cycle__image) {
-    object-position: center 42%;
-  }
-
-  .project-card--hardware-management :deep(.cycle__image) {
-    object-position: center 22%;
+    gap: 2rem;
   }
 
   .project-card__body {
-    padding-top: 1rem;
+    padding-top: 0.9rem;
   }
 
   .project-card__title {
@@ -461,8 +645,8 @@ function onMediaClick(event: MouseEvent, project: ProjectCaseStudy) {
     margin: 0;
     padding: 0.28rem 0.55rem;
     border-radius: 6px;
-    background: rgba(5, 7, 11, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(243, 245, 248, 0.92);
+    border: 1px solid var(--color-border);
     color: var(--color-text-muted);
     font-size: 0.6875rem;
     letter-spacing: 0.02em;

@@ -120,7 +120,13 @@ export type ProjectCaseStudy = {
   content: ProjectLocaleContent;
 };
 
-export type ServiceId = "websitesShops" | "webapps" | "automation";
+export type ServiceId =
+  | "consulting"
+  | "concept"
+  | "design"
+  | "websitesShops"
+  | "webapps"
+  | "automation";
 
 export type ServiceItem = {
   id: ServiceId;

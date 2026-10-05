@@ -412,7 +412,7 @@ watch([() => props.speed, () => props.pauseOnHover, () => props.hoverSpeed], () 
 .logoloop {
   position: relative;
   overflow-x: hidden;
-  --logoloop-fadeColorAuto: var(--color-bg, #05070b);
+  --logoloop-fadeColorAuto: var(--color-bg, #f3f5f8);
 }
 
 .logoloop__track {
@@ -465,30 +465,33 @@ watch([() => props.speed, () => props.pauseOnHover, () => props.hoverSpeed], () 
   object-fit: contain;
   -webkit-user-drag: none;
   pointer-events: none;
-  filter: grayscale(1) brightness(1.45) opacity(0.55);
+  filter: none;
+  opacity: 0.92;
   transition:
     filter var(--duration) var(--ease-out),
-    opacity var(--duration) var(--ease-out);
+    opacity var(--duration) var(--ease-out),
+    transform var(--duration) var(--ease-out);
 }
 
 :deep(.logoloop__label) {
   font-size: 0.88rem;
-  font-weight: 500;
+  font-weight: 550;
   letter-spacing: 0.01em;
-  color: var(--color-text-subtle);
+  color: var(--color-text-muted);
   white-space: nowrap;
   transition: color var(--duration) var(--ease-out);
 }
 
 .logoloop__item:hover :deep(.logoloop__logo-img),
 .logoloop__item--static:hover :deep(.logoloop__logo-img) {
-  filter: none;
-  opacity: 0.95;
+  filter: brightness(1.12) saturate(1.12);
+  opacity: 1;
+  transform: translateY(-1px);
 }
 
 .logoloop__item:hover :deep(.logoloop__label),
 .logoloop__item--static:hover :deep(.logoloop__label) {
-  color: var(--logoloop-brand, var(--color-accent-hover));
+  color: var(--logoloop-brand, var(--color-accent));
 }
 
 :deep(.logoloop__link) {

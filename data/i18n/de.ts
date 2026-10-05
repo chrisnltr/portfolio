@@ -4,7 +4,7 @@ export const de: AppTranslations = {
   nav: {
     home: "Startseite",
     projects: "Meine Projekte",
-    contact: "Kontakt",
+    contact: "Erstgespräch",
     resume: "Lebenslauf",
     brandName: "Chris Leon Noltemeier",
     brandMark: "CLN",
@@ -14,12 +14,12 @@ export const de: AppTranslations = {
   },
 
   hero: {
-    eyebrow: "Chris Leon Noltemeier · Web- und Softwareentwicklung aus Bad Essen",
+    eyebrow: "Chris Leon Noltemeier · Web- und Softwareentwicklung",
     headlineLine1: "Websites und Software.",
     headlineLine2: "Persönlich umgesetzt.",
     description:
       "Ich entwickle moderne Websites, Shopify-Shops und individuelle Webanwendungen für kleine Unternehmen.",
-    primaryCta: "Projekt besprechen",
+    primaryCta: "Erstgespräch vereinbaren",
     primaryCtaHint: "Unverbindlich",
     secondaryCta: "Projekte ansehen",
     trustLine:
@@ -35,23 +35,39 @@ export const de: AppTranslations = {
   },
   services: {
     eyebrow: "Leistungen",
-    title: "Was ich für Sie umsetze",
-    subtitle: "Von der ersten Website bis zum individuellen System.",
+    title: "So setze ich Websites und Software um,",
+    titleAccent: "die klar funktionieren.",
+    subtitle: "",
     items: {
+      consulting: {
+        title: "Beratung & Zielklärung",
+        description:
+          "Bevor ich starte, klären wir Ziel, Umfang und den sinnvollen nächsten Schritt. Sie wissen genau, was entstehen soll.",
+      },
+      concept: {
+        title: "Konzept & Seitenstruktur",
+        description:
+          "Ich strukturiere Inhalte und Abläufe so, dass Besucher sofort verstehen, worum es geht – und zum nächsten Schritt geführt werden.",
+      },
+      design: {
+        title: "Design & Nutzerführung",
+        description:
+          "Ein klarer Aufbau, der Vertrauen schafft. Weniger Ablenkung, mehr Orientierung – abgestimmt auf Ihr Angebot.",
+      },
       websitesShops: {
         title: "Websites & Shopify-Shops",
         description:
-          "Klar strukturierte Auftritte und Shops mit den richtigen Informationen und einfachen Anfragewegen.",
+          "Moderne Auftritte und Shops, mobil stark und technisch sauber. Mit den richtigen Informationen und einfachen Anfragewegen.",
       },
       webapps: {
         title: "Individuelle Webanwendungen",
         description:
-          "Digitale Systeme, die zu Ihren betrieblichen Abläufen passen, von Verwaltung bis Buchung.",
+          "Systeme, die zu Ihren betrieblichen Abläufen passen – von Verwaltung und Buchung bis zu internen Tools.",
       },
       automation: {
-        title: "Automatisierung & Schnittstellen",
+        title: "Automatisierung & Livegang",
         description:
-          "Tools verbinden und wiederkehrende Schritte automatisieren, damit weniger manuelle Arbeit bleibt.",
+          "Schnittstellen verbinden, wiederkehrende Schritte automatisieren und gemeinsam sauber live gehen.",
       },
     },
   },
@@ -69,7 +85,7 @@ export const de: AppTranslations = {
     ],
     profileRole: "Web- und Softwareentwicklung",
     techLoopLabel: "Technologien, mit denen ich arbeite",
-    ctaLabel: "Projekt mit mir besprechen",
+    ctaLabel: "Erstgespräch vereinbaren",
     photoLabel: "CLN",
     photoHint: "Chris Leon Noltemeier",
   },
@@ -121,9 +137,8 @@ export const de: AppTranslations = {
   },
   projects: {
     title: "Ausgewählte Projekte",
-    subtitle:
-      "Einblicke in Websites, Shops und digitale Systeme, die ich umgesetzt habe.",
-    featuredTitle: "Schwerpunkte",
+    subtitle: "Screens und Systeme aus realen Umsetzungen.",
+    featuredTitle: "Hervorgehoben",
     secondaryTitle: "Weitere Projekte",
     archiveTitle: "Archiv",
     viewDetails: "Projekt ansehen",
@@ -152,7 +167,7 @@ export const de: AppTranslations = {
     breadcrumbProjects: "Projekte",
     nextProject: "Nächstes Projekt",
     requestProject: "Projekt anfragen",
-    discussProject: "Projekt besprechen",
+    discussProject: "Erstgespräch vereinbaren",
     closingCtaPrompt:
       "Sie planen eine Website, einen Shop oder ein individuelles System?",
     visitLive: "Live ansehen",
@@ -181,10 +196,10 @@ export const de: AppTranslations = {
     },
   },
   closingCta: {
-    title: "Bereit für ein kurzes Gespräch?",
-    body: "Schreiben Sie mir, was Sie vorhaben. Wir klären unverbindlich, ob und wie eine Zusammenarbeit sinnvoll ist.",
-    primaryCta: "Nachricht schreiben",
-    emailCta: "Direkt per E-Mail",
+    title: "Bereit für Ihr Projekt?",
+    body: "Schreiben Sie direkt an Chris – ich melde mich persönlich.",
+    primaryCta: "Erstgespräch vereinbaren",
+    emailCta: "E-Mail",
   },
   projectReferences: {
     title: "Referenzen aus dem Pferdebereich",
@@ -284,6 +299,47 @@ export const de: AppTranslations = {
     privacyConsentLabel:
       "Ich habe die Datenschutzerklärung gelesen und bin mit der Verarbeitung meiner Angaben zur Bearbeitung der Anfrage einverstanden.",
     validationPrivacyRequired: "Bitte bestätigen Sie die Datenschutzerklärung.",
+  },
+  funnel: {
+    pageTitle: "Erstgespräch vereinbaren",
+    pageIntro: "Zwei kurze Fragen – ich melde mich persönlich.",
+    progressLabel: "Fortschritt",
+    stepOf: "{current} / {total}",
+    nextLabel: "Weiter",
+    backLabel: "Zurück",
+    submitLabel: "Anfrage senden",
+    needTitle: "Worum geht es?",
+    needHint: "Mehrfachauswahl möglich",
+    needs: {
+      website: {
+        label: "Website",
+        hint: "Neu oder Redesign",
+      },
+      shop: {
+        label: "Shopify / Shop",
+        hint: "Verkauf online",
+      },
+      software: {
+        label: "Software & Automatisierung",
+        hint: "Individuelle Systeme",
+      },
+      other: {
+        label: "Etwas anderes",
+        hint: "Kurz im Gespräch klären",
+      },
+    },
+    budgetTitle: "Welches Budget schwebt Ihnen vor?",
+    budgets: {
+      under15: { label: "bis 1.500 €" },
+      "15to3": { label: "1.500 – 3.000 €" },
+      "3to6": { label: "3.000 – 6.000 €" },
+      over6: { label: "über 6.000 €" },
+      unsure: { label: "Noch offen" },
+    },
+    detailsTitle: "Wie erreiche ich Sie?",
+    messageOptionalLabel: "Kurznotiz (optional)",
+    validationNeedRequired: "Bitte wählen Sie mindestens eine Option.",
+    validationBudgetRequired: "Bitte wählen Sie eine Option.",
   },
   seo: {
     title: "Chris Leon Noltemeier | Websites, Software und Automatisierung",

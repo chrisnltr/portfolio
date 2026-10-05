@@ -10,9 +10,12 @@ export const mainNavItems: NavItem[] = [
   { id: "projects", hash: "projects" },
 ];
 
-export const contactNavHash = "contact" as const;
+export const contactPath = "/kontakt" as const;
 
 export const services: ServiceItem[] = [
+  { id: "consulting" },
+  { id: "concept" },
+  { id: "design" },
   { id: "websitesShops" },
   { id: "webapps" },
   { id: "automation" },
@@ -38,6 +41,7 @@ export const paths = {
   datenschutz: "/datenschutz",
   lebenslauf: "/lebenslauf",
   danke: "/danke",
+  contact: contactPath,
   projects: "/#projects",
 } as const;
 

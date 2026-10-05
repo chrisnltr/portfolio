@@ -49,7 +49,7 @@ const hiddenTech = computed(() => props.project.technologies.slice(5));
   font-size: clamp(1.2rem, 2.2vw, 1.45rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #fff;
+  color: var(--color-text);
 }
 
 .technical-insight__grid {

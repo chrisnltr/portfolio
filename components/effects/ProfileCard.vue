@@ -59,7 +59,7 @@ const props = withDefaults(
     showIcon: false,
     showBehindGlow: false,
     enableTilt: true,
-    innerGradient: "linear-gradient(145deg, rgba(13, 21, 36, 0.92) 0%, rgba(26, 58, 122, 0.35) 100%)",
+    innerGradient: "linear-gradient(145deg, rgba(232, 238, 246, 0.95) 0%, rgba(47, 102, 255, 0.12) 100%)",
     className: "",
   },
 );
@@ -306,14 +306,14 @@ onUnmounted(() => {
   border-radius: var(--card-radius);
   position: relative;
   box-shadow:
-    rgba(0, 0, 0, 0.45) calc((var(--pointer-from-left) * 6px) - 2px)
+    rgba(18, 26, 38, 0.16) calc((var(--pointer-from-left) * 6px) - 2px)
       calc((var(--pointer-from-top) * 10px) - 4px) 18px -4px;
   transition: transform 0.85s var(--ease-out);
   transform: translateZ(0) rotateX(0deg) rotateY(0deg);
-  background: #0b0f16;
+  background: #e8eef6;
   backface-visibility: hidden;
   overflow: hidden;
-  border: 1px solid rgba(243, 246, 250, 0.12);
+  border: 1px solid var(--color-border);
 }
 
 .pc-card-shell.active .pc-card,
@@ -342,7 +342,7 @@ onUnmounted(() => {
   inset: 0;
   position: absolute;
   background-image: var(--inner-gradient);
-  background-color: #0b0f16;
+  background-color: #e8eef6;
 }
 
 .pc-glare {
@@ -350,13 +350,13 @@ onUnmounted(() => {
   overflow: hidden;
   background-image: radial-gradient(
     farthest-corner circle at var(--pointer-x) var(--pointer-y),
-    rgba(142, 176, 255, 0.18) 12%,
-    rgba(13, 21, 36, 0.75) 90%
+    rgba(47, 102, 255, 0.16) 12%,
+    rgba(232, 238, 246, 0.55) 90%
   );
-  mix-blend-mode: overlay;
-  filter: brightness(0.85) contrast(1.1);
+  mix-blend-mode: soft-light;
+  filter: brightness(1.02) contrast(1.05);
   z-index: 4;
-  opacity: 0.85;
+  opacity: 0.75;
 }
 
 .pc-avatar-content {

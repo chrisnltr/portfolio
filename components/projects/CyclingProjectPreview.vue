@@ -246,8 +246,8 @@ onBeforeUnmount(() => {
   aspect-ratio: 16 / 10;
   max-height: min(52vh, 22rem);
   border-radius: 10px;
-  background: #070a10;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #e8eef6;
+  border: 1px solid var(--color-border);
 }
 
 .cycle--interactive {

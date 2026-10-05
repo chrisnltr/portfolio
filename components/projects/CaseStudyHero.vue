@@ -163,7 +163,7 @@ const imageStyle = computed(() => {
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
-  color: #fff;
+  color: var(--color-text);
   max-width: 14ch;
   overflow-wrap: break-word;
 }

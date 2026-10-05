@@ -21,6 +21,15 @@
           </span>
         </p>
 
+        <NuxtLink
+          to="/kontakt"
+          class="btn-cta about__cta"
+          @click="onCta"
+        >
+          <span>{{ messages.about.ctaLabel }}</span>
+          <span aria-hidden="true">→</span>
+        </NuxtLink>
+
         <div v-if="showTechLoop" class="about__tech">
           <p class="about__tech-label">{{ messages.about.techLoopLabel }}</p>
           <LogoLoop
@@ -29,7 +38,7 @@
             :gap="56"
             :speed="30"
             fade-out
-            :fade-out-color="'var(--color-bg)'"
+            :fade-out-color="'var(--color-surface)'"
             aria-label="Technologien, mit denen ich arbeite"
           />
         </div>
@@ -41,6 +50,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import LogoLoop from "~/components/effects/LogoLoop.vue";
+import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
 import { techLogoItems } from "~/data/techLogos";
 
@@ -60,6 +70,14 @@ const props = withDefaults(
 );
 
 const { messages } = useI18n();
+const { track } = useAnalytics();
+
+function onCta() {
+  track("cta_click", {
+    location: "about",
+    service: "erstgespraech",
+  });
+}
 
 const resolvedEyebrow = computed(
   () => props.eyebrow ?? messages.value.about.eyebrow,
@@ -78,7 +96,6 @@ const resolvedTrustItems = computed(
 <style scoped>
 .about-section {
   background: transparent;
-  border-block: 1px solid var(--color-border);
 }
 
 .about {
@@ -87,11 +104,16 @@ const resolvedTrustItems = computed(
 }
 
 .about__copy {
-  width: min(100%, 42rem);
+  width: min(100%, 44rem);
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border-radius: 24px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 16px 40px rgba(18, 26, 38, 0.05);
 }
 
 .about__paragraphs {
@@ -114,6 +136,11 @@ const resolvedTrustItems = computed(
   line-height: 1.5;
   color: var(--color-text-subtle);
   max-width: 36rem;
+}
+
+.about__cta {
+  margin-bottom: 1.5rem;
+  min-height: 2.75rem;
 }
 
 .about__tech {

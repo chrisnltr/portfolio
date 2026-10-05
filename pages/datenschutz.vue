@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page-shell">
     <LegalHeader />
-    <main class="pt-24 pb-14 md:pt-28 md:pb-20 min-h-screen">
+    <main class="pt-24 pb-14 md:pt-28 md:pb-20">
       <div class="container mx-auto px-4 md:px-6">
         <article class="max-w-3xl mx-auto modern-section rounded-xl p-6 md:p-10 card-elevated">
           <h1 class="text-3xl md:text-4xl font-bold gradient-text mb-2">
@@ -125,11 +125,12 @@
             </section>
 
             <section>
-              <h2 class="text-xl font-semibold text-text-primary mb-2">5. Kontaktformular</h2>
+              <h2 class="text-xl font-semibold text-text-primary mb-2">5. Kontaktformular / Erstgespräch</h2>
               <p class="text-text-secondary leading-relaxed mb-2">
-                Wenn Sie das Kontaktformular nutzen, werden die von Ihnen eingegebenen Daten
-                (Name, E-Mail-Adresse, optional Telefonnummer, Nachricht sowie technische Angaben zur
-                Spam-Abwehr/Rate-Limiting auf dem Server) verarbeitet, um Ihre Anfrage zu beantworten.
+                Wenn Sie das Kontakt- bzw. Erstgesprächsformular nutzen, werden die von Ihnen eingegebenen Daten
+                (Name, E-Mail-Adresse, optional Telefonnummer, Angaben zu Bedarf und Budget,
+                optionale Nachricht sowie technische Angaben zur Spam-Abwehr/Rate-Limiting auf dem Server)
+                verarbeitet, um Ihre Anfrage zu beantworten.
               </p>
               <ul class="list-disc list-inside text-text-secondary space-y-1 ml-2">
                 <li><strong class="text-text-primary">Anbieter (E-Mail-Versand):</strong> Resend (sofern konfiguriert) und/oder Formspree als Fallback</li>

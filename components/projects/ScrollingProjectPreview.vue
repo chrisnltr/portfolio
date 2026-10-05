@@ -37,6 +37,41 @@
     <div v-else class="preview__empty" aria-hidden="true">
       <span>{{ title }}</span>
     </div>
+
+    <div
+      v-if="canScroll"
+      class="preview__hint"
+      aria-hidden="true"
+    >
+      <span class="preview__hint-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect
+            x="8"
+            y="3.5"
+            width="8"
+            height="13"
+            rx="4"
+            stroke="currentColor"
+            stroke-width="1.6"
+          />
+          <path
+            class="preview__hint-wheel"
+            d="M12 6.5v3"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+          />
+          <path
+            d="M10.2 19.2 12 21l1.8-1.8"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <span class="preview__hint-label">{{ hintLabel }}</span>
+    </div>
   </div>
 </template>
 
@@ -91,6 +126,10 @@ const previewLabel = computed(() =>
   isPreviewActive.value
     ? `Vorschau von ${props.title} zurücksetzen`
     : `Vorschau von ${props.title} anzeigen`,
+);
+
+const hintLabel = computed(() =>
+  isTouchInteractive.value ? "Antippen zum Scrollen" : "Hover zum Scrollen",
 );
 
 function updateCapability() {
@@ -232,8 +271,8 @@ watch(
   aspect-ratio: 16 / 10;
   max-height: min(52vh, 22rem);
   border-radius: 10px;
-  background: #070a10;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: #e8eef6;
+  border: 1px solid var(--color-border);
 }
 
 .preview--fill {
@@ -316,5 +355,87 @@ watch(
   font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 650;
+}
+
+.preview__hint {
+  position: absolute;
+  right: 0.7rem;
+  bottom: 0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.65rem 0.38rem 0.45rem;
+  border-radius: 999px;
+  border: 1px solid rgba(18, 26, 38, 0.1);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 20px rgba(18, 26, 38, 0.12);
+  color: var(--color-text);
+  pointer-events: none;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.22s var(--ease-out),
+    transform 0.22s var(--ease-out);
+}
+
+.preview__hint-icon {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: rgba(47, 102, 255, 0.1);
+  color: var(--color-accent);
+}
+
+.preview__hint-icon svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.preview__hint-label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.preview__hint-wheel {
+  animation: preview-wheel 1.2s var(--ease-out) infinite;
+}
+
+@keyframes preview-wheel {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(2px);
+    opacity: 0.45;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .preview.can-scroll {
+    cursor: ns-resize;
+  }
+
+  .preview.can-scroll:hover .preview__hint,
+  .preview.is-preview-active .preview__hint {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview__hint-wheel {
+    animation: none;
+  }
+
+  .preview__hint {
+    transition: none;
+  }
 }
 </style>

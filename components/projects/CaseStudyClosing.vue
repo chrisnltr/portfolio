@@ -5,11 +5,12 @@
         {{ messages.projects.closingCtaPrompt }}
       </p>
       <NuxtLink
-        :to="`${homePath}#contact`"
-        class="btn-primary"
+        :to="contactPath"
+        class="btn-cta"
         @click="emit('cta-click')"
       >
-        {{ messages.projects.discussProject }}
+        <span>{{ messages.projects.discussProject }}</span>
+        <span aria-hidden="true">→</span>
       </NuxtLink>
     </div>
   </footer>
@@ -29,7 +30,7 @@ const emit = defineEmits<{
 }>();
 
 const { messages } = useI18n();
-const homePath = "/";
+const contactPath = "/kontakt";
 const showContactCta = computed(() => props.project.showContactCta !== false);
 </script>
 
@@ -64,13 +65,13 @@ const showContactCta = computed(() => props.project.showContactCta !== false);
   overflow-wrap: anywhere;
 }
 
-.case-closing__cta .btn-primary {
+.case-closing__cta .btn-cta {
   width: 100%;
   max-width: 22rem;
 }
 
 @media (min-width: 640px) {
-  .case-closing__cta .btn-primary {
+  .case-closing__cta .btn-cta {
     width: auto;
   }
 }

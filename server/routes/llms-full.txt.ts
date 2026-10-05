@@ -40,7 +40,7 @@ export default defineEventHandler((event) => {
     ]),
     "## Links",
     "",
-    `- Kontakt: ${origin}/#contact`,
+    `- Kontakt / Erstgespräch: ${origin}/kontakt`,
     `- Lebenslauf: ${origin}/lebenslauf`,
     `- GitHub: ${profile.socialLinks.find((link) => link.id === "github")?.url || "nicht angegeben"}`,
     `- LinkedIn: ${profile.socialLinks.find((link) => link.id === "linkedin")?.url || "nicht angegeben"}`,

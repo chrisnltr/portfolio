@@ -1,5 +1,5 @@
 <template>
-  <section id="referenzen" class="section-pad references">
+  <section id="referenzen" class="section-pad--compact references">
     <div class="container-page">
       <div ref="introEl" class="references__intro reveal">
         <h2 class="section-heading">{{ copy.title }}</h2>
@@ -148,18 +148,6 @@ onMounted(() => {
   background: transparent;
 }
 
-.references::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 52% 38% at 24% 32%,
-    rgba(47, 102, 255, 0.05),
-    transparent 72%
-  );
-}
-
 .references > .container-page {
   position: relative;
   z-index: 1;
@@ -279,7 +267,7 @@ onMounted(() => {
 }
 
 .reference-row__visual :deep(.showcase__frame) {
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 16px 36px rgba(18, 26, 38, 0.1);
 }
 
 .reference-row__visual :deep(.showcase__media),
@@ -382,7 +370,7 @@ onMounted(() => {
 
   .reference-row__visual :deep(.showcase__frame) {
     border-radius: 12px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.24);
+    box-shadow: 0 10px 28px rgba(18, 26, 38, 0.08);
   }
 
   .reference-row__visual :deep(.showcase__glow) {

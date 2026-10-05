@@ -66,14 +66,14 @@
           {{ item.label }}
         </a>
 
-        <a
-          :href="sectionHref(contactNavHash)"
+        <NuxtLink
+          :to="contactPath"
           class="nav-cta header-mobile-cta"
-          :class="{ 'is-active': activeSection === contactNavHash }"
-          @click="onMobileSectionNav($event, contactNavHash)"
+          :class="{ 'is-active': isContactPage }"
+          @click="closeMobileMenu()"
         >
           {{ messages.nav.contact }}
-        </a>
+        </NuxtLink>
       </div>
     </div>
   </header>
@@ -88,7 +88,7 @@ import {
   lockBodyScroll,
   unlockBodyScroll,
 } from "~/composables/useScrollLock";
-import { contactNavHash, mainNavItems } from "~/data/navigation";
+import { contactPath, mainNavItems } from "~/data/navigation";
 
 const mobileMenuOpen = ref(false);
 const scrolled = ref(false);
@@ -104,6 +104,11 @@ const { messages } = useI18n();
 const isHomePage = computed(() => {
   const path = route.path.replace(/\/$/, "") || "/";
   return path === "/";
+});
+
+const isContactPage = computed(() => {
+  const path = route.path.replace(/\/$/, "") || "/";
+  return path === contactPath;
 });
 
 const sectionHref = (hash: string) => {
@@ -133,27 +138,44 @@ const gooeyNavItems = computed(() => [
   {
     id: "contact",
     label: messages.value.nav.contact,
-    href: sectionHref(contactNavHash),
+    href: contactPath,
     variant: "contact" as const,
   },
 ]);
 
-const gooeyHashes = ["home", "projects", contactNavHash] as const;
+const gooeyHashes = ["home", "projects", "contact"] as const;
 
 const activeGooeyIndex = computed(() => {
+  if (isContactPage.value) return 2;
   const current = activeSection.value || "home";
   const index = gooeyHashes.indexOf(current as (typeof gooeyHashes)[number]);
   return index >= 0 ? index : 0;
 });
 
+let contactNavTimer: number | null = null;
+
 function onGooeyNavigate(index: number, event: MouseEvent) {
-  onSectionNav(event, gooeyHashes[index]);
+  const hash = gooeyHashes[index];
+  if (hash === "contact") {
+    event.preventDefault();
+    closeMobileMenu();
+    if (isContactPage.value) return;
+    // Let the gooey pill + particles finish before leaving the page.
+    if (contactNavTimer !== null) window.clearTimeout(contactNavTimer);
+    contactNavTimer = window.setTimeout(() => {
+      contactNavTimer = null;
+      navigateTo(contactPath);
+    }, 320);
+    return;
+  }
+  if (contactNavTimer !== null) {
+    window.clearTimeout(contactNavTimer);
+    contactNavTimer = null;
+  }
+  onSectionNav(event, hash);
 }
 
-const trackedHashes = computed(() => [
-  ...mainNavItems.map((i) => i.hash),
-  contactNavHash,
-]);
+const trackedHashes = computed(() => mainNavItems.map((i) => i.hash));
 
 const menuScrollLocked = ref(false);
 
@@ -272,13 +294,6 @@ const onScroll = () => {
   }
 
   const sections = trackedHashes.value;
-  const nearBottom =
-    window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 96;
-  if (nearBottom) {
-    activeSection.value = contactNavHash;
-    return;
-  }
-
   const probeY = Math.min(window.innerHeight * 0.32, 180);
   const home = document.getElementById("home");
   if (home && home.getBoundingClientRect().bottom > probeY + 80 && window.scrollY < 120) {
@@ -313,6 +328,7 @@ onUnmounted(() => {
   window.removeEventListener("keydown", onKeydown);
   window.removeEventListener("scroll", onScroll);
   if (scrollNavLockTimer !== null) window.clearTimeout(scrollNavLockTimer);
+  if (contactNavTimer !== null) window.clearTimeout(contactNavTimer);
   setBodyScrollLock(false);
 });
 </script>
@@ -354,7 +370,7 @@ onUnmounted(() => {
 }
 
 .brand-mark:hover .brand-mark__sigil {
-  color: #4b7cff;
+  color: var(--color-accent-hover);
 }
 
 .header-desktop {
@@ -383,7 +399,7 @@ onUnmounted(() => {
 
 .header-menu-btn:hover {
   color: var(--color-text);
-  background: rgba(243, 246, 250, 0.05);
+  background: rgba(18, 26, 38, 0.05);
 }
 
 .header-mobile {

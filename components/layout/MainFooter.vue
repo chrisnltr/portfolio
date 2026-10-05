@@ -39,9 +39,9 @@ const brandHomeLabel = computed(
 
 <style scoped>
 .site-footer {
-  background: rgba(5, 7, 11, 0.97);
+  background: transparent;
   color: var(--color-text-subtle);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--color-border);
 }
 
 .footer-inner {
@@ -75,11 +75,11 @@ const brandHomeLabel = computed(
 }
 
 .footer-brand-mark:hover {
-  color: #4b7cff;
+  color: var(--color-accent-hover);
 }
 
 .footer-brand-mark:focus-visible {
-  outline: 2px solid #93b0ff;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -106,11 +106,11 @@ const brandHomeLabel = computed(
 }
 
 .footer-legal a:hover {
-  color: #ffffff;
+  color: var(--color-text);
 }
 
 .footer-legal a:focus-visible {
-  outline: 2px solid #93b0ff;
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 

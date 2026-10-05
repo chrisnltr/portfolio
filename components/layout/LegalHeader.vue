@@ -43,6 +43,6 @@
 }
 
 .brand-mark:hover {
-  color: #ffffff;
+  color: var(--color-text);
 }
 </style>

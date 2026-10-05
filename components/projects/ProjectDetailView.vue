@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-shell">
     <MainHeader />
     <main class="case-study overflow-x-hidden" id="main-content">
       <div class="container-page case-study__inner">

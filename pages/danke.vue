@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page-shell">
     <MainHeader />
-    <main class="pt-28 pb-16 min-h-full" id="main-content">
+    <main class="pt-28 pb-16" id="main-content">
       <div class="container-page max-w-xl text-center">
         <h1 class="font-display text-3xl md:text-4xl font-semibold text-text-primary mb-4">
           {{ messages.thankYou.title }}

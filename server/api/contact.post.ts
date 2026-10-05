@@ -53,7 +53,11 @@ interface ContactBody {
   name?: string;
   email?: string;
   phone?: string;
+  company?: string;
   message?: string;
+  needs?: string[];
+  timeline?: string;
+  budget?: string;
   turnstileToken?: string;
   honeypot?: string;
   locale?: string;
@@ -95,17 +99,28 @@ function buildEmailContent(input: {
   name: string;
   email: string;
   phone: string;
+  company: string;
   message: string;
+  needs: string[];
+  timeline: string;
+  budget: string;
   locale: string;
   formType: string;
 }): { subject: string; text: string; html: string } {
-  const subject = `Portfolio-Anfrage von ${input.name}`;
+  const isFunnel = input.formType === "erstgespraech-funnel";
+  const subject = isFunnel
+    ? `Erstgespräch-Anfrage von ${input.name}`
+    : `Portfolio-Anfrage von ${input.name}`;
 
   const text = [
     `Form: ${input.formType}`,
     `Name: ${input.name}`,
     `Email: ${input.email}`,
     `Phone: ${input.phone || "(none)"}`,
+    ...(input.company ? [`Company: ${input.company}`] : []),
+    `Needs: ${input.needs.length ? input.needs.join(", ") : "(none)"}`,
+    ...(input.timeline ? [`Timeline: ${input.timeline}`] : []),
+    `Budget: ${input.budget || "(none)"}`,
     `Locale: ${input.locale}`,
     "",
     "Message:",
@@ -116,10 +131,14 @@ function buildEmailContent(input: {
 <!DOCTYPE html>
 <html>
   <body style="font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; line-height: 1.5; color: #111;">
-    <h2 style="margin: 0 0 16px;">Portfolio contact form</h2>
+    <h2 style="margin: 0 0 16px;">${isFunnel ? "Erstgespräch-Anfrage" : "Portfolio-Kontakt"}</h2>
     <p style="margin: 0 0 8px;"><strong>Name:</strong> ${escapeHtml(input.name)}</p>
     <p style="margin: 0 0 8px;"><strong>Email:</strong> ${escapeHtml(input.email)}</p>
     <p style="margin: 0 0 8px;"><strong>Phone:</strong> ${escapeHtml(input.phone || "(none)")}</p>
+    ${input.company ? `<p style="margin: 0 0 8px;"><strong>Company:</strong> ${escapeHtml(input.company)}</p>` : ""}
+    <p style="margin: 0 0 8px;"><strong>Needs:</strong> ${escapeHtml(input.needs.length ? input.needs.join(", ") : "(none)")}</p>
+    ${input.timeline ? `<p style="margin: 0 0 8px;"><strong>Timeline:</strong> ${escapeHtml(input.timeline)}</p>` : ""}
+    <p style="margin: 0 0 8px;"><strong>Budget:</strong> ${escapeHtml(input.budget || "(none)")}</p>
     <p style="margin: 0 0 8px;"><strong>Locale:</strong> ${escapeHtml(input.locale)}</p>
     <p style="margin: 16px 0 8px;"><strong>Message:</strong></p>
     <p style="margin: 0; white-space: pre-wrap;">${escapeHtml(input.message).replace(/\n/g, "<br />")}</p>
@@ -159,7 +178,17 @@ export default defineEventHandler(async (event) => {
   const name = typeof body.name === "string" ? body.name.trim() : "";
   const email = typeof body.email === "string" ? body.email.trim() : "";
   const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+  const company = typeof body.company === "string" ? body.company.trim() : "";
   const message = typeof body.message === "string" ? body.message.trim() : "";
+  const timeline = typeof body.timeline === "string" ? body.timeline.trim() : "";
+  const budget = typeof body.budget === "string" ? body.budget.trim() : "";
+  const needs = Array.isArray(body.needs)
+    ? body.needs
+        .filter((item): item is string => typeof item === "string")
+        .map((item) => item.trim())
+        .filter(Boolean)
+        .slice(0, 12)
+    : [];
   const turnstileToken =
     typeof body.turnstileToken === "string" ? body.turnstileToken.trim() : "";
   const locale =
@@ -180,8 +209,14 @@ export default defineEventHandler(async (event) => {
   if (phone.length > MAX_PHONE) {
     throw createError({ statusCode: 400, statusMessage: "Invalid phone" });
   }
+  if (company.length > MAX_NAME) {
+    throw createError({ statusCode: 400, statusMessage: "Invalid company" });
+  }
   if (!message || message.length > MAX_MESSAGE) {
     throw createError({ statusCode: 400, statusMessage: "Invalid message" });
+  }
+  if (timeline.length > 80 || budget.length > 80) {
+    throw createError({ statusCode: 400, statusMessage: "Invalid funnel fields" });
   }
 
   const config = useRuntimeConfig(event);
@@ -241,7 +276,11 @@ export default defineEventHandler(async (event) => {
     name,
     email,
     phone,
+    company,
     message,
+    needs,
+    timeline,
+    budget,
     locale,
     formType,
   });

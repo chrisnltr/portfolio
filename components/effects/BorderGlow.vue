@@ -31,7 +31,7 @@ const props = withDefaults(
   {
     edgeSensitivity: 48,
     glowColor: "220 68% 72%",
-    backgroundColor: "#0d1524",
+    backgroundColor: "#ffffff",
     borderRadius: 14,
     glowRadius: 10,
     glowIntensity: 0.22,
@@ -243,12 +243,12 @@ onMounted(() => {
   isolation: isolate;
   transform: translate3d(0, 0, 0.01px);
   display: grid;
-  border: 1px solid rgba(243, 246, 250, 0.14);
-  background: var(--card-bg, #0d1524);
+  border: 1px solid var(--color-border);
+  background: var(--card-bg, #ffffff);
   overflow: visible;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.04) inset,
-    0 18px 42px rgba(2, 6, 18, 0.45);
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 14px 36px rgba(18, 26, 38, 0.08);
 }
 
 .border-glow-card::before,
@@ -272,7 +272,7 @@ onMounted(() => {
 .border-glow-card::before {
   border: 1px solid transparent;
   background:
-    linear-gradient(var(--card-bg, #0d1524) 0 100%) padding-box,
+    linear-gradient(var(--card-bg, #ffffff) 0 100%) padding-box,
     linear-gradient(rgb(255 255 255 / 0%) 0% 100%) border-box,
     var(--gradient-one) border-box,
     var(--gradient-two) border-box,

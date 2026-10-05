@@ -166,20 +166,20 @@ const isPending = computed(
   gap: 0.75rem;
   padding: clamp(1.25rem, 3vw, 2rem);
   text-align: center;
-  background: linear-gradient(180deg, #101722 0%, #0b0f16 100%);
+  background: linear-gradient(180deg, #eef2f8 0%, #e4ebf5 100%);
 }
 
 .showcase__badge {
   margin: 0;
   padding: 0.32rem 0.75rem;
   border-radius: 999px;
-  border: 1px solid rgba(47, 102, 255, 0.45);
-  background: rgba(47, 102, 255, 0.12);
+  border: 1px solid rgba(47, 102, 255, 0.35);
+  background: rgba(47, 102, 255, 0.1);
   font-size: 0.72rem;
   font-weight: 650;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #8eb0ff;
+  color: var(--color-accent);
 }
 
 .showcase__title {

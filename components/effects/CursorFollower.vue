@@ -37,10 +37,10 @@ const followerStyle = computed(() => {
   return {
     left: `${mousePosition.value.x}px`,
     top: `${mousePosition.value.y}px`,
-    background: `rgba(${r}, ${g}, ${b}, ${active ? 0.38 : 0.22})`,
+    background: `rgba(${r}, ${g}, ${b}, ${active ? 0.22 : 0.12})`,
     boxShadow: active
-      ? `0 0 40px 20px rgba(${r}, ${g}, ${b}, 0.45)`
-      : `0 0 20px 10px rgba(${r}, ${g}, ${b}, 0.3)`,
+      ? `0 0 36px 16px rgba(${r}, ${g}, ${b}, 0.22)`
+      : `0 0 18px 8px rgba(${r}, ${g}, ${b}, 0.14)`,
   };
 });
 

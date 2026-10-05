@@ -262,7 +262,7 @@ onUnmounted(() => {
 .gooey-nav-container {
   --gooey-color-1: #2f66ff;
   --gooey-color-2: #4b7cff;
-  --gooey-color-3: rgba(255, 255, 255, 0.88);
+  --gooey-color-3: rgba(255, 255, 255, 0.92);
   --gooey-color-4: #1a3a7a;
 
   position: relative;
@@ -316,8 +316,21 @@ onUnmounted(() => {
   border-radius: 100vw;
 }
 
+.gooey-nav-container nav ul li.gooey-nav-item--contact {
+  color: var(--color-accent);
+}
+
 .gooey-nav-item--contact a {
-  font-weight: 600;
+  font-weight: 650;
+}
+
+.gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active) a {
+  background: rgba(47, 102, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(47, 102, 255, 0.18);
+}
+
+.gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active):hover {
+  color: var(--color-accent-hover);
 }
 
 .gooey-nav-container nav ul li:focus-within:has(:focus-visible) a {

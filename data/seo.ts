@@ -30,9 +30,9 @@ export const resumeSeo: SeoCopy = {
 };
 
 export const contactSeo: SeoCopy = {
-  title: "Kontakt | Chris Leon Noltemeier",
+  title: "Erstgespräch vereinbaren | Chris Leon Noltemeier",
   description:
-    "Projekt anfragen: Websites, Shopify, Software und Automatisierung. Persönliche Rückmeldung aus Bad Essen.",
+    "Kostenloses Erstgespräch: Beantworten Sie ein paar kurze Fragen zu Website, Shop oder Software. Persönliche Rückmeldung aus Bad Essen.",
 };
 
 export const imprintSeo: SeoCopy = {

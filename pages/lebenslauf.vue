@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="page-shell">
     <MainHeader />
-    <main class="pt-20 pb-12 min-h-full" id="main-content">
+    <main class="pt-20 pb-12" id="main-content">
       <div class="container mx-auto px-4 max-w-4xl">
         <NuxtLink
           :to="homePath"

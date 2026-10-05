@@ -70,6 +70,7 @@ describe("SEO regression data", () => {
     const urls = getPublicSitemapUrls(CANONICAL_SITE_ORIGIN);
     expect(urls).toEqual([
       "https://chrisnoltemeier.de/",
+      "https://chrisnoltemeier.de/kontakt",
       "https://chrisnoltemeier.de/lebenslauf",
       "https://chrisnoltemeier.de/impressum",
       "https://chrisnoltemeier.de/datenschutz",

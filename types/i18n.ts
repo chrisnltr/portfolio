@@ -38,6 +38,7 @@ export type ServiceCopy = {
 export type ServicesSection = {
   eyebrow: string;
   title: string;
+  titleAccent: string;
   subtitle: string;
   items: Record<string, ServiceCopy>;
 };
@@ -207,6 +208,30 @@ export type ContactSection = {
   validationPrivacyRequired: string;
 };
 
+export type FunnelOptionCopy = {
+  label: string;
+  hint?: string;
+};
+
+export type FunnelSection = {
+  pageTitle: string;
+  pageIntro: string;
+  progressLabel: string;
+  stepOf: string;
+  nextLabel: string;
+  backLabel: string;
+  submitLabel: string;
+  needTitle: string;
+  needHint: string;
+  needs: Record<string, FunnelOptionCopy>;
+  budgetTitle: string;
+  budgets: Record<string, FunnelOptionCopy>;
+  detailsTitle: string;
+  messageOptionalLabel: string;
+  validationNeedRequired: string;
+  validationBudgetRequired: string;
+};
+
 export type SeoSection = {
   title: string;
   description: string;
@@ -287,6 +312,7 @@ export type AppTranslations = {
   thankYou: ThankYouPage;
   resume: ResumePage;
   contact: ContactSection;
+  funnel: FunnelSection;
   seo: SeoSection;
   social: SocialTranslations;
   footer: FooterSection;

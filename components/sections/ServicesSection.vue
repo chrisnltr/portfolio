@@ -1,25 +1,45 @@
 <template>
   <section
     :id="sectionId"
-    class="section-pad--compact services"
-    :class="{ 'services--alt': variant === 'alt' }"
+    class="section-pad services"
   >
     <div class="container-page">
       <header class="services__header">
-        <p v-if="showEyebrow && resolvedEyebrow" class="section-label">{{ resolvedEyebrow }}</p>
-        <h2 class="section-heading">{{ resolvedTitle }}</h2>
-        <p v-if="resolvedSubtitle" class="section-lead">{{ resolvedSubtitle }}</p>
+        <p class="services__eyebrow">{{ resolvedEyebrow }}</p>
+        <h2 class="services__title">
+          <span class="services__title-line">{{ resolvedTitle }}</span>
+          <span
+            v-if="resolvedTitleAccent"
+            class="services__title-line services__title-line--accent"
+          >{{ resolvedTitleAccent }}</span>
+        </h2>
       </header>
 
       <div class="services__grid">
         <article
-          v-for="(item, index) in resolvedItems"
-          :key="item.id ?? index"
-          class="services__col"
+          v-for="item in resolvedItems"
+          :key="item.id"
+          class="services__card"
         >
-          <span class="services__num" aria-hidden="true">0{{ index + 1 }}</span>
-          <h3 class="services__title">{{ item.title }}</h3>
-          <p class="services__desc">{{ item.description }}</p>
+          <div class="services__visual" aria-hidden="true">
+            <svg
+              class="services__icon"
+              viewBox="0 0 64 64"
+              fill="none"
+            >
+              <path
+                :d="iconPath(item.id)"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </div>
+          <div class="services__body">
+            <h3 class="services__card-title">{{ item.title }}</h3>
+            <p class="services__desc">{{ item.description }}</p>
+          </div>
         </article>
       </div>
     </div>
@@ -30,11 +50,21 @@
 import { computed } from "vue";
 import { useI18n } from "~/composables/useI18n";
 import { services } from "~/data/navigation";
+import type { ServiceId } from "~/types/content";
 
-export type NumberedColumnItem = {
-  id?: string;
-  title: string;
-  description: string;
+const ICON_PATHS: Record<ServiceId, string> = {
+  consulting:
+    "M20 22h24v6H20zM20 34h16v6H20zM46 20l6 6-16 16H30v-6L46 20z",
+  concept:
+    "M16 18h32v28H16zM24 26h16M24 34h12M24 42h8",
+  design:
+    "M18 40l8-20h4l4 10 4-8h4l8 18H18zM22 46h20",
+  websitesShops:
+    "M14 20h36v26H14zM14 28h36M22 20v8M42 20v8M24 36h10v6H24z",
+  webapps:
+    "M16 16h20v32H16zM42 22h8v24h-8zM22 24h8M22 30h6",
+  automation:
+    "M32 18v6M32 40v6M18 32h6M40 32h6M32 26a6 6 0 1 1 0 12 6 6 0 0 1 0-12zM22 22l4 4M38 38l4 4M42 22l-4 4M26 38l-4 4",
 };
 
 const props = withDefaults(
@@ -42,15 +72,10 @@ const props = withDefaults(
     sectionId?: string;
     eyebrow?: string;
     title?: string;
-    subtitle?: string;
-    items?: NumberedColumnItem[];
-    showEyebrow?: boolean;
-    variant?: "default" | "alt";
+    titleAccent?: string;
   }>(),
   {
     sectionId: "services",
-    showEyebrow: true,
-    variant: "default",
   },
 );
 
@@ -62,144 +87,172 @@ const resolvedEyebrow = computed(
 const resolvedTitle = computed(
   () => props.title ?? messages.value.services.title,
 );
-const resolvedSubtitle = computed(() => {
-  if (props.subtitle !== undefined) return props.subtitle;
-  if (props.items?.length) return "";
-  return messages.value.services.subtitle;
-});
+const resolvedTitleAccent = computed(
+  () => props.titleAccent ?? messages.value.services.titleAccent,
+);
 
-const resolvedItems = computed<NumberedColumnItem[]>(() => {
-  if (props.items?.length) return props.items;
-  return services.map((service) => ({
+const resolvedItems = computed(() =>
+  services.map((service) => ({
     id: service.id,
     title: messages.value.services.items[service.id].title,
     description: messages.value.services.items[service.id].description,
-  }));
-});
+  })),
+);
+
+function iconPath(id: ServiceId) {
+  return ICON_PATHS[id];
+}
 </script>
 
 <style scoped>
 .services {
   background: transparent;
-  border-block: 1px solid var(--color-border);
 }
 
 .services__header {
-  margin-bottom: clamp(1.75rem, 4vw, 2.5rem);
+  text-align: center;
   max-width: 40rem;
+  margin-inline: auto;
+  margin-bottom: clamp(2rem, 4.5vw, 3rem);
 }
 
-.services__grid {
-  display: grid;
-  gap: 0;
-}
-
-@media (min-width: 900px) {
-  .services__grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-.services__col {
-  padding-block: 1.35rem;
-  border-top: 1px solid var(--color-border);
-}
-
-@media (min-width: 900px) {
-  .services__col {
-    padding: 0 1.5rem;
-    border-top: 0;
-    border-left: 1px solid var(--color-border);
-  }
-
-  .services__col:first-child {
-    padding-left: 0;
-    border-left: 0;
-  }
-
-  .services__col:last-child {
-    padding-right: 0;
-  }
-}
-
-.services__num {
-  display: block;
-  margin-bottom: 0.7rem;
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 650;
-  letter-spacing: 0.06em;
+.services__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 1rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-accent);
 }
 
 .services__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: clamp(1.85rem, 4.5vw, 2.75rem);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+  color: var(--color-text);
+  text-wrap: balance;
+}
+
+.services__title-line {
+  display: inline;
+}
+
+.services__title-line + .services__title-line::before {
+  content: " ";
+}
+
+.services__title-line--accent {
+  color: var(--color-accent);
+}
+
+.services__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 700px) {
+  .services__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .services__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+}
+
+.services__card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 22px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: 0 12px 32px rgba(18, 26, 38, 0.04);
+  transition:
+    transform 0.22s var(--ease-out),
+    border-color 0.22s var(--ease-out),
+    box-shadow 0.22s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .services__card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(47, 102, 255, 0.28);
+    box-shadow: 0 18px 40px rgba(47, 102, 255, 0.08);
+  }
+}
+
+.services__visual {
+  display: grid;
+  place-items: center;
+  min-height: 8.5rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse 70% 80% at 50% 40%, rgba(47, 102, 255, 0.1), transparent 70%),
+    color-mix(in srgb, var(--color-bg) 70%, var(--color-surface));
+  border-bottom: 1px solid var(--color-border);
+}
+
+.services__icon {
+  width: 3.25rem;
+  height: 3.25rem;
+  color: var(--color-accent);
+}
+
+.services__body {
+  display: grid;
+  gap: 0.55rem;
+  padding: 1.35rem 1.3rem 1.5rem;
+}
+
+.services__card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--color-text);
+  color: var(--color-accent);
 }
 
 .services__desc {
-  margin: 0.55rem 0 0;
-  font-size: 0.98rem;
-  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--color-text-muted);
-  max-width: 28rem;
 }
 
-.services--alt {
-  border-block: 0;
-}
-
-@media (max-width: 899px) {
-  .services__header {
-    margin-bottom: 1.35rem;
+@media (max-width: 699px) {
+  .services__visual {
+    min-height: 7.25rem;
   }
 
-  .services__col {
-    display: grid;
-    grid-template-columns: 2.35rem minmax(0, 1fr);
-    column-gap: 0.75rem;
-    row-gap: 0;
-    padding-block: 1.45rem;
-    align-items: start;
-  }
-
-  .services__col:first-child {
-    padding-top: 0.35rem;
-  }
-
-  .services__num {
-    grid-column: 1;
-    grid-row: 1;
-    margin: 0;
-    padding-top: 0.28rem;
-    font-size: 0.8rem;
-    line-height: 1.2;
-  }
-
-  .services__title {
-    grid-column: 2;
-    grid-row: 1;
-    font-size: clamp(1.25rem, 5vw, 1.4rem);
-    line-height: 1.25;
-    overflow-wrap: break-word;
-  }
-
-  .services__desc {
-    grid-column: 2;
-    grid-row: 2;
-    margin-top: 0.55rem;
-    font-size: 1rem;
-    line-height: 1.6;
+  .services__card-title {
+    font-size: clamp(1.1rem, 4.5vw, 1.25rem);
   }
 }
 
-@media (max-width: 767px) {
-  .services__col {
-    padding-block: 1.5rem;
+@media (prefers-reduced-motion: reduce) {
+  .services__card {
+    transition: none;
+  }
+
+  .services__card:hover {
+    transform: none;
   }
 }
 </style>
