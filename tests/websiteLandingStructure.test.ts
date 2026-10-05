@@ -2,9 +2,10 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  websiteLandingClarityBenefits,
+  websiteLandingClarityIllustration,
   websiteLandingConsultationPoints,
   websiteLandingFaqItems,
-  websiteLandingProblemTransforms,
   websiteLandingProcessSteps,
   websiteLandingProjects,
   websiteLandingTestimonials,
@@ -86,6 +87,7 @@ describe("website landing structure", () => {
     expect(websiteLandingTestimonials.every((item) => item.isDraft)).toBe(true);
     expect(websiteLandingProjects.map((p) => p.routeSlug)).toEqual([
       "cantus-halle",
+      "ls-aktivstall",
       "stallzentrale",
     ]);
   });
@@ -127,7 +129,7 @@ describe("website landing structure", () => {
     expect(projectsIndex).toBeGreaterThan(scopeIndex);
   });
 
-  it("keeps unrelated pink production placeholders on the landing page", () => {
+  it("replaces hero and consultation media placeholders with illustration components", () => {
     const consult = readFileSync(
       resolve("components/landing/FirstConsultationSection.vue"),
       "utf8",
@@ -136,9 +138,23 @@ describe("website landing structure", () => {
       resolve("components/landing/WebsiteLandingHero.vue"),
       "utf8",
     );
+    const heroVisual = readFileSync(
+      resolve("components/landing/WebsiteHeroVisual.vue"),
+      "utf8",
+    );
+    const consultVisual = readFileSync(
+      resolve("components/landing/ConsultationVisual.vue"),
+      "utf8",
+    );
 
-    expect(consult).toContain("TEMPORÄRER MEDIEN-PLATZHALTER");
-    expect(hero).toContain("TEMPORÄRER HERO-ASSET-PLATZHALTER");
+    expect(hero).toContain("WebsiteHeroVisual");
+    expect(hero).not.toContain("TEMPORÄRER HERO-ASSET-PLATZHALTER");
+    expect(hero).not.toContain("UiVisualPlaceholder");
+    expect(consult).toContain("ConsultationVisual");
+    expect(consult).not.toContain("TEMPORÄRER MEDIEN-PLATZHALTER");
+    expect(consult).not.toContain("UiVisualPlaceholder");
+    expect(heroVisual).toContain("/images/website-hero-visual-transparent.png");
+    expect(consultVisual).toContain("/images/erstgespraech-visual-transparent.png");
   });
 
   it("provides all planned FAQ questions with unique ids", () => {
@@ -151,7 +167,7 @@ describe("website landing structure", () => {
       "Müssen Texte und Bilder bereits fertig sein?",
       "Kann meine bestehende Domain weiterverwendet werden?",
       "Kann ich Inhalte später selbst bearbeiten?",
-      "Erstellst du auch Onlineshops?",
+      "Erstellen Sie auch Onlineshops?",
       "Ist das Erstgespräch kostenlos und unverbindlich?",
     ]);
 
@@ -166,6 +182,11 @@ describe("website landing structure", () => {
     expect(faqSource).toContain("website-faq-trigger-");
     expect(faqSource).toContain("website-faq-panel-");
     expect(faqSource).toContain("prefers-reduced-motion");
+    expect(faqSource).toContain("Ihre Frage ist nicht dabei?");
+    expect(faqSource).toContain("Kostenloses Erstgespräch starten");
+    expect(faqSource).toContain("btn-cta");
+    expect(faqSource).toContain('projekt: "website"');
+    expect(faqSource).toMatch(/contactPath|path:\s*contactPath/);
   });
 
   it("points final CTA secondary link to website projects and primary to kontakt funnel", () => {
@@ -178,25 +199,30 @@ describe("website landing structure", () => {
     );
   });
 
-  it("renders four problem transforms in the scope section", () => {
-    expect(websiteLandingProblemTransforms).toHaveLength(4);
-    expect(websiteLandingProblemTransforms.map((item) => item.problem)).toEqual([
-      "Der Auftritt wirkt veraltet oder fehlt ganz.",
-      "Besucher verstehen das Angebot nicht sofort.",
-      "Die mobile Nutzung ist umständlich oder technisch schwach.",
-      "Der Weg zur Anfrage ist unnötig kompliziert.",
+  it("renders clarity two-column section with illustration and short benefits", () => {
+    expect(websiteLandingClarityBenefits).toHaveLength(3);
+    expect(websiteLandingClarityBenefits.map((item) => item.label)).toEqual([
+      "Klar aufgebaut",
+      "Für jedes Gerät gedacht",
+      "Auf Ihr Ziel ausgerichtet",
     ]);
-    expect(websiteLandingProblemTransforms.map((item) => item.result)).toEqual([
-      "Ein moderner und glaubwürdiger erster Eindruck, der zu Ihrem Unternehmen passt.",
-      "Eine klare Seitenstruktur mit verständlichen Inhalten und eindeutiger Nutzerführung.",
-      "Eine responsive und technisch saubere Umsetzung für Smartphone, Tablet und Desktop.",
-      "Sichtbare Handlungswege und ein einfacher, nachvollziehbarer Kontaktprozess.",
-    ]);
+    expect(websiteLandingClarityIllustration.src).toBe(
+      "/images/wireframe-to-clear-interface.png",
+    );
+    expect(websiteLandingClarityIllustration.alt).toContain(
+      "unklaren Website zu einer übersichtlichen",
+    );
 
-    expect(problemScopeSource).toContain("Ausgangslage");
-    expect(problemScopeSource).toContain("Das ändert sich");
-    expect(problemScopeSource).not.toContain("Konkreter Leistungsumfang");
-    expect(problemScopeSource).not.toContain("wl-scope__deliverables");
+    expect(problemScopeSource).toContain("Klarheit statt Komplexität");
+    expect(problemScopeSource).toContain("Ihr Angebot. Auf den ersten Blick klar.");
+    expect(problemScopeSource).toContain(
+      "Welche Inhalte und Funktionen dafür sinnvoll sind, klären wir",
+    );
+    expect(problemScopeSource).toContain("websiteLandingClarityIllustration");
+    expect(problemScopeSource).toContain(":src=\"illustration.src\"");
+    expect(problemScopeSource).not.toContain("Ausgangslage");
+    expect(problemScopeSource).not.toContain("Das ändert sich");
+    expect(problemScopeSource).not.toContain("wl-scope__module");
     expect(problemScopeSource).toContain("prefers-reduced-motion");
   });
 

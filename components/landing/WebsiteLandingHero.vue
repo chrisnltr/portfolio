@@ -4,19 +4,18 @@
     <div class="container-page wl-hero__inner">
       <div class="wl-hero__copy">
         <p class="wl-hero__eyebrow">
-          Webdesign für Selbstständige und kleine Unternehmen
+          Webdesign für Selbstständige &amp; kleine Unternehmen
         </p>
 
         <h1 id="website-landing-hero-title" class="wl-hero__title">
           Eine
-          <span class="wl-hero__accent">professionelle Website</span>, die Ihr
-          Unternehmen überzeugend präsentiert.
+          <span class="wl-hero__accent">professionelle Website</span>, die
+          überzeugt.
         </h1>
 
         <p class="wl-hero__body">
-          Individuell geplant und persönlich umgesetzt – von der klaren
-          Seitenstruktur und dem passenden Design bis zum mobiloptimierten
-          Livegang. Ohne Agenturumwege und mit einem direkten Ansprechpartner.
+          Individuell geplant, persönlich umgesetzt und für jedes Gerät
+          optimiert – ohne Agenturumwege.
         </p>
 
         <div class="wl-hero__actions">
@@ -30,7 +29,7 @@
               <span aria-hidden="true">→</span>
             </NuxtLink>
             <p class="wl-hero__micro">
-              Unverbindlich · ca. 15 Minuten · persönliche Rückmeldung
+              Kostenlos · 15 Minuten · unverbindlich
             </p>
           </div>
 
@@ -39,7 +38,7 @@
             class="wl-hero__secondary"
             @click="onSecondary"
           >
-            Website-Projekte ansehen
+            Projekte ansehen
           </NuxtLink>
         </div>
 
@@ -61,26 +60,15 @@
         </ul>
       </div>
 
-      <div class="wl-hero__visual" ref="visualRef">
-        <UiVisualPlaceholder
-          type="media"
-          badge="TEMPORÄRER HERO-ASSET-PLATZHALTER"
-          title="Persönliches Foto von Chris + Website-Projekt-Mockups"
-          description="Hier später ein hochwertiges Halbporträt von Chris einsetzen. Chris wirkt seriös, sympathisch und direkt ansprechbar. Ergänzend zwei kleine schwebende Browser- oder Geräte-Mockups mit echten Kundenwebsites, um persönliche Zusammenarbeit und sichtbare Projekterfahrung gleichzeitig zu vermitteln."
-          mobile-description="Desktop: großes Porträt mit überlagerten Projektkarten. Mobil: reduziertes Porträt mit höchstens einem Website-Mockup."
-          format-label="Desktop ungefähr 4:5 beziehungsweise hochformatige Komposition"
-          aspect-ratio="4 / 5"
-          animation-hint="Die beiden Website-Mockups erscheinen beim Laden leicht zeitversetzt und bewegen sich anschließend nur minimal. Keine dauerhafte starke Bewegung."
-          replace-hint="Später durch finales Bild ersetzen."
-        />
+      <div class="wl-hero__visual">
+        <WebsiteHeroVisual />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import UiVisualPlaceholder from "~/components/ui/VisualPlaceholder.vue";
+import WebsiteHeroVisual from "~/components/landing/WebsiteHeroVisual.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { contactPath } from "~/data/navigation";
 
@@ -89,19 +77,17 @@ const { track } = useAnalytics();
 const contactTo = { path: contactPath, query: { projekt: "website" } };
 const projectsHref = "#website-projekte";
 
-const visualRef = ref<HTMLElement | null>(null);
-
 const trustItems = [
   {
     label: "Direkter Ansprechpartner",
     path: "M16 19v-1.5c0-2.1-2.7-3.5-4-3.5s-4 1.4-4 3.5V19M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z",
   },
   {
-    label: "Individuelle Umsetzung",
+    label: "Individuell umgesetzt",
     path: "M12 3l1.8 4.6L18.5 9l-4 3.2L15.6 17 12 14.6 8.4 17l1.1-4.8-4-3.2 4.7-1.4L12 3Z",
   },
   {
-    label: "Für Desktop und Mobil optimiert",
+    label: "Für jedes Gerät",
     path: "M8 3.5h8A1.5 1.5 0 0 1 17.5 5v14A1.5 1.5 0 0 1 16 20.5H8A1.5 1.5 0 0 1 6.5 19V5A1.5 1.5 0 0 1 8 3.5ZM10 18h4",
   },
 ] as const;
@@ -119,19 +105,6 @@ function onSecondary() {
     service: "projects",
   });
 }
-
-onMounted(() => {
-  const node = visualRef.value;
-  if (!node || typeof window === "undefined") return;
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) {
-    node.classList.add("is-visible");
-    return;
-  }
-  requestAnimationFrame(() => {
-    node.classList.add("is-visible");
-  });
-});
 </script>
 
 <style scoped>
@@ -171,8 +144,8 @@ onMounted(() => {
 
 .wl-hero__copy {
   display: grid;
-  gap: 1rem;
-  max-width: 38rem;
+  gap: 0.75rem;
+  max-width: 34rem;
 }
 
 .wl-hero__eyebrow {
@@ -186,6 +159,7 @@ onMounted(() => {
 
 .wl-hero__title {
   margin: 0;
+  max-width: 22ch;
   font-family: var(--font-display);
   font-size: clamp(1.85rem, 5.2vw, 3.15rem);
   font-weight: 750;
@@ -203,21 +177,21 @@ onMounted(() => {
 
 .wl-hero__body {
   margin: 0;
-  max-width: 34rem;
+  max-width: 32rem;
   font-size: clamp(1rem, 1.7vw, 1.12rem);
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--color-text-muted);
 }
 
 .wl-hero__actions {
   display: grid;
-  gap: 0.85rem;
-  margin-top: 0.35rem;
+  gap: 0.7rem;
+  margin-top: 0.15rem;
 }
 
 .wl-hero__primary-group {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.4rem;
 }
 
 .wl-hero__cta {
@@ -230,7 +204,7 @@ onMounted(() => {
 .wl-hero__micro {
   margin: 0;
   font-size: 0.88rem;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--color-text-subtle);
 }
 
@@ -260,10 +234,10 @@ onMounted(() => {
 
 .wl-hero__trust {
   list-style: none;
-  margin: 0.35rem 0 0;
+  margin: 0.15rem 0 0;
   padding: 0;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .wl-hero__trust-item {
@@ -295,18 +269,9 @@ onMounted(() => {
 
 .wl-hero__visual {
   width: 100%;
-  max-width: 28rem;
+  max-width: 30rem;
   margin-inline: auto;
-  opacity: 0;
-  transform: translateY(0.75rem);
-  transition:
-    opacity 0.55s var(--ease-out),
-    transform 0.55s var(--ease-out);
-}
-
-.wl-hero__visual.is-visible {
-  opacity: 1;
-  transform: none;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
@@ -323,9 +288,10 @@ onMounted(() => {
   .wl-hero__trust-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.45rem;
+    gap: 0.4rem;
     font-size: 0.88rem;
-    line-height: 1.3;
+    line-height: 1.25;
+    white-space: nowrap;
   }
 }
 
@@ -345,6 +311,14 @@ onMounted(() => {
     max-width: none;
   }
 
+  .wl-hero__title {
+    max-width: 22ch;
+  }
+
+  .wl-hero__body {
+    max-width: 30rem;
+  }
+
   .wl-hero__visual {
     max-width: none;
     margin-inline: 0;
@@ -354,18 +328,19 @@ onMounted(() => {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 1rem 1.35rem;
+    gap: 0.85rem 1.25rem;
   }
 
   .wl-hero__primary-group {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem 1rem;
+    gap: 0.55rem 0.9rem;
   }
 
   .wl-hero__micro {
-    max-width: 14rem;
+    max-width: none;
+    white-space: nowrap;
   }
 }
 
@@ -377,18 +352,6 @@ onMounted(() => {
 
   .wl-hero__visual {
     max-width: 22rem;
-  }
-
-  .wl-hero__visual :deep(.visual-placeholder) {
-    aspect-ratio: 5 / 4;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .wl-hero__visual {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 }
 </style>

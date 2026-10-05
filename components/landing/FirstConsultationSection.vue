@@ -48,23 +48,14 @@
       </div>
 
       <div class="wl-consult__media">
-        <UiVisualPlaceholder
-          type="media"
-          badge="TEMPORÄRER MEDIEN-PLATZHALTER"
-          title="Persönliches Begrüßungsvideo oder Gesprächsfoto von Chris"
-          description="Hier später entweder ein sympathisches, professionelles Foto von Chris in einer realen Arbeitssituation oder ein kurzes Begrüßungsvideo einsetzen. Inhalt des Videos: kurze persönliche Vorstellung, Erklärung des unverbindlichen Erstgesprächs und Hinweis, dass noch kein fertiges Konzept benötigt wird."
-          format-label="Desktop ungefähr 4:5 oder Video im Hochformat; mobil kompakt unter dem Text"
-          animation-hint="Bei Verwendung eines Videos nur ein dezenter Play-Button und ein ruhiges Vorschaubild. Kein automatischer Ton und kein ungefragtes Autoplay mit Audio."
-          aspect-ratio="4 / 5"
-          replace-hint="Später durch finales Foto oder Video ersetzen. Keine Fake-Wiedergabe."
-        />
+        <ConsultationVisual />
       </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import UiVisualPlaceholder from "~/components/ui/VisualPlaceholder.vue";
+import ConsultationVisual from "~/components/landing/ConsultationVisual.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { contactPath } from "~/data/navigation";
 import {
@@ -223,8 +214,9 @@ function onCta() {
 
 .wl-consult__media {
   width: 100%;
-  max-width: 24rem;
+  max-width: 26rem;
   margin-inline: auto;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
@@ -252,8 +244,8 @@ function onCta() {
 }
 
 @media (max-width: 959px) {
-  .wl-consult__media :deep(.visual-placeholder) {
-    aspect-ratio: 5 / 4;
+  .wl-consult__media {
+    max-width: 20rem;
   }
 }
 </style>

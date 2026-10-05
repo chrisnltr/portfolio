@@ -60,6 +60,7 @@ function projectBySlug(slug: string) {
 }
 
 const cantus = projectBySlug("cantus-halle");
+const lsAktivstall = projectBySlug("ls-aktivstall");
 const stallzentrale = projectBySlug("stallzentrale");
 
 /**
@@ -98,6 +99,35 @@ export const websiteLandingProjects: WebsiteLandingProject[] = [
     mediaSide: "left",
   },
   {
+    id: lsAktivstall.slug,
+    routeSlug: lsAktivstall.routeSlug,
+    title: lsAktivstall.content.title,
+    positioning: "Unternehmenswebsite",
+    situation: lsAktivstall.content.situation,
+    description:
+      "Ein klar strukturierter Webauftritt für einen Aktivstall, der Haltungskonzept, Anlage und Leistungen verständlich präsentiert und Interessenten zur Platzanfrage führt.",
+    features: [
+      "Responsive Unternehmenswebsite",
+      "Klare Informationsstruktur",
+      "Großflächige Bildsprache",
+      "Kontakt und Platzanfrage",
+      "Mobil optimierte Bedienung",
+    ],
+    media: {
+      kind: "image",
+      src: lsAktivstall.images[0]?.src || lsAktivstall.previewImage!.src,
+      alt:
+        lsAktivstall.images[0]?.alt ||
+        lsAktivstall.previewImage!.alt ||
+        "LS Aktivstall Unternehmenswebsite",
+      width: lsAktivstall.images[0]?.width || lsAktivstall.previewImage!.width,
+      height:
+        lsAktivstall.images[0]?.height || lsAktivstall.previewImage!.height,
+    },
+    caseStudyPath: projectDetailPath(lsAktivstall.routeSlug),
+    mediaSide: "right",
+  },
+  {
     id: stallzentrale.slug,
     routeSlug: stallzentrale.routeSlug,
     title: stallzentrale.content.title,
@@ -124,7 +154,7 @@ export const websiteLandingProjects: WebsiteLandingProject[] = [
         stallzentrale.images[0]?.height || stallzentrale.previewImage!.height,
     },
     caseStudyPath: projectDetailPath(stallzentrale.routeSlug),
-    mediaSide: "right",
+    mediaSide: "left",
   },
 ];
 
@@ -191,7 +221,8 @@ export const websiteLandingProcessSteps = [
     description:
       "Sie beantworten in etwa 60 Sekunden einige kurze Fragen zu Ihrer gewünschten Website, dem aktuellen Stand und Ihrem ungefähren Budget.",
     note: "Kostenlos und unverbindlich",
-    icon: "form",
+    image: "/images/process/request.png",
+    imageAlt: "Illustration: Schlankes Anfrageformular für eine Website-Projektanfrage",
   },
   {
     id: "call",
@@ -200,7 +231,8 @@ export const websiteLandingProcessSteps = [
     description:
       "Ich melde mich persönlich bei Ihnen. Gemeinsam klären wir Ihre Ziele, die aktuelle Situation und ob ich Sie sinnvoll unterstützen kann.",
     note: "In der Regel etwa 15 Minuten",
-    icon: "chat",
+    image: "/images/process/call.png",
+    imageAlt: "Illustration: Freundliches Erstgespräch per Videocall",
   },
   {
     id: "offer",
@@ -209,7 +241,8 @@ export const websiteLandingProcessSteps = [
     description:
       "Sie erhalten eine verständliche Empfehlung zu Seitenumfang, Funktionen, Ablauf und Kosten. Danach entscheiden Sie in Ruhe über die Zusammenarbeit.",
     note: "Keine Verpflichtung durch das Erstgespräch",
-    icon: "offer",
+    image: "/images/process/offer.png",
+    imageAlt: "Illustration: Transparentes Angebot mit klarer Checkliste",
   },
   {
     id: "build",
@@ -218,78 +251,23 @@ export const websiteLandingProcessSteps = [
     description:
       "Nach Ihrer Freigabe entwickle ich Struktur und Design, setze die Website technisch um und begleite sie bis zur Veröffentlichung.",
     note: "Direkte Abstimmung ohne Agenturumwege",
-    icon: "launch",
+    image: "/images/process/launch.png",
+    imageAlt: "Illustration: Browserfenster mit Launch-Rakete und Häkchen",
   },
 ] as const;
 
-export type WebsiteLandingProcessIcon =
-  (typeof websiteLandingProcessSteps)[number]["icon"];
-
-export const websiteLandingProblemTransforms = [
-  {
-    id: "appearance",
-    problem: "Der Auftritt wirkt veraltet oder fehlt ganz.",
-    result:
-      "Ein moderner und glaubwürdiger erster Eindruck, der zu Ihrem Unternehmen passt.",
-  },
-  {
-    id: "clarity",
-    problem: "Besucher verstehen das Angebot nicht sofort.",
-    result:
-      "Eine klare Seitenstruktur mit verständlichen Inhalten und eindeutiger Nutzerführung.",
-  },
-  {
-    id: "mobile",
-    problem: "Die mobile Nutzung ist umständlich oder technisch schwach.",
-    result:
-      "Eine responsive und technisch saubere Umsetzung für Smartphone, Tablet und Desktop.",
-  },
-  {
-    id: "contact",
-    problem: "Der Weg zur Anfrage ist unnötig kompliziert.",
-    result:
-      "Sichtbare Handlungswege und ein einfacher, nachvollziehbarer Kontaktprozess.",
-  },
+export const websiteLandingClarityBenefits = [
+  { id: "structure", label: "Klar aufgebaut" },
+  { id: "devices", label: "Für jedes Gerät gedacht" },
+  { id: "goal", label: "Auf Ihr Ziel ausgerichtet" },
 ] as const;
 
-export const websiteLandingScopeItems = [
-  {
-    id: "consulting",
-    title: "Beratung & Zielklärung",
-    description:
-      "Ziele, Zielgruppe, Anforderungen und der sinnvolle Projektumfang werden gemeinsam festgelegt.",
-  },
-  {
-    id: "structure",
-    title: "Seitenkonzept & Struktur",
-    description:
-      "Navigation, Inhalte und Seiten werden so geplant, dass Besucher schnell die richtigen Informationen finden.",
-  },
-  {
-    id: "design",
-    title: "Design & Nutzerführung",
-    description:
-      "Die Website erhält ein passendes Erscheinungsbild und klare Wege zu den wichtigsten Inhalten und Aktionen.",
-  },
-  {
-    id: "responsive",
-    title: "Responsive Umsetzung",
-    description:
-      "Die Website wird technisch sauber für Smartphone, Tablet und Desktop umgesetzt.",
-  },
-  {
-    id: "technical",
-    title: "Funktionen & technische Grundlagen",
-    description:
-      "Kontaktwege und vereinbarte Funktionen werden integriert sowie grundlegende Performance- und SEO-Aspekte berücksichtigt.",
-  },
-  {
-    id: "launch",
-    title: "Qualitätssicherung & Livegang",
-    description:
-      "Vor der Veröffentlichung werden die wichtigsten Geräte, Browser, Inhalte und Funktionen kontrolliert.",
-  },
-] as const;
+export const websiteLandingClarityIllustration = {
+  src: "/images/wireframe-to-clear-interface.png",
+  alt: "Von einer unklaren Website zu einer übersichtlichen digitalen Nutzerführung",
+  width: 1448,
+  height: 1086,
+} as const;
 
 export const websiteLandingConsultationPoints = [
   {
@@ -358,7 +336,7 @@ export const websiteLandingFaqItems: WebsiteLandingFaqItem[] = [
   },
   {
     id: "shops",
-    question: "Erstellst du auch Onlineshops?",
+    question: "Erstellen Sie auch Onlineshops?",
     answer:
       "Ja. Neben Unternehmenswebsites können auch Shopify-Shops geplant und umgesetzt werden. Im Erstgespräch klären wir, welche Produkte, Zahlungsarten, Versandregeln und weiteren Funktionen benötigt werden.",
   },

@@ -86,7 +86,15 @@
             <p class="wl-process__mobile-body">{{ step.description }}</p>
             <p class="wl-process__mobile-note">{{ step.note }}</p>
             <div class="wl-process__mobile-visual" aria-hidden="true">
-              <ProcessStepIllustration :icon="step.icon" variant="mobile" />
+              <img
+                class="wl-process__illustration wl-process__illustration--mobile"
+                :src="step.image"
+                :alt="step.imageAlt"
+                width="300"
+                height="300"
+                loading="lazy"
+                decoding="async"
+              >
             </div>
           </div>
         </li>
@@ -150,7 +158,15 @@
               class="wl-process__visual-layer"
               :class="{ 'wl-process__visual-layer--active': activeIndex === index }"
             >
-              <ProcessStepIllustration :icon="step.icon" variant="desktop" />
+              <img
+                class="wl-process__illustration"
+                :src="step.image"
+                :alt="step.imageAlt"
+                width="420"
+                height="420"
+                loading="lazy"
+                decoding="async"
+              >
             </div>
           </div>
         </div>
@@ -160,20 +176,8 @@
 </template>
 
 <script setup lang="ts">
-import {
-  computed,
-  defineComponent,
-  h,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-  type PropType,
-} from "vue";
-import {
-  websiteLandingProcessSteps,
-  type WebsiteLandingProcessIcon,
-} from "~/data/websiteLanding";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { websiteLandingProcessSteps } from "~/data/websiteLanding";
 
 const AUTO_DURATION_MS = 7000;
 
@@ -325,183 +329,6 @@ watch(isPaused, (paused) => {
   if (!paused && !prefersReducedMotion.value) {
     scheduleAutoAdvance();
   }
-});
-
-const ProcessStepIllustration = defineComponent({
-  name: "ProcessStepIllustration",
-  props: {
-    icon: {
-      type: String as PropType<WebsiteLandingProcessIcon>,
-      required: true,
-    },
-    variant: {
-      type: String as PropType<"desktop" | "mobile">,
-      default: "desktop",
-    },
-  },
-  setup(props) {
-    const size = computed(() => (props.variant === "mobile" ? 120 : 200));
-
-    return () => {
-      const s = size.value;
-      const stroke = "#3867FF";
-      const navy = "#0B1D35";
-      const ice = "#E7EEFC";
-      const muted = "rgba(91, 107, 127, 0.35)";
-
-      if (props.icon === "form") {
-        return h(
-          "svg",
-          {
-            viewBox: "0 0 200 160",
-            width: s,
-            height: (s * 160) / 200,
-            fill: "none",
-            xmlns: "http://www.w3.org/2000/svg",
-          },
-          [
-            h("rect", {
-              x: 28,
-              y: 18,
-              width: 144,
-              height: 124,
-              rx: 14,
-              fill: "#fff",
-              stroke: muted,
-              "stroke-width": 1.5,
-            }),
-            h("rect", { x: 44, y: 40, width: 80, height: 8, rx: 4, fill: ice }),
-            h("rect", { x: 44, y: 58, width: 112, height: 8, rx: 4, fill: ice }),
-            h("rect", { x: 44, y: 76, width: 96, height: 8, rx: 4, fill: ice }),
-            h("rect", {
-              x: 44,
-              y: 102,
-              width: 52,
-              height: 24,
-              rx: 8,
-              fill: stroke,
-              opacity: 0.12,
-            }),
-            h("path", {
-              d: "M56 114l6 6 12-12",
-              stroke,
-              "stroke-width": 2,
-              "stroke-linecap": "round",
-              "stroke-linejoin": "round",
-            }),
-          ],
-        );
-      }
-
-      if (props.icon === "chat") {
-        return h(
-          "svg",
-          {
-            viewBox: "0 0 200 160",
-            width: s,
-            height: (s * 160) / 200,
-            fill: "none",
-          },
-          [
-            h("path", {
-              d: "M36 52h72a12 12 0 0 1 12 12v28a12 12 0 0 1-12 12H56l-16 14v-14H36a12 12 0 0 1-12-12V64a12 12 0 0 1 12-12Z",
-              fill: "#fff",
-              stroke: muted,
-              "stroke-width": 1.5,
-            }),
-            h("path", {
-              d: "M92 68h92a12 12 0 0 1 12 12v28a12 12 0 0 1-12 12h-20l-16 14v-14H92a12 12 0 0 1-12-12V80a12 12 0 0 1 12-12Z",
-              fill: ice,
-              stroke: stroke,
-              "stroke-width": 1.5,
-              opacity: 0.9,
-            }),
-            h("circle", { cx: 56, cy: 74, r: 3, fill: stroke }),
-            h("circle", { cx: 68, cy: 74, r: 3, fill: stroke, opacity: 0.45 }),
-            h("circle", { cx: 80, cy: 74, r: 3, fill: stroke, opacity: 0.25 }),
-            h("rect", { x: 112, y: 90, width: 56, height: 6, rx: 3, fill: stroke, opacity: 0.35 }),
-            h("rect", { x: 112, y: 102, width: 40, height: 6, rx: 3, fill: stroke, opacity: 0.2 }),
-          ],
-        );
-      }
-
-      if (props.icon === "offer") {
-        return h(
-          "svg",
-          {
-            viewBox: "0 0 200 160",
-            width: s,
-            height: (s * 160) / 200,
-            fill: "none",
-          },
-          [
-            h("rect", {
-              x: 40,
-              y: 16,
-              width: 120,
-              height: 128,
-              rx: 12,
-              fill: "#fff",
-              stroke: muted,
-              "stroke-width": 1.5,
-            }),
-            h("rect", { x: 56, y: 36, width: 72, height: 6, rx: 3, fill: ice }),
-            h("rect", { x: 56, y: 50, width: 88, height: 6, rx: 3, fill: ice }),
-            h("rect", { x: 56, y: 64, width: 64, height: 6, rx: 3, fill: ice }),
-            h("rect", {
-              x: 52,
-              y: 86,
-              width: 96,
-              height: 42,
-              rx: 10,
-              fill: stroke,
-              opacity: 0.1,
-              stroke,
-              "stroke-width": 1.25,
-            }),
-            h("rect", { x: 62, y: 98, width: 48, height: 5, rx: 2.5, fill: stroke, opacity: 0.55 }),
-            h("rect", { x: 62, y: 110, width: 36, height: 5, rx: 2.5, fill: navy, opacity: 0.35 }),
-          ],
-        );
-      }
-
-      return h(
-        "svg",
-        {
-          viewBox: "0 0 200 160",
-          width: s,
-          height: (s * 160) / 200,
-          fill: "none",
-        },
-        [
-          h("rect", {
-            x: 32,
-            y: 24,
-            width: 136,
-            height: 104,
-            rx: 12,
-            fill: "#fff",
-            stroke: muted,
-            "stroke-width": 1.5,
-          }),
-          h("rect", { x: 32, y: 24, width: 136, height: 22, rx: 12, fill: ice }),
-          h("circle", { cx: 48, cy: 35, r: 3, fill: stroke, opacity: 0.35 }),
-          h("circle", { cx: 58, cy: 35, r: 3, fill: stroke, opacity: 0.25 }),
-          h("circle", { cx: 68, cy: 35, r: 3, fill: stroke, opacity: 0.18 }),
-          h("rect", { x: 48, y: 62, width: 72, height: 8, rx: 4, fill: ice }),
-          h("rect", { x: 48, y: 78, width: 96, height: 8, rx: 4, fill: ice }),
-          h("circle", { cx: 128, cy: 98, r: 18, fill: stroke, opacity: 0.12 }),
-          h("path", {
-            d: "M121 98l5 5 10-10",
-            stroke,
-            "stroke-width": 2,
-            "stroke-linecap": "round",
-            "stroke-linejoin": "round",
-          }),
-        ],
-      );
-    };
-  },
 });
 </script>
 
@@ -747,7 +574,18 @@ const ProcessStepIllustration = defineComponent({
 
 .wl-process__mobile-visual {
   margin-top: 0.85rem;
-  opacity: 0.75;
+}
+
+.wl-process__illustration {
+  display: block;
+  width: min(100%, 26rem);
+  height: auto;
+  margin-inline: auto;
+  object-fit: contain;
+}
+
+.wl-process__illustration--mobile {
+  width: min(100%, 16rem);
 }
 
 /* Desktop spotlight */
@@ -764,16 +602,15 @@ const ProcessStepIllustration = defineComponent({
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
   padding: clamp(1.75rem, 3vw, 2.5rem);
-  min-height: 22rem;
 }
 
 .wl-process__spotlight-copy {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1.5rem;
-  min-height: 100%;
+  justify-content: flex-start;
+  gap: 1.25rem;
 }
 
 .wl-process__spotlight-stages {
@@ -842,7 +679,6 @@ const ProcessStepIllustration = defineComponent({
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-  padding-top: 0.25rem;
 }
 
 .wl-process__nav-btn {
