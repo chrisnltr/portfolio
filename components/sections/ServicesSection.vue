@@ -5,7 +5,6 @@
   >
     <div class="container-page">
       <header class="services__header">
-        <p class="services__eyebrow">{{ resolvedEyebrow }}</p>
         <h2 class="services__title">
           <span class="services__title-line">{{ resolvedTitle }}</span>
           <span
@@ -70,7 +69,6 @@ const ICON_PATHS: Record<ServiceId, string> = {
 const props = withDefaults(
   defineProps<{
     sectionId?: string;
-    eyebrow?: string;
     title?: string;
     titleAccent?: string;
   }>(),
@@ -81,9 +79,6 @@ const props = withDefaults(
 
 const { messages } = useI18n();
 
-const resolvedEyebrow = computed(
-  () => props.eyebrow ?? messages.value.services.eyebrow,
-);
 const resolvedTitle = computed(
   () => props.title ?? messages.value.services.title,
 );
@@ -114,21 +109,6 @@ function iconPath(id: ServiceId) {
   max-width: 40rem;
   margin-inline: auto;
   margin-bottom: clamp(2rem, 4.5vw, 3rem);
-}
-
-.services__eyebrow {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 0 1rem;
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
 }
 
 .services__title {

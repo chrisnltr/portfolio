@@ -5,11 +5,12 @@
       <div class="container-page kontakt__inner">
         <header class="kontakt__intro">
           <h1 class="kontakt__title">{{ messages.funnel.pageTitle }}</h1>
-          <p class="kontakt__body">{{ messages.funnel.pageIntro }}</p>
-          <p class="kontakt__follow-up">{{ messages.funnel.pageFollowUp }}</p>
+          <p v-if="funnelStep === 1" class="kontakt__body">
+            {{ messages.funnel.pageIntro }}
+          </p>
         </header>
 
-        <ContactFunnel />
+        <ContactFunnel @update:step="funnelStep = $event" />
       </div>
     </main>
     <MainFooter />
@@ -28,6 +29,7 @@ import { resolveSiteOrigin } from "~/utils/siteOrigin";
 const { messages } = useI18n();
 const requestURL = useRequestURL();
 const config = useRuntimeConfig();
+const funnelStep = ref(1);
 
 const siteOrigin = computed(() => {
   const configured = String(config.public.siteUrl || "").trim();
@@ -82,13 +84,6 @@ usePageSeo(() => ({
   color: var(--color-text-muted);
 }
 
-.kontakt__follow-up {
-  margin: 0.45rem 0 0;
-  font-size: 0.9rem;
-  line-height: 1.45;
-  color: var(--color-text-subtle);
-}
-
 @media (max-height: 820px) {
   .kontakt {
     padding-top: calc(var(--header-height) + 0.65rem);
@@ -107,11 +102,6 @@ usePageSeo(() => ({
   .kontakt__body {
     margin-top: 0.3rem;
     font-size: 0.9rem;
-  }
-
-  .kontakt__follow-up {
-    margin-top: 0.35rem;
-    font-size: 0.86rem;
   }
 }
 </style>

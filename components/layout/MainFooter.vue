@@ -20,6 +20,13 @@
       <nav class="footer-legal" :aria-label="messages.footer.legalNavLabel">
         <NuxtLink to="/impressum">{{ messages.footer.impressum }}</NuxtLink>
         <NuxtLink to="/datenschutz">{{ messages.footer.datenschutz }}</NuxtLink>
+        <button
+          type="button"
+          class="footer-consent-link"
+          @click="onOpenConsentSettings"
+        >
+          {{ messages.footer.consentSettings }}
+        </button>
         <NuxtLink to="/agb">{{ messages.footer.agb }}</NuxtLink>
       </nav>
     </div>
@@ -28,9 +35,15 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { useConsent } from "~/composables/useConsent";
 import { useI18n } from "~/composables/useI18n";
 
 const { messages } = useI18n();
+const { openSettings } = useConsent();
+
+function onOpenConsentSettings(event: MouseEvent) {
+  openSettings(event.currentTarget as HTMLElement);
+}
 
 const brandHomeLabel = computed(
   () => `${messages.value.nav.brandMark}, zur Startseite`,
@@ -96,7 +109,8 @@ const brandHomeLabel = computed(
   line-height: 1.35;
 }
 
-.footer-legal a {
+.footer-legal a,
+.footer-consent-link {
   color: inherit;
   text-decoration: none;
   border-radius: 4px;
@@ -105,11 +119,22 @@ const brandHomeLabel = computed(
   align-items: center;
 }
 
-.footer-legal a:hover {
+.footer-consent-link {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.footer-legal a:hover,
+.footer-consent-link:hover {
   color: var(--color-text);
 }
 
-.footer-legal a:focus-visible {
+.footer-legal a:focus-visible,
+.footer-consent-link:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }

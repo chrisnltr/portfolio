@@ -67,7 +67,7 @@
         </a>
 
         <NuxtLink
-          :to="contactPath"
+          :to="contactTo"
           class="nav-cta header-mobile-cta"
           :class="{ 'is-active': isContactPage }"
           @click="closeMobileMenu()"
@@ -88,7 +88,7 @@ import {
   lockBodyScroll,
   unlockBodyScroll,
 } from "~/composables/useScrollLock";
-import { contactPath, mainNavItems } from "~/data/navigation";
+import { contactPath, mainNavItems, paths } from "~/data/navigation";
 
 const mobileMenuOpen = ref(false);
 const scrolled = ref(false);
@@ -110,6 +110,18 @@ const isContactPage = computed(() => {
   const path = route.path.replace(/\/$/, "") || "/";
   return path === contactPath;
 });
+
+const isWebsiteLandingPage = computed(() => {
+  const path = route.path.replace(/\/$/, "") || "/";
+  return path === paths.websiteLanding;
+});
+
+/** From the website landing page, keep the Website funnel preselection. */
+const contactTo = computed(() =>
+  isWebsiteLandingPage.value
+    ? { path: contactPath, query: { projekt: "website" } }
+    : contactPath,
+);
 
 const sectionHref = (hash: string) => {
   if (isHomePage.value) return `#${hash}`;
@@ -138,7 +150,10 @@ const gooeyNavItems = computed(() => [
   {
     id: "contact",
     label: messages.value.nav.contact,
-    href: contactPath,
+    href:
+      typeof contactTo.value === "string"
+        ? contactTo.value
+        : `${contactTo.value.path}?projekt=${contactTo.value.query.projekt}`,
     variant: "contact" as const,
   },
 ]);
@@ -164,7 +179,7 @@ function onGooeyNavigate(index: number, event: MouseEvent) {
     if (contactNavTimer !== null) window.clearTimeout(contactNavTimer);
     contactNavTimer = window.setTimeout(() => {
       contactNavTimer = null;
-      navigateTo(contactPath);
+      navigateTo(contactTo.value);
     }, 320);
     return;
   }
@@ -461,26 +476,33 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 2.25rem;
-  padding: 0 0.9rem;
-  border-radius: 8px;
-  background: #2f66ff;
+  height: 2.5rem;
+  padding: 0 1.1rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #3b72ff 0%, #2f66ff 55%, #2554db 100%);
   color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 650;
   text-decoration: none;
   line-height: 1;
-  border: 1px solid transparent;
+  border: 1px solid rgba(47, 102, 255, 0.28);
   white-space: nowrap;
   cursor: pointer;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 8px 20px rgba(47, 102, 255, 0.22);
   transition:
     background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
     transform var(--duration-fast) var(--ease-out);
 }
 
 .nav-cta:hover {
-  background: #4b7cff;
+  background: linear-gradient(180deg, #4b7cff 0%, #3b72ff 55%, #2f66ff 100%);
   transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.24) inset,
+    0 12px 26px rgba(47, 102, 255, 0.28);
 }
 
 .nav-cta:active {

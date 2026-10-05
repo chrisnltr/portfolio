@@ -287,6 +287,10 @@ import {
   type FunnelNeedId,
 } from "~/data/funnel";
 
+const emit = defineEmits<{
+  "update:step": [step: number];
+}>();
+
 const { locale, messages: rawMessages } = useI18n();
 const messages = computed(() => rawMessages.value);
 const runtimeConfig = useRuntimeConfig();
@@ -301,6 +305,14 @@ const turnstileSiteKey = computed(
 
 const totalSteps = FUNNEL_TOTAL_STEPS;
 const step = ref(1);
+
+watch(
+  step,
+  (value) => {
+    emit("update:step", value);
+  },
+  { immediate: true },
+);
 const direction = ref<"forward" | "back">("forward");
 const stepError = ref("");
 const formStarted = ref(false);
@@ -737,6 +749,7 @@ async function submit() {
   border: 1px solid var(--funnel-border);
   color: var(--color-text);
   font: inherit;
+  font-size: 1rem;
   caret-color: var(--color-accent);
 }
 

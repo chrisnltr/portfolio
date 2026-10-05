@@ -317,20 +317,42 @@ onUnmounted(() => {
 }
 
 .gooey-nav-container nav ul li.gooey-nav-item--contact {
-  color: var(--color-accent);
+  color: #ffffff;
+  margin-left: 0.35rem;
 }
 
 .gooey-nav-item--contact a {
   font-weight: 650;
+  min-height: 2.4rem;
+  padding: 0.5rem 1.1rem;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
 }
 
 .gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active) a {
-  background: rgba(47, 102, 255, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(47, 102, 255, 0.18);
+  background: linear-gradient(180deg, #3b72ff 0%, #2f66ff 55%, #2554db 100%);
+  color: #ffffff;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 8px 20px rgba(47, 102, 255, 0.22);
 }
 
 .gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active):hover {
-  color: var(--color-accent-hover);
+  color: #ffffff;
+}
+
+.gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active):hover a {
+  background: linear-gradient(180deg, #4b7cff 0%, #3b72ff 55%, #2f66ff 100%);
+  transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.24) inset,
+    0 12px 26px rgba(47, 102, 255, 0.28);
+}
+
+.gooey-nav-container nav ul li.gooey-nav-item--contact:not(.active):active a {
+  transform: translateY(0);
 }
 
 .gooey-nav-container nav ul li:focus-within:has(:focus-visible) a {

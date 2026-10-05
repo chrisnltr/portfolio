@@ -34,7 +34,6 @@ export const de: AppTranslations = {
     ],
   },
   services: {
-    eyebrow: "Leistungen",
     title: "So setze ich Websites und Software um,",
     titleAccent: "die klar funktionieren.",
     subtitle: "",
@@ -302,9 +301,7 @@ export const de: AppTranslations = {
   },
   funnel: {
     pageTitle: "Erstgespräch vereinbaren",
-    pageIntro: "Drei kurze Schritte – dauert etwa 60 Sekunden.",
-    pageFollowUp:
-      "Ich prüfe Ihre Angaben persönlich und melde mich in der Regel innerhalb eines Werktags bei Ihnen.",
+    pageIntro: "Drei kurze Schritte - dauert etwa 60 Sekunden.",
     progressLabel: "Fortschritt",
     stepOf: "{current} / {total}",
     nextLabel: "Weiter",

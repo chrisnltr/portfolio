@@ -1,6 +1,6 @@
 <template>
   <div class="page-shell">
-    <LandingHeader secondary-href="#website-projekte" />
+    <MainHeader />
     <main id="main-content">
       <WebsiteLandingHero />
 
@@ -45,8 +45,8 @@
 
 <script setup lang="ts">
 import FirstConsultationSection from "~/components/landing/FirstConsultationSection.vue";
-import LandingHeader from "~/components/layout/LandingHeader.vue";
 import MainFooter from "~/components/layout/MainFooter.vue";
+import MainHeader from "~/components/layout/MainHeader.vue";
 import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
 import WebsiteLandingHero from "~/components/landing/WebsiteLandingHero.vue";
 import WebsiteProcessSection from "~/components/landing/WebsiteProcessSection.vue";
