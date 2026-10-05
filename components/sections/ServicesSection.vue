@@ -1,10 +1,11 @@
 <template>
   <section
     :id="sectionId"
+    ref="root"
     class="section-pad services"
   >
     <div class="container-page">
-      <header class="services__header">
+      <header class="services__header reveal">
         <p class="section-label">{{ resolvedEyebrow }}</p>
         <h2 class="services__title">
           <span class="services__title-lead">{{ resolvedTitle }}</span>
@@ -16,10 +17,14 @@
 
       <div class="services__offerings">
         <article
-          v-for="item in offerings"
+          v-for="(item, index) in offerings"
           :key="item.id"
-          class="services__offering"
-          :class="`services__offering--${item.id}`"
+          class="services__offering reveal"
+          :class="[
+            `services__offering--${item.id}`,
+            index === 1 ? 'reveal--delay-1' : '',
+            index === 2 ? 'reveal--delay-2' : '',
+          ]"
         >
           <div class="services__visual">
             <img
@@ -43,6 +48,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "~/composables/useI18n";
+import { useRevealGroup } from "~/composables/useReveal";
 import { serviceOfferingIds, services } from "~/data/navigation";
 
 const props = withDefaults(
@@ -60,6 +66,7 @@ const props = withDefaults(
 );
 
 const { messages } = useI18n();
+const { root } = useRevealGroup();
 
 const resolvedEyebrow = computed(
   () => props.eyebrow ?? messages.value.services.eyebrow,

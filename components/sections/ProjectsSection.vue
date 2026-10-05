@@ -1,10 +1,11 @@
 <template>
   <section
     :id="sectionId"
+    ref="root"
     class="section-pad projects-section"
   >
     <div class="container-page">
-      <div class="projects-intro">
+      <div class="projects-intro reveal">
         <h2 class="section-heading">{{ resolvedTitle }}</h2>
         <p v-if="resolvedSubtitle" class="section-lead">
           {{ resolvedSubtitle }}
@@ -13,7 +14,7 @@
 
       <article
         v-if="featuredProject"
-        class="project-feature"
+        class="project-feature reveal reveal--delay-1"
         :class="{
           'project-feature--static': !cardLink,
           [`project-feature--${featuredProject.slug}`]: true,
@@ -96,10 +97,13 @@
         <article
           v-for="(project, index) in gridProjects"
           :key="project.slug"
-          class="project-card"
+          class="project-card reveal"
           :class="{
             'project-card--static': !cardLink,
             [`project-card--${project.slug}`]: true,
+            'reveal--delay-1': index === 0,
+            'reveal--delay-2': index === 1,
+            'reveal--delay-3': index >= 2,
           }"
           :style="cardAccentStyle(project)"
         >
@@ -180,6 +184,7 @@ import CyclingProjectPreview from "~/components/projects/CyclingProjectPreview.v
 import ScrollingProjectPreview from "~/components/projects/ScrollingProjectPreview.vue";
 import { isFinePointerHover } from "~/composables/usePreviewInteraction";
 import { useI18n } from "~/composables/useI18n";
+import { useRevealGroup } from "~/composables/useReveal";
 import { projectDetailPath } from "~/data/navigation";
 import { getPreviewProjects, getProjectBySlug } from "~/data/projects";
 import type { ProjectCaseStudy, ProjectImage } from "~/types/content";
@@ -201,6 +206,7 @@ const props = withDefaults(
 );
 
 const { messages } = useI18n();
+const { root } = useRevealGroup();
 
 const resolvedTitle = computed(
   () => props.title ?? messages.value.projects.title,

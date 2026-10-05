@@ -1,10 +1,11 @@
 <template>
   <section
     :id="sectionId"
+    ref="root"
     class="section-pad--compact about-section"
   >
     <div class="container-page about">
-      <div class="about__copy">
+      <div class="about__copy reveal">
         <p class="section-label">{{ resolvedEyebrow }}</p>
         <h2 class="section-heading">{{ resolvedTitle }}</h2>
         <div class="about__paragraphs">
@@ -52,6 +53,7 @@ import { computed } from "vue";
 import LogoLoop from "~/components/effects/LogoLoop.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
+import { useRevealGroup } from "~/composables/useReveal";
 import { techLogoItems } from "~/data/techLogos";
 
 const props = withDefaults(
@@ -71,6 +73,7 @@ const props = withDefaults(
 
 const { messages } = useI18n();
 const { track } = useAnalytics();
+const { root } = useRevealGroup();
 
 function onCta() {
   track("cta_click", {

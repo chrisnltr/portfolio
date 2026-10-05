@@ -2,7 +2,9 @@
   <section
     :id="sectionId"
     class="hero"
+    :class="{ 'hero--backdrop-ready': backdropReady }"
   >
+    <div class="hero__backdrop" aria-hidden="true" />
     <div class="hero__glow" aria-hidden="true" />
     <div class="container-page hero__inner">
       <div class="hero__copy">
@@ -47,9 +49,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
+
+const HERO_BACKDROP_SRC = "/images/hintergrund.png";
 
 const props = withDefaults(
   defineProps<{
@@ -70,6 +74,7 @@ const props = withDefaults(
 
 const { messages } = useI18n();
 const { track } = useAnalytics();
+const backdropReady = ref(false);
 
 const resolvedEyebrow = computed(
   () => props.eyebrow ?? messages.value.hero.eyebrow,
@@ -104,9 +109,30 @@ const headlineLines = computed(() => {
 function onCta(location: string) {
   track("cta_click", {
     location,
-    service: location === "hero-primary" ? props.analyticsService : "projects",
+    service: props.analyticsService,
   });
 }
+
+onMounted(() => {
+  if (typeof window === "undefined") return;
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduced) {
+    backdropReady.value = true;
+    return;
+  }
+
+  const img = new Image();
+  const reveal = () => {
+    backdropReady.value = true;
+  };
+
+  img.addEventListener("load", reveal, { once: true });
+  img.addEventListener("error", reveal, { once: true });
+  img.src = HERO_BACKDROP_SRC;
+
+  if (img.complete) reveal();
+});
 </script>
 
 <style scoped>
@@ -117,6 +143,15 @@ function onCta(location: string) {
   align-items: center;
   padding-top: calc(var(--header-height) + clamp(3.5rem, 5vw, 5rem));
   padding-bottom: clamp(4.5rem, 8vw, 6.5rem);
+  background-color: var(--color-bg);
+  overflow: hidden;
+}
+
+.hero__backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
   background:
     linear-gradient(
       105deg,
@@ -126,7 +161,12 @@ function onCta(location: string) {
       rgba(243, 245, 248, 0.28) 100%
     ),
     url("/images/hintergrund.png") right center / cover no-repeat;
-  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.7s var(--ease-out);
+}
+
+.hero--backdrop-ready .hero__backdrop {
+  opacity: 1;
 }
 
 .hero__glow {
@@ -136,7 +176,7 @@ function onCta(location: string) {
   width: min(48vw, 560px);
   height: min(48vw, 460px);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   background: radial-gradient(
     closest-side,
     rgba(47, 102, 255, 0.14) 0%,
@@ -152,7 +192,7 @@ function onCta(location: string) {
   inset: auto 0 0;
   height: clamp(5rem, 12vw, 9rem);
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   background: linear-gradient(
     to bottom,
     rgba(243, 245, 248, 0) 0%,
@@ -277,6 +317,11 @@ function onCta(location: string) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero__backdrop {
+    opacity: 1;
+    transition: none;
+  }
+
   .hero__eyebrow,
   .hero__title,
   .hero__body,
@@ -291,6 +336,9 @@ function onCta(location: string) {
     align-items: flex-start;
     padding-top: calc(var(--header-height) + 3.5rem);
     padding-bottom: 4rem;
+  }
+
+  .hero__backdrop {
     background-position: 72% center;
     background-size: auto 100%;
     background-color: var(--color-bg);

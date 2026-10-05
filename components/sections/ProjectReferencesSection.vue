@@ -1,12 +1,16 @@
 <template>
-  <section id="referenzen" class="section-pad--compact references">
+  <section
+    id="referenzen"
+    ref="root"
+    class="section-pad--compact references"
+  >
     <div class="container-page">
-      <div ref="introEl" class="references__intro reveal">
+      <div class="references__intro reveal">
         <h2 class="section-heading">{{ copy.title }}</h2>
         <p class="section-lead">{{ copy.subtitle }}</p>
       </div>
 
-      <div ref="listEl" class="references__list">
+      <div class="references__list">
         <article
           v-for="(ref, index) in cards"
           :key="ref.id"
@@ -72,16 +76,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed } from "vue";
 import ProjectBrowserShowcase from "~/components/projects/ProjectBrowserShowcase.vue";
 import { useI18n } from "~/composables/useI18n";
-import { useReveal } from "~/composables/useReveal";
+import { useRevealGroup } from "~/composables/useReveal";
 import { projectDetailPath } from "~/data/navigation";
 import { getProjectBySlug } from "~/data/projects";
 import type { ProjectReferenceId } from "~/types/i18n";
 import type { ProjectCaseStudy } from "~/types/content";
 
 const { messages } = useI18n();
+const { root } = useRevealGroup();
 
 const copy = computed(() => messages.value.projectReferences);
 
@@ -113,33 +118,6 @@ function rowAccentStyle(project: ProjectCaseStudy) {
   if (!project.accent) return undefined;
   return { "--ref-accent": project.accent } as Record<string, string>;
 }
-
-const { el: introEl } = useReveal();
-const listEl = ref<HTMLElement | null>(null);
-
-onMounted(() => {
-  const root = listEl.value;
-  if (!root) return;
-  const rows = root.querySelectorAll<HTMLElement>(".reference-row");
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  rows.forEach((row) => {
-    if (reduced) {
-      row.classList.add("is-visible");
-      return;
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry?.isIntersecting) {
-          row.classList.add("is-visible");
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -4% 0px" },
-    );
-    observer.observe(row);
-  });
-});
 </script>
 
 <style scoped>
@@ -281,27 +259,6 @@ onMounted(() => {
   max-height: 320px;
 }
 
-.reveal {
-  opacity: 0;
-  transform: translateY(1.1rem);
-  transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.reveal--delay-1 {
-  transition-delay: 80ms;
-}
-
-.reveal--delay-2 {
-  transition-delay: 140ms;
-}
-
 @media (max-width: 767px) {
   .references__intro {
     margin-bottom: 1.15rem;
@@ -375,14 +332,6 @@ onMounted(() => {
 
   .reference-row__visual :deep(.showcase__glow) {
     opacity: 0.45;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
   }
 }
 </style>

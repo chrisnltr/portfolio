@@ -1,5 +1,26 @@
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
+function prefersReducedMotion() {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}
+
+function revealNow(node: Element) {
+  node.classList.add("is-visible");
+}
+
+function isNearViewport(node: Element) {
+  const rect = node.getBoundingClientRect();
+  return rect.top < window.innerHeight * 0.92 && rect.bottom > 0;
+}
+
+const OBSERVER_OPTIONS: IntersectionObserverInit = {
+  threshold: 0.12,
+  rootMargin: "0px 0px -6% 0px",
+};
+
 export function useReveal() {
   const el = ref<HTMLElement | null>(null);
   let observer: IntersectionObserver | null = null;
@@ -8,36 +29,27 @@ export function useReveal() {
     const node = el.value;
     if (!node || typeof window === "undefined") return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
-      node.classList.add("is-visible");
+    if (prefersReducedMotion()) {
+      revealNow(node);
       return;
     }
 
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer?.unobserve(entry.target);
-          }
-        }
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -4% 0px" },
-    );
-
-    // Above-the-fold content can miss the first intersection in some browsers.
-    requestAnimationFrame(() => {
-      if (!node.classList.contains("is-visible")) {
-        const rect = node.getBoundingClientRect();
-        if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
-          node.classList.add("is-visible");
-          observer?.unobserve(node);
-        }
+    observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        revealNow(entry.target);
+        observer?.unobserve(entry.target);
       }
-    });
+    }, OBSERVER_OPTIONS);
 
-    observer.observe(node);
+    requestAnimationFrame(() => {
+      if (!node.classList.contains("is-visible") && isNearViewport(node)) {
+        revealNow(node);
+        observer?.unobserve(node);
+        return;
+      }
+      observer?.observe(node);
+    });
   });
 
   onBeforeUnmount(() => {
@@ -45,4 +57,47 @@ export function useReveal() {
   });
 
   return { el };
+}
+
+/** Observe every `.reveal` descendant inside a section root. */
+export function useRevealGroup(selector = ".reveal") {
+  const root = ref<HTMLElement | null>(null);
+  const observers: IntersectionObserver[] = [];
+
+  onMounted(() => {
+    const node = root.value;
+    if (!node || typeof window === "undefined") return;
+
+    const targets = [...node.querySelectorAll<HTMLElement>(selector)];
+    if (!targets.length) return;
+
+    if (prefersReducedMotion()) {
+      targets.forEach(revealNow);
+      return;
+    }
+
+    for (const target of targets) {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          revealNow(entry.target);
+          observer.unobserve(entry.target);
+        }
+      }, OBSERVER_OPTIONS);
+
+      observers.push(observer);
+
+      if (isNearViewport(target)) {
+        revealNow(target);
+      } else {
+        observer.observe(target);
+      }
+    }
+  });
+
+  onBeforeUnmount(() => {
+    for (const observer of observers) observer.disconnect();
+  });
+
+  return { root };
 }

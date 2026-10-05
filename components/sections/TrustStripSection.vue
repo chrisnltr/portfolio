@@ -1,9 +1,10 @@
 <template>
   <section
+    ref="root"
     class="trust-strip"
     :aria-label="messages.trustStrip.items.join(', ')"
   >
-    <div class="container-page trust-strip__inner">
+    <div class="container-page trust-strip__inner reveal">
       <ul class="trust-strip__list">
         <li
           v-for="item in messages.trustStrip.items"
@@ -19,8 +20,10 @@
 
 <script setup lang="ts">
 import { useI18n } from "~/composables/useI18n";
+import { useRevealGroup } from "~/composables/useReveal";
 
 const { messages } = useI18n();
+const { root } = useRevealGroup();
 </script>
 
 <style scoped>

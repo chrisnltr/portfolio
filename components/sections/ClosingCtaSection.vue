@@ -1,6 +1,7 @@
 <template>
   <section
     :id="sectionId"
+    ref="root"
     class="closing-cta"
     :style="glowStyle"
     @pointermove="onPointerMove"
@@ -11,7 +12,7 @@
       aria-hidden="true"
     />
 
-    <div class="closing-cta__content">
+    <div class="closing-cta__content reveal">
       <h2 class="closing-cta__title">
         {{ resolvedTitle }}
       </h2>
@@ -33,6 +34,7 @@ import { computed } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { useBottomGlow } from "~/composables/useBottomGlow";
 import { useI18n } from "~/composables/useI18n";
+import { useRevealGroup } from "~/composables/useReveal";
 import { paths } from "~/data/navigation";
 
 const props = withDefaults(
@@ -49,6 +51,7 @@ const props = withDefaults(
 const { messages } = useI18n();
 const { track } = useAnalytics();
 const { glowStyle, onPointerMove, onPointerLeave } = useBottomGlow();
+const { root } = useRevealGroup();
 const contactPath = paths.contact;
 
 const resolvedTitle = computed(
