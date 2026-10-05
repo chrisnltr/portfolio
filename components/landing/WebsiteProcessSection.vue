@@ -1,12 +1,14 @@
 <template>
   <section
     id="ablauf"
+    ref="sectionEl"
     class="wl-process"
     aria-labelledby="website-process-title"
+    @mouseenter="setPaused(true)"
+    @mouseleave="setPaused(false)"
+    @focusin="setPaused(true)"
+    @focusout="onSectionFocusOut"
   >
-    <div class="wl-process__glow" aria-hidden="true" />
-    <div class="wl-process__grid" aria-hidden="true" />
-
     <div class="container-page">
       <header class="wl-process__header">
         <div class="wl-process__intro">
@@ -14,152 +16,521 @@
           <h2 id="website-process-title" class="wl-process__title">
             Von der ersten Anfrage bis zur fertigen Website.
           </h2>
-          <p class="wl-process__lead">
-            Sie wissen jederzeit, was als Nächstes passiert, und stimmen sich
-            während des gesamten Projekts direkt mit mir ab.
-          </p>
         </div>
-        <p class="wl-process__badge">4 klare Schritte · direkte Zusammenarbeit</p>
       </header>
 
-      <ol ref="timelineEl" class="wl-process__timeline">
+      <!-- Desktop tab navigation -->
+      <div
+        class="wl-process__desktop"
+        role="tablist"
+        aria-label="Projektablauf"
+      >
+        <button
+          v-for="(step, index) in steps"
+          :key="`tab-${step.id}`"
+          :id="tabId(index)"
+          ref="tabRefs"
+          type="button"
+          role="tab"
+          class="wl-process__tab"
+          :class="{ 'wl-process__tab--active': activeIndex === index }"
+          :aria-selected="activeIndex === index"
+          :aria-controls="panelId(index)"
+          :tabindex="activeIndex === index ? 0 : -1"
+          @click="selectStep(index)"
+          @keydown="onTabKeydown($event, index)"
+        >
+          <span class="wl-process__tab-num">{{ stepNumber(index) }}</span>
+          <span class="wl-process__tab-label">{{ step.tabTitle }}</span>
+          <span class="wl-process__tab-track" aria-hidden="true">
+            <span
+              class="wl-process__tab-progress"
+              :class="{
+                'wl-process__tab-progress--active': activeIndex === index,
+                'wl-process__tab-progress--paused': isPaused || prefersReducedMotion,
+              }"
+              :key="activeIndex === index ? progressCycle : `idle-${index}`"
+            />
+          </span>
+        </button>
+      </div>
+
+      <!-- Mobile accordion -->
+      <ol class="wl-process__mobile" aria-label="Projektablauf">
         <li
           v-for="(step, index) in steps"
-          :key="step.id"
-          class="wl-process__step"
-          :class="{ 'wl-process__step--final': index === steps.length - 1 }"
-          :style="{ '--step-index': String(index) }"
+          :key="`mobile-${step.id}`"
+          class="wl-process__mobile-item"
+          :class="{ 'wl-process__mobile-item--active': activeIndex === index }"
         >
-          <div class="wl-process__marker" aria-hidden="true">
-            <span class="wl-process__num">{{ String(index + 1).padStart(2, "0") }}</span>
-          </div>
-
-          <article class="wl-process__card">
-            <span class="wl-process__watermark" aria-hidden="true">
-              {{ String(index + 1).padStart(2, "0") }}
+          <button
+            type="button"
+            class="wl-process__mobile-trigger"
+            :aria-expanded="activeIndex === index"
+            :aria-controls="panelId(index)"
+            @click="selectStep(index)"
+          >
+            <span class="wl-process__mobile-num" aria-hidden="true">
+              {{ stepNumber(index) }}
             </span>
+            <span class="wl-process__mobile-title">{{ step.tabTitle }}</span>
+          </button>
 
-            <div class="wl-process__card-top">
-              <span class="wl-process__label">Schritt {{ index + 1 }}</span>
-              <span class="wl-process__icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path
-                    :d="iconPaths[step.icon]"
-                    stroke="currentColor"
-                    stroke-width="1.75"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </span>
+          <div
+            v-show="activeIndex === index"
+            :id="panelId(index)"
+            class="wl-process__mobile-panel"
+            role="region"
+            :aria-labelledby="tabId(index)"
+          >
+            <p class="wl-process__mobile-body">{{ step.description }}</p>
+            <p class="wl-process__mobile-note">{{ step.note }}</p>
+            <div class="wl-process__mobile-visual" aria-hidden="true">
+              <ProcessStepIllustration :icon="step.icon" variant="mobile" />
             </div>
-
-            <h3 class="wl-process__step-title">{{ step.title }}</h3>
-            <p class="wl-process__step-body">{{ step.description }}</p>
-            <p class="wl-process__step-note">{{ step.note }}</p>
-          </article>
+          </div>
         </li>
       </ol>
+
+      <!-- Desktop spotlight panel -->
+      <div
+        class="wl-process__spotlight"
+        role="tabpanel"
+        :id="panelId(activeIndex)"
+        :aria-labelledby="tabId(activeIndex)"
+      >
+        <div class="wl-process__spotlight-grid">
+          <div class="wl-process__spotlight-copy">
+            <div class="wl-process__spotlight-stages">
+              <div
+                v-for="(step, index) in steps"
+                :key="`copy-${step.id}`"
+                class="wl-process__step-layer"
+                :class="{ 'wl-process__step-layer--active': activeIndex === index }"
+                :aria-hidden="activeIndex !== index"
+              >
+                <p class="wl-process__step-label">
+                  Schritt {{ index + 1 }}
+                </p>
+                <h3 class="wl-process__step-title">{{ step.title }}</h3>
+                <p class="wl-process__step-body">{{ step.description }}</p>
+                <p class="wl-process__step-note">{{ step.note }}</p>
+              </div>
+            </div>
+
+            <div class="wl-process__nav">
+              <button
+                type="button"
+                class="wl-process__nav-btn"
+                :disabled="activeIndex === 0"
+                :aria-label="prevLabel"
+                @click="goPrev"
+              >
+                Zurück
+              </button>
+              <button
+                type="button"
+                class="wl-process__nav-btn wl-process__nav-btn--next"
+                :disabled="activeIndex === steps.length - 1"
+                :aria-label="nextLabel"
+                @click="goNext"
+              >
+                Weiter
+              </button>
+            </div>
+          </div>
+
+          <div class="wl-process__spotlight-visual" aria-hidden="true">
+            <span class="wl-process__watermark">
+              {{ stepNumber(activeIndex) }}
+            </span>
+            <div
+              v-for="(step, index) in steps"
+              :key="`visual-${step.id}`"
+              class="wl-process__visual-layer"
+              :class="{ 'wl-process__visual-layer--active': activeIndex === index }"
+            >
+              <ProcessStepIllustration :icon="step.icon" variant="desktop" />
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import {
+  computed,
+  defineComponent,
+  h,
+  onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
+  type PropType,
+} from "vue";
 import {
   websiteLandingProcessSteps,
   type WebsiteLandingProcessIcon,
 } from "~/data/websiteLanding";
 
-const steps = websiteLandingProcessSteps;
-const timelineEl = ref<HTMLOListElement | null>(null);
-let observer: IntersectionObserver | null = null;
+const AUTO_DURATION_MS = 7000;
 
-const iconPaths: Record<WebsiteLandingProcessIcon, string> = {
-  form: "M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Zm3 5h4M8 13h8M8 17h5M15.5 7.5l1 1 2-2",
-  chat: "M5 7.5A2.5 2.5 0 0 1 7.5 5h5A2.5 2.5 0 0 1 15 7.5V11a2.5 2.5 0 0 1-2.5 2.5H10l-3 2.5V13.5A2.5 2.5 0 0 1 5 11V7.5Zm7 4.5h4.5A2.5 2.5 0 0 0 19 9.5V6A2.5 2.5 0 0 0 16.5 3.5H12",
-  offer: "M7 4h10a2 2 0 0 1 2 2v13l-3-1.5L14 19l-2-1.5L10 19l-2-1.5L5 19V6a2 2 0 0 1 2-2Zm3 5h4M8 12h8M8 15h5",
-  launch:
-    "M5 7.5h14a1.5 1.5 0 0 1 1.5 1.5v8A1.5 1.5 0 0 1 19 18.5H5A1.5 1.5 0 0 1 3.5 17V9A1.5 1.5 0 0 1 5 7.5ZM3.5 10.5h17M9 15.5l2 2 4-4",
+const steps = websiteLandingProcessSteps;
+const sectionEl = ref<HTMLElement | null>(null);
+const tabRefs = ref<(HTMLButtonElement | null)[]>([]);
+const activeIndex = ref(0);
+const isPaused = ref(false);
+const prefersReducedMotion = ref(true);
+const progressCycle = ref(0);
+
+let timerId: ReturnType<typeof setTimeout> | null = null;
+
+const prevLabel = computed(() => {
+  if (activeIndex.value <= 0) return "Zurück – nicht verfügbar";
+  return `Zurück zu Schritt ${activeIndex.value}: ${steps[activeIndex.value - 1]?.tabTitle}`;
+});
+
+const nextLabel = computed(() => {
+  if (activeIndex.value >= steps.length - 1) return "Weiter – nicht verfügbar";
+  return `Weiter zu Schritt ${activeIndex.value + 2}: ${steps[activeIndex.value + 1]?.tabTitle}`;
+});
+
+function stepNumber(index: number) {
+  return String(index + 1).padStart(2, "0");
+}
+
+function tabId(index: number) {
+  return `website-process-tab-${index}`;
+}
+
+function panelId(index: number) {
+  return `website-process-panel-${index}`;
+}
+
+function clearTimer() {
+  if (timerId !== null) {
+    clearTimeout(timerId);
+    timerId = null;
+  }
+}
+
+function scheduleAutoAdvance() {
+  clearTimer();
+  if (prefersReducedMotion.value || isPaused.value) return;
+  if (typeof document !== "undefined" && document.hidden) return;
+
+  timerId = setTimeout(() => {
+    const next = (activeIndex.value + 1) % steps.length;
+    selectStep(next);
+  }, AUTO_DURATION_MS);
+}
+
+function selectStep(index: number) {
+  if (index < 0 || index >= steps.length) return;
+  activeIndex.value = index;
+  progressCycle.value += 1;
+  scheduleAutoAdvance();
+}
+
+function goPrev() {
+  if (activeIndex.value > 0) selectStep(activeIndex.value - 1);
+}
+
+function goNext() {
+  if (activeIndex.value < steps.length - 1) selectStep(activeIndex.value + 1);
+}
+
+function setPaused(value: boolean) {
+  isPaused.value = value;
+  if (value) {
+    clearTimer();
+  } else {
+    scheduleAutoAdvance();
+  }
+}
+
+function onSectionFocusOut(event: FocusEvent) {
+  const next = event.relatedTarget as Node | null;
+  if (next && sectionEl.value?.contains(next)) return;
+  setPaused(false);
+}
+
+function onTabKeydown(event: KeyboardEvent, index: number) {
+  let target = index;
+
+  switch (event.key) {
+    case "ArrowRight":
+      target = (index + 1) % steps.length;
+      break;
+    case "ArrowLeft":
+      target = (index - 1 + steps.length) % steps.length;
+      break;
+    case "Home":
+      target = 0;
+      break;
+    case "End":
+      target = steps.length - 1;
+      break;
+    default:
+      return;
+  }
+
+  event.preventDefault();
+  selectStep(target);
+  tabRefs.value[target]?.focus();
+}
+
+function onVisibilityChange() {
+  if (document.hidden) {
+    clearTimer();
+  } else {
+    scheduleAutoAdvance();
+  }
+}
+
+let motionQuery: MediaQueryList | null = null;
+
+const onMotionChange = (event: MediaQueryListEvent) => {
+  prefersReducedMotion.value = event.matches;
+  if (event.matches) {
+    clearTimer();
+  } else {
+    scheduleAutoAdvance();
+  }
 };
 
 onMounted(() => {
-  const node = timelineEl.value;
-  if (!node || typeof window === "undefined") return;
+  if (typeof window === "undefined") return;
 
-  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (reduced) {
-    node.classList.add("is-visible");
-    return;
+  motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  prefersReducedMotion.value = motionQuery.matches;
+
+  motionQuery.addEventListener("change", onMotionChange);
+  document.addEventListener("visibilitychange", onVisibilityChange);
+
+  if (!prefersReducedMotion.value) {
+    scheduleAutoAdvance();
   }
-
-  observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add("is-visible");
-        observer?.unobserve(entry.target);
-      }
-    },
-    { threshold: 0.18, rootMargin: "0px 0px -8% 0px" },
-  );
-
-  observer.observe(node);
 });
 
 onBeforeUnmount(() => {
-  observer?.disconnect();
+  clearTimer();
+  motionQuery?.removeEventListener("change", onMotionChange);
+  document.removeEventListener("visibilitychange", onVisibilityChange);
+});
+
+watch(isPaused, (paused) => {
+  if (!paused && !prefersReducedMotion.value) {
+    scheduleAutoAdvance();
+  }
+});
+
+const ProcessStepIllustration = defineComponent({
+  name: "ProcessStepIllustration",
+  props: {
+    icon: {
+      type: String as PropType<WebsiteLandingProcessIcon>,
+      required: true,
+    },
+    variant: {
+      type: String as PropType<"desktop" | "mobile">,
+      default: "desktop",
+    },
+  },
+  setup(props) {
+    const size = computed(() => (props.variant === "mobile" ? 120 : 200));
+
+    return () => {
+      const s = size.value;
+      const stroke = "#3867FF";
+      const navy = "#0B1D35";
+      const ice = "#E7EEFC";
+      const muted = "rgba(91, 107, 127, 0.35)";
+
+      if (props.icon === "form") {
+        return h(
+          "svg",
+          {
+            viewBox: "0 0 200 160",
+            width: s,
+            height: (s * 160) / 200,
+            fill: "none",
+            xmlns: "http://www.w3.org/2000/svg",
+          },
+          [
+            h("rect", {
+              x: 28,
+              y: 18,
+              width: 144,
+              height: 124,
+              rx: 14,
+              fill: "#fff",
+              stroke: muted,
+              "stroke-width": 1.5,
+            }),
+            h("rect", { x: 44, y: 40, width: 80, height: 8, rx: 4, fill: ice }),
+            h("rect", { x: 44, y: 58, width: 112, height: 8, rx: 4, fill: ice }),
+            h("rect", { x: 44, y: 76, width: 96, height: 8, rx: 4, fill: ice }),
+            h("rect", {
+              x: 44,
+              y: 102,
+              width: 52,
+              height: 24,
+              rx: 8,
+              fill: stroke,
+              opacity: 0.12,
+            }),
+            h("path", {
+              d: "M56 114l6 6 12-12",
+              stroke,
+              "stroke-width": 2,
+              "stroke-linecap": "round",
+              "stroke-linejoin": "round",
+            }),
+          ],
+        );
+      }
+
+      if (props.icon === "chat") {
+        return h(
+          "svg",
+          {
+            viewBox: "0 0 200 160",
+            width: s,
+            height: (s * 160) / 200,
+            fill: "none",
+          },
+          [
+            h("path", {
+              d: "M36 52h72a12 12 0 0 1 12 12v28a12 12 0 0 1-12 12H56l-16 14v-14H36a12 12 0 0 1-12-12V64a12 12 0 0 1 12-12Z",
+              fill: "#fff",
+              stroke: muted,
+              "stroke-width": 1.5,
+            }),
+            h("path", {
+              d: "M92 68h92a12 12 0 0 1 12 12v28a12 12 0 0 1-12 12h-20l-16 14v-14H92a12 12 0 0 1-12-12V80a12 12 0 0 1 12-12Z",
+              fill: ice,
+              stroke: stroke,
+              "stroke-width": 1.5,
+              opacity: 0.9,
+            }),
+            h("circle", { cx: 56, cy: 74, r: 3, fill: stroke }),
+            h("circle", { cx: 68, cy: 74, r: 3, fill: stroke, opacity: 0.45 }),
+            h("circle", { cx: 80, cy: 74, r: 3, fill: stroke, opacity: 0.25 }),
+            h("rect", { x: 112, y: 90, width: 56, height: 6, rx: 3, fill: stroke, opacity: 0.35 }),
+            h("rect", { x: 112, y: 102, width: 40, height: 6, rx: 3, fill: stroke, opacity: 0.2 }),
+          ],
+        );
+      }
+
+      if (props.icon === "offer") {
+        return h(
+          "svg",
+          {
+            viewBox: "0 0 200 160",
+            width: s,
+            height: (s * 160) / 200,
+            fill: "none",
+          },
+          [
+            h("rect", {
+              x: 40,
+              y: 16,
+              width: 120,
+              height: 128,
+              rx: 12,
+              fill: "#fff",
+              stroke: muted,
+              "stroke-width": 1.5,
+            }),
+            h("rect", { x: 56, y: 36, width: 72, height: 6, rx: 3, fill: ice }),
+            h("rect", { x: 56, y: 50, width: 88, height: 6, rx: 3, fill: ice }),
+            h("rect", { x: 56, y: 64, width: 64, height: 6, rx: 3, fill: ice }),
+            h("rect", {
+              x: 52,
+              y: 86,
+              width: 96,
+              height: 42,
+              rx: 10,
+              fill: stroke,
+              opacity: 0.1,
+              stroke,
+              "stroke-width": 1.25,
+            }),
+            h("rect", { x: 62, y: 98, width: 48, height: 5, rx: 2.5, fill: stroke, opacity: 0.55 }),
+            h("rect", { x: 62, y: 110, width: 36, height: 5, rx: 2.5, fill: navy, opacity: 0.35 }),
+          ],
+        );
+      }
+
+      return h(
+        "svg",
+        {
+          viewBox: "0 0 200 160",
+          width: s,
+          height: (s * 160) / 200,
+          fill: "none",
+        },
+        [
+          h("rect", {
+            x: 32,
+            y: 24,
+            width: 136,
+            height: 104,
+            rx: 12,
+            fill: "#fff",
+            stroke: muted,
+            "stroke-width": 1.5,
+          }),
+          h("rect", { x: 32, y: 24, width: 136, height: 22, rx: 12, fill: ice }),
+          h("circle", { cx: 48, cy: 35, r: 3, fill: stroke, opacity: 0.35 }),
+          h("circle", { cx: 58, cy: 35, r: 3, fill: stroke, opacity: 0.25 }),
+          h("circle", { cx: 68, cy: 35, r: 3, fill: stroke, opacity: 0.18 }),
+          h("rect", { x: 48, y: 62, width: 72, height: 8, rx: 4, fill: ice }),
+          h("rect", { x: 48, y: 78, width: 96, height: 8, rx: 4, fill: ice }),
+          h("circle", { cx: 128, cy: 98, r: 18, fill: stroke, opacity: 0.12 }),
+          h("path", {
+            d: "M121 98l5 5 10-10",
+            stroke,
+            "stroke-width": 2,
+            "stroke-linecap": "round",
+            "stroke-linejoin": "round",
+          }),
+        ],
+      );
+    };
+  },
 });
 </script>
 
 <style scoped>
 .wl-process {
-  position: relative;
-  isolation: isolate;
-  overflow: clip;
+  --wl-process-blue: #3867ff;
+  --wl-process-navy: #0b1d35;
+  --wl-process-ice: #f3f7fc;
+  --wl-process-muted: #8a9bb5;
+  --wl-process-track: rgba(138, 155, 181, 0.28);
+  --wl-process-auto-duration: 7s;
+  --wl-process-transition: 280ms var(--ease-out);
+
   padding-block: clamp(3rem, 6vw, 5rem);
-  background:
-    radial-gradient(ellipse 42% 48% at 92% 12%, rgba(47, 102, 255, 0.08), transparent 68%),
-    radial-gradient(ellipse 38% 42% at 6% 88%, rgba(47, 102, 255, 0.05), transparent 70%),
-    linear-gradient(180deg, rgba(232, 238, 246, 0.55) 0%, rgba(243, 245, 248, 0.2) 100%);
-}
-
-.wl-process__glow,
-.wl-process__grid {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.wl-process__glow {
-  background:
-    radial-gradient(circle at 78% 24%, rgba(147, 176, 255, 0.14), transparent 34%),
-    radial-gradient(circle at 18% 70%, rgba(47, 102, 255, 0.07), transparent 38%);
-}
-
-.wl-process__grid {
-  opacity: 0.18;
-  background-image:
-    linear-gradient(rgba(47, 102, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(47, 102, 255, 0.08) 1px, transparent 1px);
-  background-size: 32px 32px;
-  mask-image: radial-gradient(ellipse 70% 65% at 50% 40%, #000 15%, transparent 78%);
-}
-
-.wl-process > .container-page {
-  position: relative;
-  z-index: 1;
+  background: linear-gradient(
+    180deg,
+    rgba(243, 247, 252, 0.85) 0%,
+    rgba(243, 245, 248, 0.35) 100%
+  );
 }
 
 .wl-process__header {
   display: grid;
   gap: 1rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
+  margin-bottom: clamp(2.25rem, 4.5vw, 3.5rem);
 }
 
 .wl-process__intro {
-  max-width: 40rem;
+  max-width: 36rem;
 }
 
 .wl-process__eyebrow {
@@ -168,7 +539,7 @@ onBeforeUnmount(() => {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--wl-process-blue);
 }
 
 .wl-process__title {
@@ -182,344 +553,401 @@ onBeforeUnmount(() => {
   text-wrap: balance;
 }
 
-.wl-process__lead {
-  margin: 0.85rem 0 0;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: var(--color-text-muted);
+/* Desktop tabs */
+.wl-process__desktop {
+  display: none;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
 }
 
-.wl-process__badge {
-  margin: 0;
-  width: fit-content;
-  padding: 0.55rem 0.9rem;
-  border-radius: 999px;
-  border: 1px solid rgba(47, 102, 255, 0.18);
-  background: rgba(255, 255, 255, 0.78);
-  color: var(--color-accent);
-  font-size: 0.88rem;
+.wl-process__tab {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  min-height: 4.75rem;
+  padding: 0.65rem 0.5rem 0.85rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition:
+    color var(--wl-process-transition),
+    background-color var(--wl-process-transition);
+}
+
+.wl-process__tab:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.wl-process__tab-num {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--wl-process-muted);
+  transition: color var(--wl-process-transition);
+}
+
+.wl-process__tab-label {
+  font-size: 0.92rem;
   font-weight: 650;
   letter-spacing: -0.01em;
-  box-shadow: 0 6px 16px rgba(47, 102, 255, 0.06);
+  line-height: 1.25;
+  color: var(--wl-process-muted);
+  transition: color var(--wl-process-transition);
 }
 
-.wl-process__timeline {
+.wl-process__tab--active .wl-process__tab-num,
+.wl-process__tab--active .wl-process__tab-label {
+  color: var(--wl-process-blue);
+}
+
+.wl-process__tab-track {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.35rem;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--wl-process-track);
+  overflow: hidden;
+}
+
+.wl-process__tab-progress {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--wl-process-blue);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.wl-process__tab-progress--active {
+  animation: wl-process-tab-progress var(--wl-process-auto-duration) linear forwards;
+}
+
+.wl-process__tab-progress--paused {
+  animation-play-state: paused;
+}
+
+@keyframes wl-process-tab-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Mobile accordion */
+.wl-process__mobile {
   list-style: none;
   margin: 0;
   padding: 0;
   position: relative;
-  display: grid;
-  gap: 1.2rem;
 }
 
-.wl-process__timeline::before {
+.wl-process__mobile::before {
   content: "";
   position: absolute;
-  left: 1.35rem;
-  top: 0.55rem;
-  bottom: calc(100% - (100% / 4) + 1.6rem);
-  width: 2px;
-  background: linear-gradient(
-    180deg,
-    rgba(147, 176, 255, 0.35) 0%,
-    rgba(47, 102, 255, 0.55) 55%,
-    rgba(31, 79, 212, 0.85) 100%
-  );
-  transform-origin: top;
-  transform: scaleY(0.16);
-  transition: transform 0.95s var(--ease-out);
-  z-index: 0;
+  left: 1.1rem;
+  top: 1.75rem;
+  bottom: 1.75rem;
+  width: 1px;
+  background: var(--wl-process-track);
 }
 
-.wl-process__timeline.is-visible::before {
-  transform: scaleY(1);
+.wl-process__mobile-item {
+  position: relative;
+  padding-left: 0.15rem;
 }
 
-.wl-process__step {
+.wl-process__mobile-item + .wl-process__mobile-item {
+  margin-top: 0.35rem;
+}
+
+.wl-process__mobile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.35rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color var(--wl-process-transition);
+}
+
+.wl-process__mobile-trigger:hover {
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.wl-process__mobile-num {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.95rem;
-  opacity: 0;
-  transform: translateY(0.9rem);
-  transition:
-    opacity 0.45s var(--ease-out),
-    transform 0.45s var(--ease-out);
-  transition-delay: calc(var(--step-index) * 95ms);
-}
-
-.wl-process__timeline.is-visible .wl-process__step {
-  opacity: 1;
-  transform: none;
-}
-
-.wl-process__marker {
-  position: relative;
-  z-index: 2;
-  width: 2.75rem;
-  display: flex;
-  justify-content: center;
-  padding-top: 0.2rem;
-}
-
-.wl-process__num {
-  display: inline-grid;
-  place-items: center;
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 999px;
-  border: 1px solid rgba(47, 102, 255, 0.28);
-  background: var(--color-surface);
-  color: var(--color-accent);
-  font-family: var(--font-display);
-  font-size: 0.92rem;
-  font-weight: 750;
-  letter-spacing: -0.02em;
-  box-shadow: 0 4px 14px rgba(47, 102, 255, 0.12);
-}
-
-.wl-process__step--final .wl-process__num {
-  background: linear-gradient(180deg, #3b72ff 0%, #2f66ff 100%);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #ffffff;
-  box-shadow: 0 8px 20px rgba(47, 102, 255, 0.28);
-}
-
-.wl-process__card {
-  position: relative;
-  overflow: hidden;
-  display: grid;
-  gap: 0.55rem;
-  align-content: start;
-  padding: 1.05rem 1.1rem 1.15rem;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  box-shadow: 0 8px 22px rgba(18, 26, 38, 0.045);
-}
-
-.wl-process__step:nth-child(1) .wl-process__card {
-  background: linear-gradient(180deg, #ffffff 0%, #fbfcfe 100%);
-}
-
-.wl-process__step:nth-child(2) .wl-process__card {
-  background: linear-gradient(180deg, #ffffff 0%, #f7f9fd 100%);
-}
-
-.wl-process__step:nth-child(3) .wl-process__card {
-  background: linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
-}
-
-.wl-process__step--final .wl-process__card {
-  border-color: rgba(255, 255, 255, 0.18);
-  background:
-    radial-gradient(ellipse 70% 80% at 88% 0%, rgba(255, 255, 255, 0.18), transparent 55%),
-    linear-gradient(145deg, #3b72ff 0%, #2f66ff 48%, #1f4fd4 100%);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.18) inset,
-    0 16px 34px rgba(31, 79, 212, 0.24);
-  color: #f8fafc;
-}
-
-.wl-process__watermark {
-  position: absolute;
-  right: 0.55rem;
-  top: 0.2rem;
-  font-family: var(--font-display);
-  font-size: 3.4rem;
-  font-weight: 750;
-  letter-spacing: -0.06em;
-  line-height: 1;
-  color: rgba(47, 102, 255, 0.06);
-  pointer-events: none;
-}
-
-.wl-process__step--final .wl-process__watermark {
-  color: rgba(255, 255, 255, 0.1);
-}
-
-.wl-process__card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-}
-
-.wl-process__label {
-  display: inline-flex;
-  align-items: center;
-  min-height: 1.55rem;
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
-  background: var(--color-accent-surface);
-  color: var(--color-accent);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.wl-process__step--final .wl-process__label {
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffffff;
-}
-
-.wl-process__icon {
+  flex: 0 0 auto;
   display: inline-grid;
   place-items: center;
   width: 2.2rem;
   height: 2.2rem;
-  border-radius: 10px;
-  border: 1px solid rgba(47, 102, 255, 0.18);
-  background: var(--color-accent-surface);
-  color: var(--color-accent);
-}
-
-.wl-process__step--final .wl-process__icon {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.14);
-  color: #ffffff;
-}
-
-.wl-process__icon svg {
-  width: 1.1rem;
-  height: 1.1rem;
-}
-
-.wl-process__step-title {
-  margin: 0;
+  border-radius: 999px;
+  border: 1px solid var(--wl-process-track);
+  background: var(--color-surface);
   font-family: var(--font-display);
-  font-size: 1.12rem;
-  font-weight: 730;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--wl-process-muted);
+  transition:
+    color var(--wl-process-transition),
+    border-color var(--wl-process-transition);
+}
+
+.wl-process__mobile-item--active .wl-process__mobile-num {
+  border-color: rgba(56, 103, 255, 0.35);
+  color: var(--wl-process-blue);
+}
+
+.wl-process__mobile-title {
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 680;
   letter-spacing: -0.02em;
+  line-height: 1.3;
   color: var(--color-text);
 }
 
-.wl-process__step--final .wl-process__step-title {
-  color: #ffffff;
+.wl-process__mobile-panel {
+  padding: 0 0 1rem 3.05rem;
 }
 
-.wl-process__step-body {
+.wl-process__mobile-body {
   margin: 0;
   font-size: 0.94rem;
   line-height: 1.55;
   color: var(--color-text-muted);
 }
 
-.wl-process__step--final .wl-process__step-body {
-  color: rgba(248, 250, 252, 0.86);
+.wl-process__mobile-note {
+  margin: 0.65rem 0 0;
+  width: fit-content;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(56, 103, 255, 0.08);
+  font-size: 0.82rem;
+  font-weight: 650;
+  color: var(--wl-process-blue);
+}
+
+.wl-process__mobile-visual {
+  margin-top: 0.85rem;
+  opacity: 0.75;
+}
+
+/* Desktop spotlight */
+.wl-process__spotlight {
+  display: none;
+  border-radius: 26px;
+  border: 1px solid rgba(138, 155, 181, 0.22);
+  background: linear-gradient(145deg, #ffffff 0%, var(--wl-process-ice) 100%);
+  box-shadow: 0 14px 40px rgba(11, 29, 53, 0.05);
+  overflow: hidden;
+}
+
+.wl-process__spotlight-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  min-height: 22rem;
+}
+
+.wl-process__spotlight-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 100%;
+}
+
+.wl-process__spotlight-stages {
+  display: grid;
+}
+
+.wl-process__step-layer {
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 0.65rem;
+  align-content: start;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity var(--wl-process-transition),
+    transform var(--wl-process-transition),
+    visibility var(--wl-process-transition);
+}
+
+.wl-process__step-layer--active {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.wl-process__step-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--wl-process-muted);
+}
+
+.wl-process__step-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.2vw, 1.65rem);
+  font-weight: 730;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--wl-process-navy);
+}
+
+.wl-process__step-body {
+  margin: 0;
+  max-width: 34rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
 }
 
 .wl-process__step-note {
   margin: 0.15rem 0 0;
   width: fit-content;
-  padding: 0.35rem 0.65rem;
+  padding: 0.4rem 0.7rem;
   border-radius: 999px;
-  background: rgba(47, 102, 255, 0.08);
+  background: rgba(56, 103, 255, 0.08);
   font-size: 0.84rem;
   font-weight: 650;
-  color: var(--color-accent);
+  color: var(--wl-process-blue);
 }
 
-.wl-process__step--final .wl-process__step-note {
-  background: rgba(255, 255, 255, 0.16);
-  color: #ffffff;
+.wl-process__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  padding-top: 0.25rem;
+}
+
+.wl-process__nav-btn {
+  min-height: 2.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  border: 1px solid rgba(138, 155, 181, 0.35);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--wl-process-navy);
+  font-size: 0.88rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    border-color var(--wl-process-transition),
+    color var(--wl-process-transition),
+    background-color var(--wl-process-transition),
+    opacity var(--wl-process-transition);
+}
+
+.wl-process__nav-btn:hover:not(:disabled) {
+  border-color: rgba(56, 103, 255, 0.35);
+  color: var(--wl-process-blue);
+}
+
+.wl-process__nav-btn:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.wl-process__nav-btn--next:not(:disabled) {
+  border-color: rgba(56, 103, 255, 0.28);
+  background: rgba(56, 103, 255, 0.06);
+  color: var(--wl-process-blue);
+}
+
+.wl-process__spotlight-visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 14rem;
+  overflow: hidden;
+}
+
+.wl-process__watermark {
+  position: absolute;
+  inset: auto 0 0 auto;
+  font-family: var(--font-display);
+  font-size: clamp(5rem, 12vw, 9rem);
+  font-weight: 750;
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  color: var(--wl-process-navy);
+  opacity: 0.05;
+  pointer-events: none;
+  user-select: none;
+}
+
+.wl-process__visual-layer {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
+  transition:
+    opacity var(--wl-process-transition),
+    transform var(--wl-process-transition);
+}
+
+.wl-process__visual-layer--active {
+  opacity: 1;
+  transform: none;
 }
 
 @media (min-width: 960px) {
-  .wl-process__header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: end;
-    gap: 1.5rem 2rem;
+  .wl-process__desktop,
+  .wl-process__spotlight {
+    display: grid;
   }
 
-  .wl-process__badge {
-    margin-bottom: 0.2rem;
+  .wl-process__mobile {
+    display: none;
   }
+}
 
-  .wl-process__timeline {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1rem;
-    padding-top: 1.15rem;
-  }
-
-  .wl-process__timeline::before {
-    left: calc((100% / 8) - 0.1rem);
-    right: calc((100% / 8) - 0.1rem);
-    top: 2.5rem;
-    bottom: auto;
-    width: auto;
-    height: 2px;
-    background: linear-gradient(
-      90deg,
-      rgba(147, 176, 255, 0.35) 0%,
-      rgba(47, 102, 255, 0.55) 55%,
-      rgba(31, 79, 212, 0.9) 100%
-    );
-    transform: scaleX(0.16);
-    transform-origin: left;
-  }
-
-  .wl-process__timeline.is-visible::before {
-    transform: scaleX(1);
-  }
-
-  .wl-process__timeline::after {
-    content: "";
-    position: absolute;
-    top: 2.2rem;
-    right: calc((100% / 8) - 0.55rem);
-    width: 0.55rem;
-    height: 0.55rem;
-    border-top: 2px solid rgba(31, 79, 212, 0.75);
-    border-right: 2px solid rgba(31, 79, 212, 0.75);
-    transform: rotate(45deg) scale(0);
-    transform-origin: center;
-    transition: transform 0.35s var(--ease-out) 0.65s;
-    z-index: 0;
-  }
-
-  .wl-process__timeline.is-visible::after {
-    transform: rotate(45deg) scale(1);
-  }
-
-  .wl-process__step {
-    grid-template-columns: 1fr;
-    gap: 0.95rem;
-  }
-
-  .wl-process__marker {
-    width: 100%;
-    justify-content: flex-start;
-    padding-top: 0;
-    padding-left: 0.15rem;
-  }
-
-  .wl-process__card {
-    min-height: 100%;
+@media (max-width: 959px) {
+  .wl-process__spotlight {
+    display: none !important;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wl-process__timeline::before,
-  .wl-process__timeline::after,
-  .wl-process__step {
+  .wl-process__tab-progress--active {
+    animation: none;
+    transform: scaleX(1);
+  }
+
+  .wl-process__step-layer,
+  .wl-process__visual-layer {
     transition: none;
   }
 
-  .wl-process__timeline::before,
-  .wl-process__timeline.is-visible::before {
-    transform: none;
-  }
-
-  .wl-process__timeline::after,
-  .wl-process__timeline.is-visible::after {
-    transform: rotate(45deg) scale(1);
-  }
-
-  .wl-process__step {
-    opacity: 1;
+  .wl-process__step-layer:not(.wl-process__step-layer--active),
+  .wl-process__visual-layer:not(.wl-process__visual-layer--active) {
+    opacity: 0;
+    visibility: hidden;
     transform: none;
   }
 }

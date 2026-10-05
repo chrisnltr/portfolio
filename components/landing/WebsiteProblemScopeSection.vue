@@ -75,66 +75,15 @@
           </div>
         </article>
       </div>
-
-      <div class="wl-scope__deliverables">
-        <header class="wl-scope__deliverables-intro">
-          <p class="wl-scope__eyebrow">Konkreter Leistungsumfang</p>
-          <h3 class="wl-scope__deliverables-title">
-            Was ich für Ihre Website übernehme.
-          </h3>
-          <p class="wl-scope__deliverables-lead">
-            Der genaue Umfang wird vor Projektbeginn transparent festgelegt.
-            Typischerweise umfasst die Zusammenarbeit diese Bereiche:
-          </p>
-        </header>
-
-        <ol class="wl-scope__list">
-          <li
-            v-for="(item, index) in scopeItems"
-            :key="item.id"
-            class="wl-scope__item"
-          >
-            <span class="wl-scope__item-num" aria-hidden="true">
-              {{ String(index + 1).padStart(2, "0") }}
-            </span>
-            <div>
-              <h4 class="wl-scope__item-title">{{ item.title }}</h4>
-              <p class="wl-scope__item-body">{{ item.description }}</p>
-            </div>
-          </li>
-        </ol>
-
-        <p class="wl-scope__note">
-          Welche Leistungen Ihr Projekt konkret benötigt, wird im Erstgespräch
-          geklärt und anschließend verständlich im Angebot festgehalten.
-        </p>
-
-        <NuxtLink
-          :to="contactTo"
-          class="wl-scope__link"
-          @click="onLink"
-        >
-          Projekt unverbindlich einordnen lassen
-          <span aria-hidden="true">→</span>
-        </NuxtLink>
-      </div>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
-import { useAnalytics } from "~/composables/useAnalytics";
-import { contactPath } from "~/data/navigation";
-import {
-  websiteLandingProblemTransforms,
-  websiteLandingScopeItems,
-} from "~/data/websiteLanding";
+import { websiteLandingProblemTransforms } from "~/data/websiteLanding";
 
-const { track } = useAnalytics();
 const transforms = websiteLandingProblemTransforms;
-const scopeItems = websiteLandingScopeItems;
-const contactTo = { path: contactPath, query: { projekt: "website" } };
 const transformsEl = ref<HTMLElement | null>(null);
 let observer: IntersectionObserver | null = null;
 
@@ -151,13 +100,6 @@ const resultIcons = {
   mobile: "M8 4.5h8A1.5 1.5 0 0 1 17.5 6v12a1.5 1.5 0 0 1-1.5 1.5H8A1.5 1.5 0 0 1 6.5 18V6A1.5 1.5 0 0 1 8 4.5Zm2.5 12h3M10 9.5l1.5 1.5L14.5 8",
   contact: "M7 8h10v5H7zM6 18l2.8-3H17a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v9l3 2Zm5-7.5l1.4 1.4L15.5 8",
 } as const;
-
-function onLink() {
-  track("cta_click", {
-    location: "website-landing-problem-scope",
-    service: "website-erstgespraech",
-  });
-}
 
 onMounted(() => {
   const node = transformsEl.value;
@@ -235,7 +177,6 @@ onBeforeUnmount(() => {
 .wl-scope__transforms {
   display: grid;
   gap: 1rem;
-  margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
 .wl-scope__module {
@@ -372,138 +313,10 @@ onBeforeUnmount(() => {
   height: 1rem;
 }
 
-.wl-scope__deliverables {
-  display: grid;
-  gap: 1.15rem;
-  padding: clamp(1.25rem, 3vw, 1.85rem);
-  border-radius: clamp(1rem, 2vw, 1.35rem);
-  border: 1px solid rgba(47, 102, 255, 0.12);
-  background:
-    radial-gradient(ellipse 50% 60% at 100% 0%, rgba(47, 102, 255, 0.08), transparent 60%),
-    linear-gradient(180deg, #f7f9fd 0%, #ffffff 100%);
-  box-shadow: 0 10px 28px rgba(18, 26, 38, 0.04);
-}
-
-.wl-scope__deliverables-intro {
-  max-width: 40rem;
-}
-
-.wl-scope__deliverables-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
-  font-weight: 740;
-  letter-spacing: -0.03em;
-  color: var(--color-text);
-}
-
-.wl-scope__deliverables-lead {
-  margin: 0.7rem 0 0;
-  font-size: 0.98rem;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-}
-
-.wl-scope__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.85rem;
-}
-
-.wl-scope__item {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 0.8rem;
-  align-items: start;
-  padding: 0.85rem 0;
-  border-top: 1px solid rgba(18, 26, 38, 0.07);
-}
-
-.wl-scope__item:first-child {
-  border-top: 0;
-  padding-top: 0.15rem;
-}
-
-.wl-scope__item-num {
-  display: inline-grid;
-  place-items: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 8px;
-  background: var(--color-accent-surface);
-  border: 1px solid rgba(47, 102, 255, 0.18);
-  color: var(--color-accent);
-  font-weight: 750;
-  font-size: 0.82rem;
-}
-
-.wl-scope__item-title {
-  margin: 0 0 0.3rem;
-  font-size: 1.02rem;
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: var(--color-text);
-}
-
-.wl-scope__item-body {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-
-.wl-scope__note {
-  margin: 0;
-  max-width: 44rem;
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--color-text-subtle);
-}
-
-.wl-scope__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  width: fit-content;
-  min-height: 44px;
-  color: var(--color-accent);
-  font-weight: 650;
-  font-size: 0.96rem;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.22em;
-  text-decoration-color: rgba(47, 102, 255, 0.35);
-  transition:
-    color var(--duration-fast) var(--ease-out),
-    text-decoration-color var(--duration-fast) var(--ease-out);
-}
-
-.wl-scope__link:hover {
-  color: var(--color-accent-hover);
-  text-decoration-color: rgba(47, 102, 255, 0.75);
-}
-
-.wl-scope__link:focus-visible {
-  outline: 2px solid #93b0ff;
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
 @media (min-width: 700px) {
   .wl-scope__transforms {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.1rem;
-  }
-
-  .wl-scope__list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 1.25rem;
-  }
-
-  .wl-scope__item {
-    padding: 0.95rem 0;
   }
 }
 
@@ -521,10 +334,6 @@ onBeforeUnmount(() => {
 
   .wl-scope__transforms.is-visible .wl-scope__arrow {
     transform: rotate(0deg) scaleX(1);
-  }
-
-  .wl-scope__list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

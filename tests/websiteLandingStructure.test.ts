@@ -7,7 +7,6 @@ import {
   websiteLandingProblemTransforms,
   websiteLandingProcessSteps,
   websiteLandingProjects,
-  websiteLandingScopeItems,
   websiteLandingTestimonials,
 } from "~/data/websiteLanding";
 import { contactPath } from "~/data/navigation";
@@ -57,7 +56,7 @@ describe("website landing structure", () => {
       "utf8",
     );
 
-    for (const source of [hero, consult, finalCtaSource, problemScopeSource]) {
+    for (const source of [hero, consult, finalCtaSource]) {
       expect(source).toContain('projekt: "website"');
       expect(source).toMatch(/contactPath|path:\s*contactPath/);
     }
@@ -67,13 +66,19 @@ describe("website landing structure", () => {
     expect(contactPath).toBe("/kontakt");
   });
 
-  it("defines four process steps for the timeline", () => {
+  it("defines four process steps with tab titles for navigation", () => {
     expect(websiteLandingProcessSteps).toHaveLength(4);
     expect(websiteLandingProcessSteps.map((step) => step.id)).toEqual([
       "request",
       "call",
       "offer",
       "build",
+    ]);
+    expect(websiteLandingProcessSteps.map((step) => step.tabTitle)).toEqual([
+      "Projektanfrage",
+      "Erstgespräch",
+      "Empfehlung & Angebot",
+      "Umsetzung & Livegang",
     ]);
   });
 
@@ -173,7 +178,7 @@ describe("website landing structure", () => {
     );
   });
 
-  it("renders four problem transforms and six scope deliverables", () => {
+  it("renders four problem transforms in the scope section", () => {
     expect(websiteLandingProblemTransforms).toHaveLength(4);
     expect(websiteLandingProblemTransforms.map((item) => item.problem)).toEqual([
       "Der Auftritt wirkt veraltet oder fehlt ganz.",
@@ -188,27 +193,23 @@ describe("website landing structure", () => {
       "Sichtbare Handlungswege und ein einfacher, nachvollziehbarer Kontaktprozess.",
     ]);
 
-    expect(websiteLandingScopeItems).toHaveLength(6);
-    expect(websiteLandingScopeItems.map((item) => item.title)).toEqual([
-      "Beratung & Zielklärung",
-      "Seitenkonzept & Struktur",
-      "Design & Nutzerführung",
-      "Responsive Umsetzung",
-      "Funktionen & technische Grundlagen",
-      "Qualitätssicherung & Livegang",
-    ]);
-
     expect(problemScopeSource).toContain("Ausgangslage");
     expect(problemScopeSource).toContain("Das ändert sich");
-    expect(problemScopeSource).toContain("Projekt unverbindlich einordnen lassen");
-    expect(problemScopeSource).toContain('projekt: "website"');
+    expect(problemScopeSource).not.toContain("Konkreter Leistungsumfang");
+    expect(problemScopeSource).not.toContain("wl-scope__deliverables");
     expect(problemScopeSource).toContain("prefers-reduced-motion");
   });
 
-  it("highlights process step four as the final outcome state", () => {
-    expect(processSource).toContain("wl-process__step--final");
-    expect(processSource).toContain("4 klare Schritte · direkte Zusammenarbeit");
+  it("implements accessible tabbed process navigation with auto-advance safeguards", () => {
+    expect(processSource).toContain('role="tablist"');
+    expect(processSource).toContain('role="tab"');
+    expect(processSource).toContain(":aria-selected=");
+    expect(processSource).toContain(":aria-controls=");
+    expect(processSource).toContain('role="tabpanel"');
     expect(processSource).toContain("prefers-reduced-motion");
+    expect(processSource).toContain("visibilitychange");
+    expect(processSource).toContain("websiteLandingProcessSteps");
+    expect(processSource).not.toContain("4 klare Schritte · direkte Zusammenarbeit");
     expect(websiteLandingProcessSteps[3]?.title).toBe(
       "Design, Umsetzung und Livegang",
     );
