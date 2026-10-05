@@ -216,6 +216,7 @@ export type FunnelOptionCopy = {
 export type FunnelSection = {
   pageTitle: string;
   pageIntro: string;
+  pageFollowUp: string;
   progressLabel: string;
   stepOf: string;
   nextLabel: string;

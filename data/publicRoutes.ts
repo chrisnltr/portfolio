@@ -7,6 +7,7 @@ import { projects } from "~/data/projects";
 export const staticPublicPaths = [
   "/",
   "/kontakt",
+  "/website-erstellen-lassen",
   "/lebenslauf",
   "/impressum",
   "/datenschutz",

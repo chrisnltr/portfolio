@@ -12,6 +12,8 @@ import {
   privacySeo,
   termsSeo,
   thankYouSeo,
+  websiteLandingSeo,
+  contactSeo,
 } from "~/data/seo";
 import {
   CANONICAL_SITE_ORIGIN,
@@ -71,6 +73,7 @@ describe("SEO regression data", () => {
     expect(urls).toEqual([
       "https://chrisnoltemeier.de/",
       "https://chrisnoltemeier.de/kontakt",
+      "https://chrisnoltemeier.de/website-erstellen-lassen",
       "https://chrisnoltemeier.de/lebenslauf",
       "https://chrisnoltemeier.de/impressum",
       "https://chrisnoltemeier.de/datenschutz",
@@ -112,6 +115,8 @@ describe("SEO regression data", () => {
       privacySeo,
       termsSeo,
       thankYouSeo,
+      contactSeo,
+      websiteLandingSeo,
       ...projects.map((project) => ({
         title: project.content.seoTitle,
         description: project.content.seoDescription,

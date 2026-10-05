@@ -37,6 +37,7 @@ export default defineEventHandler((event) => {
     "## Kontakt und weitere Informationen",
     "",
     `- [Kontakt / Erstgespräch](${origin}/kontakt)`,
+    `- [Website erstellen lassen](${origin}/website-erstellen-lassen)`,
     `- [Lebenslauf](${origin}/lebenslauf)`,
     `- [GitHub](${profile.socialLinks.find((link) => link.id === "github")?.url || `${origin}/#about`})`,
     `- [LinkedIn](${profile.socialLinks.find((link) => link.id === "linkedin")?.url || `${origin}/#about`})`,

@@ -32,7 +32,13 @@ export const resumeSeo: SeoCopy = {
 export const contactSeo: SeoCopy = {
   title: "Erstgespräch vereinbaren | Chris Leon Noltemeier",
   description:
-    "Kostenloses Erstgespräch: Beantworten Sie ein paar kurze Fragen zu Website, Shop oder Software. Persönliche Rückmeldung aus Bad Essen.",
+    "Kostenloses Erstgespräch in drei kurzen Schritten zu Website, Shop oder Software. Persönliche Rückmeldung aus Bad Essen.",
+};
+
+export const websiteLandingSeo: SeoCopy = {
+  title: "Website erstellen lassen | Persönliches Webdesign von Chris Noltemeier",
+  description:
+    "Professionelle Websites für Selbstständige und kleine Unternehmen – individuell geplant, persönlich umgesetzt und für Desktop und Mobil optimiert.",
 };
 
 export const imprintSeo: SeoCopy = {

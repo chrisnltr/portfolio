@@ -302,7 +302,9 @@ export const de: AppTranslations = {
   },
   funnel: {
     pageTitle: "Erstgespräch vereinbaren",
-    pageIntro: "Zwei kurze Fragen – ich melde mich persönlich.",
+    pageIntro: "Drei kurze Schritte – dauert etwa 60 Sekunden.",
+    pageFollowUp:
+      "Ich prüfe Ihre Angaben persönlich und melde mich in der Regel innerhalb eines Werktags bei Ihnen.",
     progressLabel: "Fortschritt",
     stepOf: "{current} / {total}",
     nextLabel: "Weiter",

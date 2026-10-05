@@ -41,6 +41,7 @@ export default defineEventHandler((event) => {
     "## Links",
     "",
     `- Kontakt / Erstgespräch: ${origin}/kontakt`,
+    `- Website erstellen lassen: ${origin}/website-erstellen-lassen`,
     `- Lebenslauf: ${origin}/lebenslauf`,
     `- GitHub: ${profile.socialLinks.find((link) => link.id === "github")?.url || "nicht angegeben"}`,
     `- LinkedIn: ${profile.socialLinks.find((link) => link.id === "linkedin")?.url || "nicht angegeben"}`,

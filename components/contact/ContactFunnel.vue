@@ -290,6 +290,7 @@ import {
 const { locale, messages: rawMessages } = useI18n();
 const messages = computed(() => rawMessages.value);
 const runtimeConfig = useRuntimeConfig();
+const route = useRoute();
 const router = useRouter();
 const { track } = useAnalytics();
 const isDev = import.meta.dev;
@@ -311,9 +312,30 @@ const turnstileRef = ref<{ reset: () => void } | null>(null);
 
 const selectedNeeds = ref<FunnelNeedId[]>([]);
 const budget = ref<FunnelBudgetId | "">("");
+const projectQueryPrefillDone = ref(false);
 
 const needOptions = funnelNeedOptions;
 const budgetOptions = funnelBudgetOptions;
+
+function applyWebsiteProjectPrefill() {
+  if (projectQueryPrefillDone.value) return;
+  const projekt = String(route.query.projekt || "").toLowerCase();
+  if (projekt !== "website") return;
+
+  projectQueryPrefillDone.value = true;
+  // Only seed an empty selection; never overwrite a user choice.
+  if (selectedNeeds.value.length === 0) {
+    selectedNeeds.value = ["website"];
+  }
+}
+
+watch(
+  () => String(route.query.projekt || "").toLowerCase(),
+  () => {
+    applyWebsiteProjectPrefill();
+  },
+  { immediate: true },
+);
 
 const form = reactive({
   name: "",

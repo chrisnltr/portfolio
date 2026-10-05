@@ -42,6 +42,7 @@ export const paths = {
   lebenslauf: "/lebenslauf",
   danke: "/danke",
   contact: contactPath,
+  websiteLanding: "/website-erstellen-lassen",
   projects: "/#projects",
 } as const;
 
