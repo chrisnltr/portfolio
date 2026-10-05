@@ -3,24 +3,11 @@
     <MainHeader />
     <main id="main-content">
       <WebsiteLandingHero />
-
-      <section
-        class="website-landing-plan website-landing-plan--compact"
-        aria-label="Nächster Inhaltsabschnitt in Planung"
-      >
-        <div class="container-page">
-          <UiVisualPlaceholder
-            type="section"
-            compact
-            badge="NÄCHSTER INHALTSSCHRITT"
-            title="Problemverständnis und konkreter Leistungsumfang"
-            description="Hier folgen später die typischen Probleme veralteter oder fehlender Unternehmenswebsites sowie eine klare Übersicht darüber, was Chris bei Planung, Design, Technik und Livegang übernimmt."
-          />
-        </div>
-      </section>
-
+      <WebsiteProblemScopeSection />
       <WebsiteProjectsSection />
+      <!-- TODO: Kundenstimmen wieder aktivieren, sobald echte Freigaben vorliegen
       <TestimonialsSection />
+      -->
       <WebsiteProcessSection />
       <FirstConsultationSection />
       <WebsiteFaqSection />
@@ -34,13 +21,13 @@
 import FirstConsultationSection from "~/components/landing/FirstConsultationSection.vue";
 import MainFooter from "~/components/layout/MainFooter.vue";
 import MainHeader from "~/components/layout/MainHeader.vue";
-import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
+// import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
 import WebsiteFaqSection from "~/components/landing/WebsiteFaqSection.vue";
 import WebsiteFinalCta from "~/components/landing/WebsiteFinalCta.vue";
 import WebsiteLandingHero from "~/components/landing/WebsiteLandingHero.vue";
+import WebsiteProblemScopeSection from "~/components/landing/WebsiteProblemScopeSection.vue";
 import WebsiteProcessSection from "~/components/landing/WebsiteProcessSection.vue";
 import WebsiteProjectsSection from "~/components/landing/WebsiteProjectsSection.vue";
-import UiVisualPlaceholder from "~/components/ui/VisualPlaceholder.vue";
 import { usePageSeo } from "~/composables/usePageSeo";
 import {
   DEFAULT_OG_IMAGE,
@@ -69,9 +56,3 @@ usePageSeo(() => ({
   ),
 }));
 </script>
-
-<style scoped>
-.website-landing-plan {
-  padding-block: clamp(1.25rem, 3vw, 2rem);
-}
-</style>

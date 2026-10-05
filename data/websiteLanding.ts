@@ -186,31 +186,108 @@ export const websiteLandingTestimonials: LandingTestimonial[] = [
 export const websiteLandingProcessSteps = [
   {
     id: "request",
+    tabTitle: "Projektanfrage",
     title: "Kurze Projektanfrage",
     description:
       "Sie beantworten in etwa 60 Sekunden einige kurze Fragen zu Ihrer gewünschten Website, dem aktuellen Stand und Ihrem ungefähren Budget.",
     note: "Kostenlos und unverbindlich",
+    icon: "form",
   },
   {
     id: "call",
+    tabTitle: "Erstgespräch",
     title: "Persönliches Erstgespräch",
     description:
-      "Ich melde mich persönlich bei Ihnen. In einem kurzen Gespräch klären wir Ihre Ziele, die aktuelle Situation und ob ich Sie sinnvoll unterstützen kann.",
-    note: "In der Regel ca. 15 Minuten",
+      "Ich melde mich persönlich bei Ihnen. Gemeinsam klären wir Ihre Ziele, die aktuelle Situation und ob ich Sie sinnvoll unterstützen kann.",
+    note: "In der Regel etwa 15 Minuten",
+    icon: "chat",
   },
   {
     id: "offer",
+    tabTitle: "Empfehlung & Angebot",
     title: "Empfehlung und transparentes Angebot",
     description:
-      "Sie erhalten eine verständliche Empfehlung zu Seitenumfang, Funktionen, Ablauf und Kosten. Erst danach entscheiden Sie in Ruhe, ob wir zusammenarbeiten.",
+      "Sie erhalten eine verständliche Empfehlung zu Seitenumfang, Funktionen, Ablauf und Kosten. Danach entscheiden Sie in Ruhe über die Zusammenarbeit.",
     note: "Keine Verpflichtung durch das Erstgespräch",
+    icon: "offer",
   },
   {
     id: "build",
+    tabTitle: "Umsetzung & Livegang",
     title: "Design, Umsetzung und Livegang",
     description:
-      "Wenn alles passt, entwickle ich Struktur und Design, setze die Website technisch um und begleite Sie bis zur Veröffentlichung.",
+      "Nach Ihrer Freigabe entwickle ich Struktur und Design, setze die Website technisch um und begleite sie bis zur Veröffentlichung.",
     note: "Direkte Abstimmung ohne Agenturumwege",
+    icon: "launch",
+  },
+] as const;
+
+export type WebsiteLandingProcessIcon =
+  (typeof websiteLandingProcessSteps)[number]["icon"];
+
+export const websiteLandingProblemTransforms = [
+  {
+    id: "appearance",
+    problem: "Der Auftritt wirkt veraltet oder fehlt ganz.",
+    result:
+      "Ein moderner und glaubwürdiger erster Eindruck, der zu Ihrem Unternehmen passt.",
+  },
+  {
+    id: "clarity",
+    problem: "Besucher verstehen das Angebot nicht sofort.",
+    result:
+      "Eine klare Seitenstruktur mit verständlichen Inhalten und eindeutiger Nutzerführung.",
+  },
+  {
+    id: "mobile",
+    problem: "Die mobile Nutzung ist umständlich oder technisch schwach.",
+    result:
+      "Eine responsive und technisch saubere Umsetzung für Smartphone, Tablet und Desktop.",
+  },
+  {
+    id: "contact",
+    problem: "Der Weg zur Anfrage ist unnötig kompliziert.",
+    result:
+      "Sichtbare Handlungswege und ein einfacher, nachvollziehbarer Kontaktprozess.",
+  },
+] as const;
+
+export const websiteLandingScopeItems = [
+  {
+    id: "consulting",
+    title: "Beratung & Zielklärung",
+    description:
+      "Ziele, Zielgruppe, Anforderungen und der sinnvolle Projektumfang werden gemeinsam festgelegt.",
+  },
+  {
+    id: "structure",
+    title: "Seitenkonzept & Struktur",
+    description:
+      "Navigation, Inhalte und Seiten werden so geplant, dass Besucher schnell die richtigen Informationen finden.",
+  },
+  {
+    id: "design",
+    title: "Design & Nutzerführung",
+    description:
+      "Die Website erhält ein passendes Erscheinungsbild und klare Wege zu den wichtigsten Inhalten und Aktionen.",
+  },
+  {
+    id: "responsive",
+    title: "Responsive Umsetzung",
+    description:
+      "Die Website wird technisch sauber für Smartphone, Tablet und Desktop umgesetzt.",
+  },
+  {
+    id: "technical",
+    title: "Funktionen & technische Grundlagen",
+    description:
+      "Kontaktwege und vereinbarte Funktionen werden integriert sowie grundlegende Performance- und SEO-Aspekte berücksichtigt.",
+  },
+  {
+    id: "launch",
+    title: "Qualitätssicherung & Livegang",
+    description:
+      "Vor der Veröffentlichung werden die wichtigsten Geräte, Browser, Inhalte und Funktionen kontrolliert.",
   },
 ] as const;
 

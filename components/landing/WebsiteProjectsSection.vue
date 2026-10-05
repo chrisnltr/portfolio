@@ -42,17 +42,10 @@
                 />
               </div>
             </div>
-            <UiVisualPlaceholder
+            <ProjectBrowserShowcase
               v-else
-              type="media"
-              :badge="project.media.badge"
-              :title="project.media.title"
-              :description="project.media.description"
-              :format-label="project.media.formatLabel"
-              :animation-hint="project.media.animationHint"
-              :mobile-description="project.media.mobileDescription"
-              aspect-ratio="16 / 10"
-              replace-hint="Später durch finales Projekt-Asset ersetzen."
+              :title="project.title"
+              :pending-badge="inDevelopmentBadge"
             />
           </div>
 
@@ -78,10 +71,16 @@
 </template>
 
 <script setup lang="ts">
-import UiVisualPlaceholder from "~/components/ui/VisualPlaceholder.vue";
+import { computed } from "vue";
+import ProjectBrowserShowcase from "~/components/projects/ProjectBrowserShowcase.vue";
+import { useI18n } from "~/composables/useI18n";
 import { websiteLandingProjects } from "~/data/websiteLanding";
 
+const { messages } = useI18n();
 const projects = websiteLandingProjects;
+const inDevelopmentBadge = computed(
+  () => messages.value.projectReferences.inDevelopmentBadge,
+);
 </script>
 
 <style scoped>
