@@ -19,9 +19,6 @@
                 Bad Essen<br>
                 Deutschland
               </p>
-              <p class="text-text-secondary leading-relaxed mt-2 text-sm">
-                Die vollständige ladungsfähige Anschrift (Straße, Hausnummer, PLZ Ort) wird hier ergänzt.
-              </p>
             </section>
 
             <section>
