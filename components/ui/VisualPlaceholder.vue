@@ -3,7 +3,10 @@
     class="visual-placeholder"
     :class="[
       `visual-placeholder--${type}`,
-      { 'visual-placeholder--has-ratio': Boolean(aspectRatio) },
+      {
+        'visual-placeholder--has-ratio': Boolean(aspectRatio),
+        'visual-placeholder--compact': compact,
+      },
     ]"
     :style="rootStyle"
     data-visual-placeholder="true"
@@ -50,9 +53,12 @@ const props = withDefaults(
     badge?: string;
     formatLabel?: string;
     replaceHint?: string;
+    /** Smaller planning block for future page sections */
+    compact?: boolean;
   }>(),
   {
     type: "media",
+    compact: false,
   },
 );
 
@@ -104,6 +110,23 @@ const rootStyle = computed(() => {
 .visual-placeholder--section {
   aspect-ratio: auto;
   min-height: auto;
+}
+
+.visual-placeholder--compact {
+  gap: 0.4rem;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 4px 14px rgba(209, 0, 138, 0.12);
+}
+
+.visual-placeholder--compact .visual-placeholder__title {
+  font-size: 1rem;
+}
+
+.visual-placeholder--compact .visual-placeholder__description,
+.visual-placeholder--compact .visual-placeholder__meta,
+.visual-placeholder--compact .visual-placeholder__hint {
+  font-size: 0.84rem;
+  line-height: 1.4;
 }
 
 .visual-placeholder__badge {

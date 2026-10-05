@@ -1,18 +1,40 @@
 <template>
   <div class="page-shell">
-    <LandingHeader />
+    <LandingHeader secondary-href="#website-projekte" />
     <main id="main-content">
       <WebsiteLandingHero />
 
       <section
-        class="website-landing-plan"
-        aria-label="Geplante weitere Landingpage-Abschnitte"
+        class="website-landing-plan website-landing-plan--compact"
+        aria-label="Nächster Inhaltsabschnitt in Planung"
       >
         <div class="container-page">
           <UiVisualPlaceholder
             type="section"
-            badge="TEMPORÄRER SEITENABSCHNITT-PLATZHALTER"
-            description="Die weiteren Bereiche der Landingpage werden in den nächsten Arbeitsschritten einzeln umgesetzt: Problemverständnis, Leistungsumfang, passende Website-Referenzen, Kundenstimmen, Zusammenarbeit, Ablauf, FAQ und Abschluss-CTA."
+            compact
+            badge="NÄCHSTER INHALTSSCHRITT"
+            title="Problemverständnis und konkreter Leistungsumfang"
+            description="Hier folgen später die typischen Probleme veralteter oder fehlender Unternehmenswebsites sowie eine klare Übersicht darüber, was Chris bei Planung, Design, Technik und Livegang übernimmt."
+          />
+        </div>
+      </section>
+
+      <WebsiteProjectsSection />
+      <TestimonialsSection />
+      <WebsiteProcessSection />
+      <FirstConsultationSection />
+
+      <section
+        class="website-landing-plan website-landing-plan--compact website-landing-plan--bottom"
+        aria-label="Späterer Abschlussabschnitt in Planung"
+      >
+        <div class="container-page">
+          <UiVisualPlaceholder
+            type="section"
+            compact
+            badge="SPÄTERER ABSCHLUSS"
+            title="FAQ und finale Abschluss-CTA"
+            description="Hier folgen später Antworten zu Kosten, Dauer, Inhalten, Domain, Pflege und Zusammenarbeit sowie der abschließende Weg in den Erstgespräch-Funnel."
           />
         </div>
       </section>
@@ -22,9 +44,13 @@
 </template>
 
 <script setup lang="ts">
+import FirstConsultationSection from "~/components/landing/FirstConsultationSection.vue";
 import LandingHeader from "~/components/layout/LandingHeader.vue";
 import MainFooter from "~/components/layout/MainFooter.vue";
+import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
 import WebsiteLandingHero from "~/components/landing/WebsiteLandingHero.vue";
+import WebsiteProcessSection from "~/components/landing/WebsiteProcessSection.vue";
+import WebsiteProjectsSection from "~/components/landing/WebsiteProjectsSection.vue";
 import UiVisualPlaceholder from "~/components/ui/VisualPlaceholder.vue";
 import { usePageSeo } from "~/composables/usePageSeo";
 import {
@@ -57,6 +83,10 @@ usePageSeo(() => ({
 
 <style scoped>
 .website-landing-plan {
-  padding-block: clamp(1.5rem, 4vw, 2.75rem) clamp(2.5rem, 6vw, 4rem);
+  padding-block: clamp(1.25rem, 3vw, 2rem);
+}
+
+.website-landing-plan--bottom {
+  padding-bottom: clamp(2.25rem, 5vw, 3.5rem);
 }
 </style>

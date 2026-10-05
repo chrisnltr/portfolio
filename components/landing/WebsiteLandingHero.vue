@@ -87,7 +87,7 @@ import { contactPath } from "~/data/navigation";
 const { track } = useAnalytics();
 
 const contactTo = { path: contactPath, query: { projekt: "website" } };
-const projectsHref = "/#projects";
+const projectsHref = "#website-projekte";
 
 const visualRef = ref<HTMLElement | null>(null);
 
