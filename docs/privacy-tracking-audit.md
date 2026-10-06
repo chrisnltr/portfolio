@@ -108,6 +108,8 @@ Getestete Zustände (`tmp/mobile-qa.mjs`, Viewport 375×812):
 
 ## Vorbereitung Google Ads + GA4 (noch ohne IDs)
 
+Siehe auch die operative Anleitung: [`docs/google-ads-conversion-tracking.md`](./google-ads-conversion-tracking.md).
+
 ### Environment-Variablen (öffentlich, leer lassen bis Freigabe)
 
 ```
@@ -127,6 +129,7 @@ Optional Consent-Version bei Policy-Änderung: `CONSENT_VERSION` in `types/conse
 | Consent Mode default denied | `utils/optionalTracking.ts` |
 | Lazy Tag-Load | `composables/useConsent.ts` → `syncOptionalTracking()` |
 | Event-Dispatch | `composables/useAnalytics.ts`, `utils/optionalTracking.ts` |
+| Lead-Conversion | `utils/optionalTracking.ts` → `trackLeadConversion()` |
 
 ### Geplante Events (noch nicht produktiv / teils Alias)
 

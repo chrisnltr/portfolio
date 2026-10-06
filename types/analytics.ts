@@ -14,6 +14,8 @@ export type AnalyticsEventProps = {
   page?: string;
   location?: string;
   project?: string;
+  /** Non-PII funnel context, e.g. `"website"`. Never form field values. */
+  project_type?: string;
   service?: string;
   language?: string;
   status?: string;

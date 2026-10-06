@@ -518,9 +518,14 @@ async function submit() {
         formType: "erstgespraech-funnel",
       },
     });
+    // Fire only after the API accepted the inquiry — never on click or failure.
+    // Google Ads conversion is dispatched via track() → trackLeadConversion (marketing consent + configured IDs).
     track("contact_form_submit_success", {
       location: "contact-funnel",
       service: "erstgespraech",
+      ...(selectedNeeds.value.includes("website")
+        ? { project_type: "website" }
+        : {}),
     });
     await router.push("/danke");
   } catch (err: unknown) {

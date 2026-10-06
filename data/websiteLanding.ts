@@ -144,14 +144,15 @@ export const websiteLandingProjects: WebsiteLandingProject[] = [
     ],
     media: {
       kind: "image",
-      src: stallzentrale.images[0]?.src || stallzentrale.previewImage!.src,
+      // Optimized hero crop for this landing preview only.
+      // Full-page PNG remains for case-study / scrolling previews elsewhere.
+      src: "/images/previews/stallzentrale-landing-preview.webp",
       alt:
         stallzentrale.images[0]?.alt ||
         stallzentrale.previewImage!.alt ||
         "Stallzentrale Marketingwebsite",
-      width: stallzentrale.images[0]?.width || stallzentrale.previewImage!.width,
-      height:
-        stallzentrale.images[0]?.height || stallzentrale.previewImage!.height,
+      width: 1440,
+      height: 900,
     },
     caseStudyPath: projectDetailPath(stallzentrale.routeSlug),
     mediaSide: "left",

@@ -2,7 +2,10 @@ import { track as vercelTrack } from "@vercel/analytics";
 import { useConsent } from "~/composables/useConsent";
 import type { AnalyticsEventName, AnalyticsEventProps } from "~/types/analytics";
 import { readTrackingIds, sanitizeAnalyticsProps } from "~/utils/analyticsConfig";
-import { dispatchPlatformEvent } from "~/utils/optionalTracking";
+import {
+  dispatchPlatformEvent,
+  trackLeadConversion as dispatchLeadConversion,
+} from "~/utils/optionalTracking";
 
 /**
  * Central typed analytics interface.
@@ -48,5 +51,22 @@ export function useAnalytics() {
     }
   }
 
-  return { track };
+  /**
+   * Google Ads lead conversion after a successful server-accepted inquiry.
+   * Requires marketing consent and configured Ads ID + conversion label.
+   * Sends only `{ send_to }` — never form PII.
+   */
+  function trackLeadConversion(): boolean {
+    if (!import.meta.client) return false;
+    if (!hasMarketingConsent.value) return false;
+
+    const ids = readTrackingIds(config.public);
+    try {
+      return dispatchLeadConversion(ids);
+    } catch {
+      return false;
+    }
+  }
+
+  return { track, trackLeadConversion };
 }

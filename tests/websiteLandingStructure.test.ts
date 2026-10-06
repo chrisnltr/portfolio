@@ -92,6 +92,22 @@ describe("website landing structure", () => {
     ]);
   });
 
+  it("uses an optimized Stallzentrale landing preview instead of the full-page PNG", () => {
+    const stallzentrale = websiteLandingProjects.find(
+      (project) => project.id === "stallzentrale",
+    );
+    expect(stallzentrale?.media.kind).toBe("image");
+    if (stallzentrale?.media.kind !== "image") return;
+    expect(stallzentrale.media.src).toBe(
+      "/images/previews/stallzentrale-landing-preview.webp",
+    );
+    expect(stallzentrale.media.width).toBe(1440);
+    expect(stallzentrale.media.height).toBe(900);
+    expect(stallzentrale.media.src).not.toContain(
+      "portfolio-fullpage-stallzentrale.png",
+    );
+  });
+
   it("documents consultation talking points", () => {
     expect(websiteLandingConsultationPoints.length).toBeGreaterThanOrEqual(3);
   });

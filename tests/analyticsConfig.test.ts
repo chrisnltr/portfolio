@@ -1,4 +1,5 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import type { AnalyticsEventProps } from "../types/analytics";
 import {
   hasAnyOptionalTrackingConfigured,
   hasGaConfigured,
@@ -7,7 +8,13 @@ import {
   readTrackingIds,
   sanitizeAnalyticsProps,
 } from "../utils/analyticsConfig";
-import { dispatchPlatformEvent } from "../utils/optionalTracking";
+import {
+  buildGoogleAdsSendTo,
+  dispatchPlatformEvent,
+  loadGoogleTag,
+  removeOptionalMarketingScripts,
+  trackLeadConversion,
+} from "../utils/optionalTracking";
 
 describe("analytics config", () => {
   it("treats empty / whitespace IDs as unset", () => {
@@ -49,12 +56,15 @@ describe("analytics config", () => {
         email: "a@b.c",
         message: "hello",
         phone: "123",
+        name: "Max",
         location: "hero",
+        project_type: "website",
         empty: "",
       }),
     ).toEqual({
       page: "/",
       location: "hero",
+      project_type: "website",
     });
   });
 });
@@ -69,5 +79,188 @@ describe("optional tracking dispatch without IDs", () => {
         { statistics: true, marketing: true },
       ),
     ).not.toThrow();
+  });
+});
+
+describe("Google Ads lead conversion", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
+  });
+
+  it("builds send_to as AW-ID/LABEL", () => {
+    const ids = readTrackingIds({
+      googleAdsId: "AW-123456789",
+      googleAdsConversionLabel: "AbCdEfGhIjKlMnOp",
+    });
+    expect(buildGoogleAdsSendTo(ids)).toBe(
+      "AW-123456789/AbCdEfGhIjKlMnOp",
+    );
+  });
+
+  it("fires conversion exactly once with send_to only (no form PII)", () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("window", {
+      gtag,
+      dataLayer: [],
+    });
+
+    const ids = readTrackingIds({
+      googleAdsId: "AW-999",
+      googleAdsConversionLabel: "leadLabel",
+    });
+
+    expect(trackLeadConversion(ids)).toBe(true);
+    expect(gtag).toHaveBeenCalledTimes(1);
+    expect(gtag).toHaveBeenCalledWith("event", "conversion", {
+      send_to: "AW-999/leadLabel",
+    });
+
+    const payload = gtag.mock.calls[0][2] as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("email");
+    expect(payload).not.toHaveProperty("name");
+    expect(payload).not.toHaveProperty("phone");
+    expect(payload).not.toHaveProperty("message");
+    expect(Object.keys(payload)).toEqual(["send_to"]);
+  });
+
+  it("does not fire when IDs are incomplete", () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("window", { gtag, dataLayer: [] });
+
+    expect(
+      trackLeadConversion(
+        readTrackingIds({
+          googleAdsId: "AW-999",
+          googleAdsConversionLabel: "",
+        }),
+      ),
+    ).toBe(false);
+    expect(gtag).not.toHaveBeenCalled();
+  });
+
+  it("does not fire conversion on failed-submit analytics event", () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("window", { gtag, dataLayer: [] });
+
+    const ids = readTrackingIds({
+      googleAdsId: "AW-999",
+      googleAdsConversionLabel: "leadLabel",
+      gaMeasurementId: "G-TEST",
+    });
+
+    dispatchPlatformEvent(
+      "contact_form_submit_error",
+      {
+        location: "contact-funnel",
+        email: "should-not-leak@example.com",
+        name: "Max",
+      } as AnalyticsEventProps & Record<string, string>,
+      ids,
+      { statistics: true, marketing: true },
+    );
+
+    const conversionCalls = gtag.mock.calls.filter(
+      (call) => call[0] === "event" && call[1] === "conversion",
+    );
+    expect(conversionCalls).toHaveLength(0);
+  });
+
+  it("fires conversion once for a simulated successful submit event", () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("window", { gtag, dataLayer: [] });
+
+    const ids = readTrackingIds({
+      googleAdsId: "AW-999",
+      googleAdsConversionLabel: "leadLabel",
+    });
+
+    dispatchPlatformEvent(
+      "contact_form_submit_success",
+      {
+        location: "contact-funnel",
+        service: "erstgespraech",
+        project_type: "website",
+        email: "leak@example.com",
+        phone: "0123",
+        message: "secret",
+      } as AnalyticsEventProps & Record<string, string>,
+      ids,
+      { statistics: false, marketing: true },
+    );
+
+    const conversionCalls = gtag.mock.calls.filter(
+      (call) => call[0] === "event" && call[1] === "conversion",
+    );
+    expect(conversionCalls).toHaveLength(1);
+    expect(conversionCalls[0][2]).toEqual({ send_to: "AW-999/leadLabel" });
+  });
+
+  it("does not fire conversion without marketing consent", () => {
+    const gtag = vi.fn();
+    vi.stubGlobal("window", { gtag, dataLayer: [] });
+
+    dispatchPlatformEvent(
+      "contact_form_submit_success",
+      { location: "contact-funnel" },
+      readTrackingIds({
+        googleAdsId: "AW-999",
+        googleAdsConversionLabel: "leadLabel",
+      }),
+      { statistics: true, marketing: false },
+    );
+
+    expect(
+      gtag.mock.calls.filter(
+        (call) => call[0] === "event" && call[1] === "conversion",
+      ),
+    ).toHaveLength(0);
+  });
+
+  it("injects the Google tag script at most once", () => {
+    const created: Array<{ id?: string; remove: () => void }> = [];
+    const head = {
+      appendChild(node: { id?: string; remove: () => void }) {
+        created.push(node);
+        return node;
+      },
+    };
+    const doc = {
+      getElementById(id: string) {
+        return created.find((node) => node.id === id) ?? null;
+      },
+      createElement(tag: string) {
+        if (tag !== "script") throw new Error(`unexpected tag ${tag}`);
+        const node = {
+          id: "",
+          async: false,
+          src: "",
+          remove() {
+            const index = created.indexOf(node);
+            if (index >= 0) created.splice(index, 1);
+          },
+        };
+        return node;
+      },
+      head,
+    };
+
+    vi.stubGlobal("document", doc);
+    vi.stubGlobal("window", {
+      dataLayer: [] as unknown[],
+      gtag: vi.fn(),
+    });
+
+    const ids = readTrackingIds({
+      googleAdsId: "AW-111",
+      googleAdsConversionLabel: "lbl",
+    });
+
+    loadGoogleTag(ids);
+    loadGoogleTag(ids);
+
+    expect(created).toHaveLength(1);
+    expect(created[0]?.id).toBe("optional-gtag-js");
+    removeOptionalMarketingScripts();
   });
 });
