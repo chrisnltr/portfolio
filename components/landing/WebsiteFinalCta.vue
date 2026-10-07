@@ -61,22 +61,20 @@
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
-import { contactPath } from "~/data/navigation";
+import { useWebsiteContactLink } from "~/composables/useWebsiteContactLink";
 import { websiteLandingFinalCtaTrustPoints } from "~/data/websiteLanding";
+import { trackWebsiteCta } from "~/utils/funnelTracking";
 
 const { track } = useAnalytics();
+const { contactTo } = useWebsiteContactLink();
 const trustPoints = websiteLandingFinalCtaTrustPoints;
-const contactTo = { path: contactPath, query: { projekt: "website" } };
 const projectsHref = "#website-projekte";
 const panelRef = ref<HTMLElement | null>(null);
 const revealed = ref(true);
 let observer: IntersectionObserver | null = null;
 
 function onPrimary() {
-  track("cta_click", {
-    location: "website-landing-final-cta",
-    service: "website-erstgespraech",
-  });
+  trackWebsiteCta(track, "final");
 }
 
 function onSecondary() {

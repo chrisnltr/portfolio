@@ -2,10 +2,19 @@ import { track as vercelTrack } from "@vercel/analytics";
 import { useConsent } from "~/composables/useConsent";
 import type { AnalyticsEventName, AnalyticsEventProps } from "~/types/analytics";
 import { readTrackingIds, sanitizeAnalyticsProps } from "~/utils/analyticsConfig";
+import { readMarketingAttribution } from "~/utils/marketingAttribution";
 import {
   dispatchPlatformEvent,
   trackLeadConversion as dispatchLeadConversion,
 } from "~/utils/optionalTracking";
+
+/** Events that may carry first-touch Ads/UTM attribution (no PII). */
+const ATTRIBUTION_EVENTS: ReadonlySet<AnalyticsEventName> = new Set([
+  "website_landing_view",
+  "website_cta_click",
+  "contact_funnel_start",
+  "contact_form_submit_success",
+]);
 
 /**
  * Central typed analytics interface.
@@ -33,6 +42,16 @@ export function useAnalytics() {
       language: props.language ?? resolveLanguage(),
       ...props,
     };
+
+    if (marketing && ATTRIBUTION_EVENTS.has(name)) {
+      const attribution = readMarketingAttribution();
+      for (const [key, value] of Object.entries(attribution)) {
+        if (value && enriched[key as keyof AnalyticsEventProps] == null) {
+          (enriched as Record<string, string | number | boolean>)[key] = value;
+        }
+      }
+    }
+
     const safe = sanitizeAnalyticsProps(enriched);
     const ids = readTrackingIds(config.public);
 

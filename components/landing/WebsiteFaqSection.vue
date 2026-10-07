@@ -87,14 +87,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
-import { contactPath } from "~/data/navigation";
+import { useWebsiteContactLink } from "~/composables/useWebsiteContactLink";
 import { websiteLandingFaqItems } from "~/data/websiteLanding";
+import { trackWebsiteCta } from "~/utils/funnelTracking";
 
 const { track } = useAnalytics();
+const { contactTo } = useWebsiteContactLink();
 
 const items = websiteLandingFaqItems;
 const openId = ref("");
-const contactTo = { path: contactPath, query: { projekt: "website" } };
 
 function triggerId(id: string) {
   return `website-faq-trigger-${id}`;
@@ -109,10 +110,7 @@ function toggle(id: string) {
 }
 
 function onContactCta() {
-  track("cta_click", {
-    location: "website-faq-contact",
-    service: "website-erstgespraech",
-  });
+  trackWebsiteCta(track, "unknown");
 }
 </script>
 

@@ -70,11 +70,11 @@
 <script setup lang="ts">
 import WebsiteHeroVisual from "~/components/landing/WebsiteHeroVisual.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
-import { contactPath } from "~/data/navigation";
+import { useWebsiteContactLink } from "~/composables/useWebsiteContactLink";
+import { trackWebsiteCta } from "~/utils/funnelTracking";
 
 const { track } = useAnalytics();
-
-const contactTo = { path: contactPath, query: { projekt: "website" } };
+const { contactTo } = useWebsiteContactLink();
 const projectsHref = "#website-projekte";
 
 const trustItems = [
@@ -93,10 +93,7 @@ const trustItems = [
 ] as const;
 
 function onPrimary() {
-  track("cta_click", {
-    location: "website-landing-hero",
-    service: "website-erstgespraech",
-  });
+  trackWebsiteCta(track, "hero");
 }
 
 function onSecondary() {

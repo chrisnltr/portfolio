@@ -20,8 +20,10 @@ export default defineNuxtConfig({
         process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ||
         "",
       // Optional analytics / ads — empty = no external scripts loaded.
+      // Prefer NUXT_PUBLIC_GA_MEASUREMENT_ID (G-XXXXXXXXXX). Alias: NUXT_PUBLIC_GOOGLE_ANALYTICS_ID.
       gaMeasurementId:
         process.env.NUXT_PUBLIC_GA_MEASUREMENT_ID ||
+        process.env.NUXT_PUBLIC_GOOGLE_ANALYTICS_ID ||
         process.env.VITE_GA_MEASUREMENT_ID ||
         "",
       googleAdsId:

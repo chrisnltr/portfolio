@@ -276,8 +276,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref, watch } from "vue";
+import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
+import { useConsent } from "~/composables/useConsent";
 import { useI18n } from "~/composables/useI18n";
 import {
   FUNNEL_TOTAL_STEPS,
@@ -286,6 +287,12 @@ import {
   type FunnelBudgetId,
   type FunnelNeedId,
 } from "~/data/funnel";
+import {
+  budgetBandFromId,
+  classifyContactSubmitError,
+  createAnalyticsOnceTracker,
+  websiteFunnelProps,
+} from "~/utils/funnelTracking";
 
 const emit = defineEmits<{
   "update:step": [step: number];
@@ -297,7 +304,12 @@ const runtimeConfig = useRuntimeConfig();
 const route = useRoute();
 const router = useRouter();
 const { track } = useAnalytics();
+const { hasStatisticsConsent, hasMarketingConsent } = useConsent();
+const canSendAnalytics = () =>
+  hasStatisticsConsent.value || hasMarketingConsent.value;
+const trackOnce = createAnalyticsOnceTracker(track, canSendAnalytics);
 const isDev = import.meta.dev;
+const conversionFired = ref(false);
 
 const turnstileSiteKey = computed(
   () => String(runtimeConfig.public.turnstileSiteKey || "").trim(),
@@ -305,14 +317,6 @@ const turnstileSiteKey = computed(
 
 const totalSteps = FUNNEL_TOTAL_STEPS;
 const step = ref(1);
-
-watch(
-  step,
-  (value) => {
-    emit("update:step", value);
-  },
-  { immediate: true },
-);
 const direction = ref<"forward" | "back">("forward");
 const stepError = ref("");
 const formStarted = ref(false);
@@ -329,16 +333,31 @@ const projectQueryPrefillDone = ref(false);
 const needOptions = funnelNeedOptions;
 const budgetOptions = funnelBudgetOptions;
 
+const isWebsiteFunnel = computed(
+  () => String(route.query.projekt || "").toLowerCase() === "website",
+);
+
 function applyWebsiteProjectPrefill() {
   if (projectQueryPrefillDone.value) return;
-  const projekt = String(route.query.projekt || "").toLowerCase();
-  if (projekt !== "website") return;
+  if (!isWebsiteFunnel.value) return;
 
   projectQueryPrefillDone.value = true;
   // Only seed an empty selection; never overwrite a user choice.
   if (selectedNeeds.value.length === 0) {
     selectedNeeds.value = ["website"];
   }
+}
+
+function trackFunnelStartAndStepView(stepNumber: number) {
+  if (!isWebsiteFunnel.value) return;
+  trackOnce("funnel_start", "contact_funnel_start", {
+    project_type: "website",
+  });
+  trackOnce(
+    `step_view_${stepNumber}`,
+    "contact_funnel_step_view",
+    websiteFunnelProps(stepNumber),
+  );
 }
 
 watch(
@@ -348,6 +367,19 @@ watch(
   },
   { immediate: true },
 );
+
+watch(
+  [step, hasStatisticsConsent, hasMarketingConsent],
+  ([value]) => {
+    emit("update:step", value);
+    trackFunnelStartAndStepView(value);
+  },
+  { immediate: true },
+);
+
+onMounted(() => {
+  trackFunnelStartAndStepView(step.value);
+});
 
 const form = reactive({
   name: "",
@@ -425,12 +457,20 @@ function validateStep(): boolean {
 
 function goNext() {
   if (!validateStep()) return;
+  const completedStep = step.value;
+  if (isWebsiteFunnel.value) {
+    const extras =
+      completedStep === 2
+        ? { budget_band: budgetBandFromId(budget.value) }
+        : undefined;
+    trackOnce(
+      `step_complete_${completedStep}`,
+      "contact_funnel_step_complete",
+      websiteFunnelProps(completedStep, extras),
+    );
+  }
   direction.value = "forward";
   step.value = Math.min(step.value + 1, totalSteps);
-  track("cta_click", {
-    location: "contact-funnel",
-    service: `step-${step.value}`,
-  });
 }
 
 function goBack() {
@@ -497,9 +537,26 @@ function messageForStatusCode(statusCode?: number): string {
 }
 
 async function submit() {
-  if (loading.value || !canSubmit.value) return;
+  if (loading.value || !canSubmit.value || conversionFired.value) return;
   statusMessage.value = "";
-  if (!validateDetails()) return;
+  if (!validateDetails()) {
+    if (isWebsiteFunnel.value) {
+      track("contact_form_submit_error", {
+        project_type: "website",
+        error_type: classifyContactSubmitError({ phase: "validation" }),
+      });
+    }
+    return;
+  }
+
+  if (isWebsiteFunnel.value) {
+    trackOnce(
+      `step_complete_${step.value}`,
+      "contact_funnel_step_complete",
+      websiteFunnelProps(step.value),
+    );
+    track("contact_form_submit_attempt", { project_type: "website" });
+  }
 
   loading.value = true;
   try {
@@ -520,27 +577,47 @@ async function submit() {
     });
     // Fire only after the API accepted the inquiry — never on click or failure.
     // Google Ads conversion is dispatched via track() → trackLeadConversion (marketing consent + configured IDs).
-    track("contact_form_submit_success", {
-      location: "contact-funnel",
-      service: "erstgespraech",
-      ...(selectedNeeds.value.includes("website")
-        ? { project_type: "website" }
-        : {}),
-    });
+    if (!conversionFired.value) {
+      conversionFired.value = true;
+      track("contact_form_submit_success", {
+        location: "contact-funnel",
+        service: "erstgespraech",
+        ...(selectedNeeds.value.includes("website") || isWebsiteFunnel.value
+          ? { project_type: "website" }
+          : {}),
+      });
+    }
     await router.push("/danke");
   } catch (err: unknown) {
     const fetchError = err as {
       statusCode?: number;
       status?: number;
       data?: { statusCode?: number };
+      name?: string;
+      message?: string;
     };
     const statusCode =
       fetchError?.statusCode ?? fetchError?.status ?? fetchError?.data?.statusCode;
     statusMessage.value = messageForStatusCode(statusCode);
-    track("contact_form_submit_error", {
-      location: "contact-funnel",
-      status: String(statusCode || "unknown"),
-    });
+    const isNetworkError =
+      typeof statusCode !== "number" &&
+      (fetchError?.name === "FetchError" ||
+        /network|fetch|failed to fetch/i.test(String(fetchError?.message || "")));
+    if (isWebsiteFunnel.value) {
+      track("contact_form_submit_error", {
+        project_type: "website",
+        error_type: classifyContactSubmitError({
+          phase: "api",
+          statusCode,
+          isNetworkError,
+        }),
+      });
+    } else {
+      track("contact_form_submit_error", {
+        location: "contact-funnel",
+        status: String(statusCode || "unknown"),
+      });
+    }
   } finally {
     loading.value = false;
     resetTurnstile();

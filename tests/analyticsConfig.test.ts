@@ -49,7 +49,7 @@ describe("analytics config", () => {
     ).toBe(true);
   });
 
-  it("strips empty values and PII-like keys", () => {
+  it("strips empty values and PII-like keys but keeps step_name", () => {
     expect(
       sanitizeAnalyticsProps({
         page: "/",
@@ -59,12 +59,14 @@ describe("analytics config", () => {
         name: "Max",
         location: "hero",
         project_type: "website",
+        step_name: "needs",
         empty: "",
       }),
     ).toEqual({
       page: "/",
       location: "hero",
       project_type: "website",
+      step_name: "needs",
     });
   });
 });

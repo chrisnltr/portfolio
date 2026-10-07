@@ -86,3 +86,16 @@ Unit-Tests (ohne Netzwerk / ohne echte Anfrage): `tests/analyticsConfig.test.ts`
 ## 7. Internes Analytics-Event
 
 Zusätzlich (Vercel Analytics / GA bei Statistik-Consent): Eventname `contact_form_submit_success` mit höchstens nicht personenbezogenen Props, z. B. `project_type: "website"`, `location`, `service`. Das Google-Ads-Conversion-Payload bleibt auf `send_to` beschränkt.
+
+Vollständiger Funnel (Landing → CTA → Steps → Submit): siehe [`website-landing-funnel-tracking.md`](./website-landing-funnel-tracking.md).
+
+## 8. Enhanced Conversions
+
+- Im Google-Ads-Konto kann „Enhanced Conversions“ aktiviert sein.
+- Diese Codebasis sendet **bewusst keine** E-Mail-Adressen (auch nicht gehasht) und schreibt keine Formulardaten in `dataLayer` / `gtag`.
+- Normale Website-Conversions mit `send_to` funktionieren auch **ohne** Enhanced Conversions.
+- Empfehlung: Enhanced Conversions im Ads-Konto vorerst deaktivieren, bis eine bewusste rechtliche und technische Entscheidung getroffen wurde.
+
+## 9. Verzögerte Verifizierung
+
+Google Ads kann den Tag-Status („Inaktiv“ / „nicht verifiziert“) erst nach Stunden bis Tagen aktualisieren. Ein Klick auf eine eigene Live-Anzeige ist für den technischen Tag-Test nicht erforderlich; Test-UTMs auf der Landing-URL reichen für den Funnel-Check (siehe Funnel-Doku).

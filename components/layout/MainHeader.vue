@@ -70,7 +70,10 @@
           :to="contactTo"
           class="nav-cta header-mobile-cta"
           :class="{ 'is-active': isContactPage }"
-          @click="closeMobileMenu()"
+          @click="
+            trackLandingContactNav();
+            closeMobileMenu();
+          "
         >
           {{ messages.nav.contact }}
         </NuxtLink>
@@ -82,6 +85,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from "vue";
 import GooeyNav from "~/components/effects/GooeyNav.vue";
+import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
 import {
   focusWithoutScroll,
@@ -89,6 +93,8 @@ import {
   unlockBodyScroll,
 } from "~/composables/useScrollLock";
 import { contactPath, mainNavItems, paths } from "~/data/navigation";
+import { trackWebsiteCta } from "~/utils/funnelTracking";
+import { websiteContactQuery } from "~/utils/marketingAttribution";
 
 const mobileMenuOpen = ref(false);
 const scrolled = ref(false);
@@ -100,6 +106,7 @@ const mobileNavRef = ref<HTMLElement | null>(null);
 const route = useRoute();
 
 const { messages } = useI18n();
+const { track } = useAnalytics();
 
 const isHomePage = computed(() => {
   const path = route.path.replace(/\/$/, "") || "/";
@@ -116,10 +123,15 @@ const isWebsiteLandingPage = computed(() => {
   return path === paths.websiteLanding;
 });
 
-/** From the website landing page, keep the Website funnel preselection. */
+/** From the website landing page, keep funnel preselect + Ads/UTM params. */
 const contactTo = computed(() =>
   isWebsiteLandingPage.value
-    ? { path: contactPath, query: { projekt: "website" } }
+    ? {
+        path: contactPath,
+        query: websiteContactQuery(
+          route.query as Record<string, string | string[] | undefined>,
+        ),
+      }
     : contactPath,
 );
 
@@ -153,7 +165,9 @@ const gooeyNavItems = computed(() => [
     href:
       typeof contactTo.value === "string"
         ? contactTo.value
-        : `${contactTo.value.path}?projekt=${contactTo.value.query.projekt}`,
+        : `${contactTo.value.path}?${new URLSearchParams(
+            contactTo.value.query,
+          ).toString()}`,
     variant: "contact" as const,
   },
 ]);
@@ -169,12 +183,19 @@ const activeGooeyIndex = computed(() => {
 
 let contactNavTimer: number | null = null;
 
+function trackLandingContactNav() {
+  if (isWebsiteLandingPage.value) {
+    trackWebsiteCta(track, "unknown");
+  }
+}
+
 function onGooeyNavigate(index: number, event: MouseEvent) {
   const hash = gooeyHashes[index];
   if (hash === "contact") {
     event.preventDefault();
     closeMobileMenu();
     if (isContactPage.value) return;
+    trackLandingContactNav();
     // Let the gooey pill + particles finish before leaving the page.
     if (contactNavTimer !== null) window.clearTimeout(contactNavTimer);
     contactNavTimer = window.setTimeout(() => {

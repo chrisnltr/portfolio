@@ -57,22 +57,21 @@
 <script setup lang="ts">
 import ConsultationVisual from "~/components/landing/ConsultationVisual.vue";
 import { useAnalytics } from "~/composables/useAnalytics";
-import { contactPath } from "~/data/navigation";
+import { useWebsiteContactLink } from "~/composables/useWebsiteContactLink";
 import {
   websiteLandingConsultationPoints,
   websiteLandingTrustNotes,
 } from "~/data/websiteLanding";
+import { trackWebsiteCta } from "~/utils/funnelTracking";
 
 const { track } = useAnalytics();
+const { contactTo } = useWebsiteContactLink();
 const points = websiteLandingConsultationPoints;
 const trustNotes = websiteLandingTrustNotes;
-const contactTo = { path: contactPath, query: { projekt: "website" } };
 
 function onCta() {
-  track("cta_click", {
-    location: "website-landing-consultation",
-    service: "website-erstgespraech",
-  });
+  // Pricing / Erstgespräch block on the website landing page.
+  trackWebsiteCta(track, "pricing");
 }
 </script>
 

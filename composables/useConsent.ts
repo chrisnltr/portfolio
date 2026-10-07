@@ -10,6 +10,10 @@ import {
 import type { ConsentDecisionInput, ConsentState } from "~/types/consent";
 import { readTrackingIds, hasAnyOptionalTrackingConfigured, hasGaConfigured, hasGoogleAdsConfigured, hasMetaConfigured } from "~/utils/analyticsConfig";
 import {
+  captureMarketingAttributionFromWindow,
+  clearMarketingAttribution,
+} from "~/utils/marketingAttribution";
+import {
   initGoogleConsentDefaults,
   loadGoogleTag,
   loadMetaPixel,
@@ -65,11 +69,17 @@ function syncOptionalTracking(categories: {
     if (needsGtag) loadGoogleTag(ids);
     if (needsMeta) loadMetaPixel(ids);
     optionalScriptsInjected = true;
+    if (categories.marketing) {
+      captureMarketingAttributionFromWindow();
+    }
     return;
   }
 
   if (optionalScriptsInjected || googleDefaultsInitialized) {
     updateGoogleConsent({ statistics: false, marketing: false });
+  }
+  if (!categories.marketing) {
+    clearMarketingAttribution();
   }
 }
 
@@ -118,6 +128,9 @@ export function useConsent() {
     }
     if (stored) {
       syncOptionalTracking(stored.categories);
+      if (!stored.categories.marketing) {
+        clearMarketingAttribution();
+      }
     }
   }
 
@@ -139,6 +152,10 @@ export function useConsent() {
 
     syncOptionalTracking(next.categories);
 
+    if (previousMarketing && !next.categories.marketing) {
+      clearMarketingAttribution();
+    }
+
     const disabledOptional =
       (previousStatistics && !next.categories.statistics) ||
       (previousMarketing && !next.categories.marketing);
@@ -146,6 +163,7 @@ export function useConsent() {
     if (disabledOptional || (!next.categories.statistics && analyticsInjected)) {
       if (!next.categories.statistics && !next.categories.marketing) {
         removeOptionalThirdPartyArtifacts();
+        clearMarketingAttribution();
         analyticsInjected = false;
         optionalScriptsInjected = false;
         if (options?.reloadIfNeeded !== false && import.meta.client) {

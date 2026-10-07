@@ -40,7 +40,39 @@ export function hasAnyOptionalTrackingConfigured(ids: TrackingIds): boolean {
   );
 }
 
-/** Strip keys with empty values; never pass PII fields. */
+/** Exact PII / free-text keys that must never reach analytics platforms. */
+const PII_EXACT_KEYS = new Set([
+  "email",
+  "e-mail",
+  "phone",
+  "telephone",
+  "mobile",
+  "tel",
+  "message",
+  "name",
+  "firstname",
+  "lastname",
+  "first_name",
+  "last_name",
+  "full_name",
+  "username",
+  "user_name",
+  "address",
+  "street",
+  "city",
+  "zip",
+  "postal",
+  "honeypot",
+  "turnstile",
+  "turnstiletoken",
+  "turnstile_token",
+]);
+
+/**
+ * Strip keys with empty values; never pass PII fields.
+ * Note: `step_name` is an allowlisted technical enum and must not be blocked
+ * by a naive substring match on "name".
+ */
 export function sanitizeAnalyticsProps(
   props?: Record<string, string | number | boolean | null | undefined>,
 ): Record<string, string | number | boolean> {
@@ -48,15 +80,18 @@ export function sanitizeAnalyticsProps(
   const out: Record<string, string | number | boolean> = {};
   for (const [key, value] of Object.entries(props)) {
     if (value === null || value === undefined || value === "") continue;
-    // Hard deny common PII keys even if passed by mistake.
     const lower = key.toLowerCase();
+    if (PII_EXACT_KEYS.has(lower)) continue;
     if (
       lower.includes("email") ||
       lower.includes("phone") ||
       lower.includes("message") ||
-      lower.includes("name") ||
       lower.includes("tel")
     ) {
+      continue;
+    }
+    // Block accidental `*_name` form fields, but allow technical `step_name`.
+    if (lower !== "step_name" && (lower === "name" || lower.endsWith("_name"))) {
       continue;
     }
     out[key] = value;

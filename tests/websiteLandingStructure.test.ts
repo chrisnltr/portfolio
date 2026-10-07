@@ -58,13 +58,25 @@ describe("website landing structure", () => {
     );
 
     for (const source of [hero, consult, finalCtaSource]) {
-      expect(source).toContain('projekt: "website"');
-      expect(source).toMatch(/contactPath|path:\s*contactPath/);
+      expect(source).toContain("useWebsiteContactLink");
+      expect(source).toContain("contactTo");
     }
 
     expect(landingPageSource).toContain("MainHeader");
-    expect(mainHeader).toContain('projekt: "website"');
+    expect(mainHeader).toContain("websiteContactQuery");
+    expect(mainHeader).toContain("isWebsiteLandingPage");
     expect(contactPath).toBe("/kontakt");
+
+    const contactLink = readFileSync(
+      resolve("composables/useWebsiteContactLink.ts"),
+      "utf8",
+    );
+    const attribution = readFileSync(
+      resolve("utils/marketingAttribution.ts"),
+      "utf8",
+    );
+    expect(contactLink).toContain("websiteContactQuery");
+    expect(attribution).toContain('projekt: "website"');
   });
 
   it("defines four process steps with tab titles for navigation", () => {
@@ -201,13 +213,13 @@ describe("website landing structure", () => {
     expect(faqSource).toContain("Ihre Frage ist nicht dabei?");
     expect(faqSource).toContain("Kostenloses Erstgespräch starten");
     expect(faqSource).toContain("btn-cta");
-    expect(faqSource).toContain('projekt: "website"');
-    expect(faqSource).toMatch(/contactPath|path:\s*contactPath/);
+    expect(faqSource).toContain("useWebsiteContactLink");
+    expect(faqSource).toContain("contactTo");
   });
 
   it("points final CTA secondary link to website projects and primary to kontakt funnel", () => {
     expect(finalCtaSource).toContain("#website-projekte");
-    expect(finalCtaSource).toContain('projekt: "website"');
+    expect(finalCtaSource).toContain("useWebsiteContactLink");
     expect(finalCtaSource).toContain("Kostenloses Website-Erstgespräch starten");
     expect(finalCtaSource).toContain("Website-Projekte ansehen");
     expect(finalCtaSource).toContain(

@@ -59,7 +59,8 @@ Getestete Zustände (`tmp/mobile-qa.mjs`, Viewport 375×812):
 | Name / Mechanismus | Typ | Inhalt | Dauer | Zweck |
 |---|---|---|---|---|
 | `portfolio_consent` | First-Party-Cookie | Consent-JSON (Version, Zeit, Kategorien) | 12 Monate | Einwilligungsspeicher |
-| `localStorage` / `sessionStorage` | – | **nicht verwendet** | – | – |
+| `sessionStorage` `portfolio_marketing_attribution_v1` | First-Party | Allowlisted Ads/UTM First-Touch (kein PII) | Sitzung | Nur nach Marketing-Consent geschrieben; bei Widerruf gelöscht |
+| `localStorage` | – | **nicht verwendet** | – | – |
 | IndexedDB | – | **nicht verwendet** | – | – |
 
 ---
@@ -131,17 +132,23 @@ Optional Consent-Version bei Policy-Änderung: `CONSENT_VERSION` in `types/conse
 | Event-Dispatch | `composables/useAnalytics.ts`, `utils/optionalTracking.ts` |
 | Lead-Conversion | `utils/optionalTracking.ts` → `trackLeadConversion()` |
 
-### Geplante Events (noch nicht produktiv / teils Alias)
+### Funnel-Events (implementiert)
 
-| Geplanter Event-Name | Aktueller Code-Name | Auslöser (Soll) |
-|---|---|---|
-| `website_landing_view` | – (noch nicht implementiert) | Page View Landing (nach Statistik-Consent) |
-| `website_primary_cta_click` | `cta_click` + `location` | Hero/Header-CTA Klick |
-| `contact_funnel_start` | `contact_form_start` | Erster Fokus Formular Schritt 3 |
-| `contact_funnel_step_complete` | `cta_click` + `location: contact-funnel` | Funnel „Weiter“ (derzeit) |
-| `contact_form_submit_success` | `contact_form_submit_success` | **Nur nach serverseitigem Erfolg** (`ContactFunnel.vue`) |
+Siehe [`website-landing-funnel-tracking.md`](./website-landing-funnel-tracking.md).
 
-Keine Formular-PII in Analytics-Props (`sanitizeAnalyticsProps` blockiert email/phone/name/message).
+| Event-Name | Auslöser |
+|---|---|
+| `website_landing_view` | Landing nach Statistik- oder Marketing-Consent |
+| `website_cta_click` | Kontakt-CTA auf der Website-Landing |
+| `contact_funnel_start` | Funnel mit `projekt=website` |
+| `contact_funnel_step_view` / `contact_funnel_step_complete` | Schritt ansehen / abschließen |
+| `contact_form_submit_attempt` | Validierung ok, API startet |
+| `contact_form_submit_success` | **Nur nach serverseitigem Erfolg** |
+| `contact_form_submit_error` | Validierung oder API-Fehler (`error_type` Enum) |
+
+Legacy: `contact_form_start` (Fokus Formular Schritt 3), Homepage-`cta_click` unverändert.
+
+Keine Formular-PII in Analytics-Props (`sanitizeAnalyticsProps`; `step_name` ist erlaubt).
 
 ---
 
@@ -152,9 +159,10 @@ Keine Formular-PII in Analytics-Props (`sanitizeAnalyticsProps` blockiert email/
 3. Datenschutzerklärung: Turnstile, Resend-only, Speicherdauern, AV-Verträge
 4. **RECHTLICH PRÜFEN:** Rechtsgrundlage Kontaktformular-Checkbox
 5. **RECHTLICH PRÜFEN:** Vercel/Resend/Cloudflare Drittland & Auftragsverarbeitung
-6. Landing-View-Event `website_landing_view` implementieren (optional, nach ID-Freigabe)
-7. Danke-Seite / Conversion-Funnel finalisieren (bewusst nicht simuliert in Step 3)
-8. Kein Deploy aus Step 3 – Veröffentlichung separat planen
+6. GA4 Measurement-ID `G-XXXXXXXXXX` in Vercel setzen, wenn Funnel-Exploration in GA4 gewünscht ist
+7. Enhanced Conversions im Google-Ads-Konto prüfen / ggf. deaktivieren
+8. Nach Deploy: Tag Assistant, GA4 DebugView, Ads-Diagnose (siehe Funnel-Doku)
+9. Kein Deploy aus dieser Tracking-Aufgabe – Veröffentlichung separat planen
 
 ---
 

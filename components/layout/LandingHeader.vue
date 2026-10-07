@@ -37,6 +37,7 @@ import { computed, onMounted, onUnmounted, ref } from "vue";
 import { useAnalytics } from "~/composables/useAnalytics";
 import { useI18n } from "~/composables/useI18n";
 import { contactPath } from "~/data/navigation";
+import { websiteContactQuery } from "~/utils/marketingAttribution";
 
 const props = withDefaults(
   defineProps<{
@@ -56,6 +57,7 @@ const props = withDefaults(
   },
 );
 
+const route = useRoute();
 const { messages } = useI18n();
 const { track } = useAnalytics();
 const scrolled = ref(false);
@@ -66,14 +68,16 @@ const primaryTo = computed(
   () =>
     props.primaryTo ?? {
       path: contactPath,
-      query: { projekt: "website" },
+      query: websiteContactQuery(
+        route.query as Record<string, string | string[] | undefined>,
+      ),
     },
 );
 
 function onPrimaryClick() {
-  track("cta_click", {
-    location: props.analyticsLocation,
-    service: "website-erstgespraech",
+  track("website_cta_click", {
+    cta_placement: "hero",
+    destination: "contact_funnel",
   });
 }
 
