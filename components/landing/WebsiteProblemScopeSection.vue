@@ -11,7 +11,7 @@
           Ihr Angebot. Auf den ersten Blick klar.
         </h2>
         <p class="wl-scope__lead">
-          Besucher verstehen sofort, was Sie anbieten – und finden ohne Umwege
+          Besucher verstehen sofort, was Sie anbieten - und finden ohne Umwege
           zur Anfrage.
         </p>
 

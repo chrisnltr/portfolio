@@ -192,12 +192,12 @@ const progressCycle = ref(0);
 let timerId: ReturnType<typeof setTimeout> | null = null;
 
 const prevLabel = computed(() => {
-  if (activeIndex.value <= 0) return "Zurück – nicht verfügbar";
+  if (activeIndex.value <= 0) return "Zurück - nicht verfügbar";
   return `Zurück zu Schritt ${activeIndex.value}: ${steps[activeIndex.value - 1]?.tabTitle}`;
 });
 
 const nextLabel = computed(() => {
-  if (activeIndex.value >= steps.length - 1) return "Weiter – nicht verfügbar";
+  if (activeIndex.value >= steps.length - 1) return "Weiter - nicht verfügbar";
   return `Weiter zu Schritt ${activeIndex.value + 2}: ${steps[activeIndex.value + 1]?.tabTitle}`;
 });
 

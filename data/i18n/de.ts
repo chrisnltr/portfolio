@@ -348,8 +348,8 @@ export const de: AppTranslations = {
     budgetTitle: "Welches Budget schwebt Ihnen vor?",
     budgets: {
       under15: { label: "bis 1.500 €" },
-      "15to3": { label: "1.500 – 3.000 €" },
-      "3to6": { label: "3.000 – 6.000 €" },
+      "15to3": { label: "1.500 - 3.000 €" },
+      "3to6": { label: "3.000 - 6.000 €" },
       over6: { label: "über 6.000 €" },
       unsure: { label: "Noch offen" },
     },

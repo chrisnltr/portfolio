@@ -11,7 +11,7 @@
           Klare Antworten zu Planung, Ablauf und Zusammenarbeit.
         </h2>
         <p class="wl-faq__lead">
-          Die wichtigsten Fragen rund um Website-Projekte – verständlich und
+          Die wichtigsten Fragen rund um Website-Projekte - verständlich und
           ohne Fachchinesisch.
         </p>
       </header>

@@ -33,7 +33,7 @@ Beide Werte müssen gesetzt sein. Fehlt einer, wird **kein** Conversion-Event ge
 1. Google Ads → **Ziele** → **Conversions** → neue Conversion-Aktion
 2. Kategorie: **Lead** bzw. **Kontakt** / Anfrage
 3. Quelle: Website
-4. Event-Snippet / Tag: Google-Tag (`gtag`) – Conversion-ID und Label notieren
+4. Event-Snippet / Tag: Google-Tag (`gtag`) - Conversion-ID und Label notieren
 5. Die Werte in die beiden Env-Variablen oben übernehmen
 
 ## 4. Wann wird die Conversion ausgelöst?
@@ -49,7 +49,7 @@ Technischer Aufruf (clientseitig):
 
 ```js
 gtag("event", "conversion", {
-  send_to: "AW-<CONVERSION_ID>/<CONVERSION_LABEL>",
+	send_to: "AW-<CONVERSION_ID>/<CONVERSION_LABEL>",
 });
 ```
 

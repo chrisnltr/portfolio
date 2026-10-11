@@ -38,7 +38,7 @@ export const contactSeo: SeoCopy = {
 export const websiteLandingSeo: SeoCopy = {
   title: "Website erstellen lassen | Persönliches Webdesign von Chris Noltemeier",
   description:
-    "Professionelle Websites für Selbstständige und kleine Unternehmen – individuell geplant, persönlich umgesetzt und für Desktop und Mobil optimiert.",
+    "Professionelle Websites für Selbstständige und kleine Unternehmen - individuell geplant, persönlich umgesetzt und für Desktop und Mobil optimiert.",
 };
 
 export const imprintSeo: SeoCopy = {

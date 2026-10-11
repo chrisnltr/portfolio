@@ -15,7 +15,7 @@
 
         <p class="wl-hero__body">
           Individuell geplant, persönlich umgesetzt und für jedes Gerät
-          optimiert – ohne Agenturumwege.
+          optimiert - ohne Agenturumwege.
         </p>
 
         <div class="wl-hero__actions">

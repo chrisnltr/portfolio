@@ -1,4 +1,4 @@
-# Portfolio – Chris Leon Noltemeier
+# Portfolio - Chris Leon Noltemeier
 
 A minimal, bilingual (DE/EN) Nuxt 3 portfolio with locale-based routing, SEO, and accessibility optimizations.
 
@@ -14,20 +14,20 @@ A minimal, bilingual (DE/EN) Nuxt 3 portfolio with locale-based routing, SEO, an
 
 Configure these in `.env.local` (or in your host’s dashboard, e.g. Vercel). See also **`.env.example`** and **`CONTACT_FORM_SETUP.md`**.
 
-| Variable | Description |
-|----------|-------------|
+| Variable               | Description                                                                                                                                                                                                           |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `NUXT_PUBLIC_SITE_URL` | Full public URL of the site (e.g. `https://chrisnoltemeier.de`). Used for sitemap, `robots.txt`, and canonical/OG URLs when the request host is not reliable (e.g. serverless). Optional; falls back to request host. |
 
 **Contact form (Resend + Cloudflare Turnstile):**
 
-| Variable | Description |
-|----------|-------------|
-| `RESEND_API_KEY` | [Resend](https://resend.com) API key (server-only). |
-| `CONTACT_TO_EMAIL` | Inbox for submissions (e.g. `chris.noltemeier@gmail.com`). |
-| `CONTACT_FROM_EMAIL` | Verified Resend sender address. |
-| `TURNSTILE_SECRET_KEY` | Cloudflare Turnstile secret key (server-only). |
-| `NUXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public). |
-| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional alias for the site key. |
+| Variable                         | Description                                                |
+| -------------------------------- | ---------------------------------------------------------- |
+| `RESEND_API_KEY`                 | [Resend](https://resend.com) API key (server-only).        |
+| `CONTACT_TO_EMAIL`               | Inbox for submissions (e.g. `chris.noltemeier@gmail.com`). |
+| `CONTACT_FROM_EMAIL`             | Verified Resend sender address.                            |
+| `TURNSTILE_SECRET_KEY`           | Cloudflare Turnstile secret key (server-only).             |
+| `NUXT_PUBLIC_TURNSTILE_SITE_KEY` | Cloudflare Turnstile site key (public).                    |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Optional alias for the site key.                           |
 
 Full setup steps: **`CONTACT_FORM_SETUP.md`**.
 

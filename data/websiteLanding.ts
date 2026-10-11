@@ -172,9 +172,9 @@ export const websiteLandingTestimonials: LandingTestimonial[] = [
     isDraft: true,
     draft: {
       badge: "KUNDENSTIMME NOCH EINHOLEN",
-      title: "Cantus-Halle – Website & Shopify-Shop",
+      title: "Cantus-Halle - Website & Shopify-Shop",
       brief:
-        "Benötigt wird eine echte, freigegebene Kundenstimme mit 2–4 Sätzen zu: Verständnis der Wünsche, persönliche Kommunikation, Umsetzung von Website und Shop sowie Zufriedenheit mit dem fertigen Ergebnis.",
+        "Benötigt wird eine echte, freigegebene Kundenstimme mit 2-4 Sätzen zu: Verständnis der Wünsche, persönliche Kommunikation, Umsetzung von Website und Shop sowie Zufriedenheit mit dem fertigen Ergebnis.",
       needed: [
         "Vollständiger oder freigegebener Vorname",
         "Funktion beziehungsweise Rolle",
@@ -198,9 +198,9 @@ export const websiteLandingTestimonials: LandingTestimonial[] = [
     isDraft: true,
     draft: {
       badge: "KUNDENSTIMME NOCH EINHOLEN",
-      title: "Stallzentrale – Website & individuelle Plattform",
+      title: "Stallzentrale - Website & individuelle Plattform",
       brief:
-        "Benötigt wird eine echte, freigegebene Kundenstimme mit 2–4 Sätzen zu: Verständnis der Stallabläufe, persönlicher Abstimmung, Nutzen der zentralen Lösung und Erfahrung während der Umsetzung.",
+        "Benötigt wird eine echte, freigegebene Kundenstimme mit 2-4 Sätzen zu: Verständnis der Stallabläufe, persönlicher Abstimmung, Nutzen der zentralen Lösung und Erfahrung während der Umsetzung.",
       needed: [
         "Vollständiger oder freigegebener Vorname",
         "Rolle beziehungsweise Stallbezug",
@@ -281,7 +281,7 @@ export const websiteLandingConsultationPoints = [
     id: "scope",
     title: "Ziele und benötigter Umfang",
     description:
-      "Wir klären, welche Inhalte, Seiten und Funktionen tatsächlich sinnvoll sind – ohne unnötige Extras einzuplanen.",
+      "Wir klären, welche Inhalte, Seiten und Funktionen tatsächlich sinnvoll sind - ohne unnötige Extras einzuplanen.",
   },
   {
     id: "next",
