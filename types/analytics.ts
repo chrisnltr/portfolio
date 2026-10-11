@@ -67,6 +67,8 @@ export type AnalyticsEventProps = {
   utm_content?: string;
   initial_landing_path?: string;
   initial_referrer_host?: string;
+  /** Server-issued inquiry id for Ads conversion dedup. Never client-generated. */
+  transaction_id?: string;
 };
 
 export type TrackingIds = {

@@ -8,7 +8,7 @@ import {
   writeConsentCookie,
 } from "~/utils/consentStorage";
 import type { ConsentDecisionInput, ConsentState } from "~/types/consent";
-import { readTrackingIds, hasAnyOptionalTrackingConfigured, hasGaConfigured, hasGoogleAdsConfigured, hasMetaConfigured } from "~/utils/analyticsConfig";
+import { readTrackingIds, hasGaConfigured, hasMetaConfigured } from "~/utils/analyticsConfig";
 import {
   captureMarketingAttributionFromWindow,
   clearMarketingAttribution,
@@ -23,6 +23,15 @@ import {
 let analyticsInjected = false;
 let googleDefaultsInitialized = false;
 let optionalScriptsInjected = false;
+
+function ensureGoogleConsentDefaults(): void {
+  if (!import.meta.client || googleDefaultsInitialized) return;
+  const ids = getIds();
+  if (hasGaConfigured(ids) || Boolean(ids.googleAdsId)) {
+    initGoogleConsentDefaults();
+    googleDefaultsInitialized = true;
+  }
+}
 
 async function injectVercelAnalytics(): Promise<void> {
   if (!import.meta.client || analyticsInjected) return;
@@ -43,30 +52,24 @@ function syncOptionalTracking(categories: {
   if (!import.meta.client) return;
   const ids = getIds();
 
-  if (hasAnyOptionalTrackingConfigured(ids) && !googleDefaultsInitialized) {
-    if (hasGaConfigured(ids) || hasGoogleAdsConfigured(ids) || ids.googleAdsId) {
-      initGoogleConsentDefaults();
-      googleDefaultsInitialized = true;
-    }
-  }
+  ensureGoogleConsentDefaults();
 
   const needsGtag =
     (categories.statistics && hasGaConfigured(ids)) ||
-    (categories.marketing && (hasGoogleAdsConfigured(ids) || Boolean(ids.googleAdsId)));
+    (categories.marketing && Boolean(ids.googleAdsId));
   const needsMeta = categories.marketing && hasMetaConfigured(ids);
 
   if (needsGtag || needsMeta) {
-    if (googleDefaultsInitialized || hasGaConfigured(ids) || ids.googleAdsId) {
-      if (!googleDefaultsInitialized && (hasGaConfigured(ids) || ids.googleAdsId)) {
-        initGoogleConsentDefaults();
-        googleDefaultsInitialized = true;
-      }
-      updateGoogleConsent({
+    updateGoogleConsent({
+      statistics: categories.statistics,
+      marketing: categories.marketing,
+    });
+    if (needsGtag) {
+      loadGoogleTag(ids, {
         statistics: categories.statistics,
         marketing: categories.marketing,
       });
     }
-    if (needsGtag) loadGoogleTag(ids);
     if (needsMeta) loadMetaPixel(ids);
     optionalScriptsInjected = true;
     if (categories.marketing) {
@@ -123,6 +126,7 @@ export function useConsent() {
     consent.value = stored;
     hydrated.value = true;
     bannerVisible.value = !isConsentValid(stored);
+    ensureGoogleConsentDefaults();
     if (stored?.categories.statistics) {
       void injectVercelAnalytics();
     }
@@ -218,6 +222,7 @@ export function useConsent() {
   }
 
   if (import.meta.client) {
+    ensureGoogleConsentDefaults();
     watch(
       [hasStatisticsConsent, hasMarketingConsent],
       ([stats, marketing]) => {

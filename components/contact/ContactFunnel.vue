@@ -293,6 +293,7 @@ import {
   createAnalyticsOnceTracker,
   websiteFunnelProps,
 } from "~/utils/funnelTracking";
+import { readContactSuccessTransactionId } from "~/utils/optionalTracking";
 
 const emit = defineEmits<{
   "update:step": [step: number];
@@ -560,7 +561,7 @@ async function submit() {
 
   loading.value = true;
   try {
-    await $fetch("/api/contact", {
+    const result = await $fetch("/api/contact", {
       method: "POST",
       body: {
         name: form.name.trim(),
@@ -579,12 +580,14 @@ async function submit() {
     // Google Ads conversion is dispatched via track() → trackLeadConversion (marketing consent + configured IDs).
     if (!conversionFired.value) {
       conversionFired.value = true;
+      const transactionId = readContactSuccessTransactionId(result);
       track("contact_form_submit_success", {
         location: "contact-funnel",
         service: "erstgespraech",
         ...(selectedNeeds.value.includes("website") || isWebsiteFunnel.value
           ? { project_type: "website" }
           : {}),
+        ...(transactionId ? { transaction_id: transactionId } : {}),
       });
     }
     await router.push("/danke");

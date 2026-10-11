@@ -15,19 +15,35 @@ const LEAD_CONVERSION_EVENTS: ReadonlySet<AnalyticsEventName> = new Set([
   "website_analysis_request",
 ]);
 
+const LEAD_CONVERSION_VALUE = 1.0;
+const LEAD_CONVERSION_CURRENCY = "EUR";
+
 let googleTagBootstrapped = false;
 let googleAdsConfigApplied = false;
 let gaConfigApplied = false;
 let missingAdsConfigWarned = false;
+const firedLeadConversionKeys = new Set<string>();
+
+export type GoogleTagConsent = {
+  statistics: boolean;
+  marketing: boolean;
+};
+
+export type LeadConversionOptions = {
+  /** Stable server-issued id only. Never invent a client-side fallback. */
+  transactionId?: string;
+};
 
 function ensureGtagStub(): void {
   if (typeof window === "undefined") return;
   window.dataLayer = window.dataLayer || [];
-  if (typeof window.gtag !== "function") {
-    window.gtag = function gtag(...args: unknown[]) {
-      window.dataLayer?.push(args);
-    };
-  }
+  if (typeof window.gtag === "function") return;
+  // Official gtag snippet pushes `arguments`, not a rest-parameter Array.
+  // gtag.js only replays Arguments objects from the pre-load queue.
+  window.gtag = function gtag() {
+    // eslint-disable-next-line prefer-rest-params
+    window.dataLayer?.push(arguments);
+  };
 }
 
 function warnMissingGoogleAdsConfig(ids: TrackingIds): void {
@@ -39,6 +55,31 @@ function warnMissingGoogleAdsConfig(ids: TrackingIds): void {
   console.warn(
     "[analytics] Google Ads lead conversion is incomplete: set both NUXT_PUBLIC_GOOGLE_ADS_ID and NUXT_PUBLIC_GOOGLE_ADS_CONVERSION_LABEL. No conversion event will be sent.",
   );
+}
+
+function resolveGtagLoaderId(
+  ids: TrackingIds,
+  consent: GoogleTagConsent,
+): string {
+  if (consent.marketing && ids.googleAdsId) return ids.googleAdsId;
+  if (consent.statistics && ids.gaMeasurementId) return ids.gaMeasurementId;
+  return "";
+}
+
+function leadConversionDedupeKey(sendTo: string, transactionId?: string): string {
+  return transactionId ? `${sendTo}:${transactionId}` : sendTo;
+}
+
+function readTransactionId(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed || undefined;
+}
+
+/** Accept a server `requestId` from `/api/contact` only when it is a non-empty string. */
+export function readContactSuccessTransactionId(result: unknown): string | undefined {
+  if (!result || typeof result !== "object") return undefined;
+  return readTransactionId((result as { requestId?: unknown }).requestId);
 }
 
 /** Default Consent Mode v2: denied until user opts in. Not a substitute for consent UI. */
@@ -54,10 +95,7 @@ export function initGoogleConsentDefaults(): void {
   });
 }
 
-export function updateGoogleConsent(options: {
-  statistics: boolean;
-  marketing: boolean;
-}): void {
+export function updateGoogleConsent(options: GoogleTagConsent): void {
   if (typeof window === "undefined" || typeof window.gtag !== "function") return;
   window.gtag("consent", "update", {
     analytics_storage: options.statistics ? "granted" : "denied",
@@ -69,37 +107,41 @@ export function updateGoogleConsent(options: {
 
 /**
  * Loads gtag.js once (client-only). Safe across SPA navigations.
- * Call only after statistics and/or marketing consent when IDs are configured.
+ * Configures GA only with statistics consent and Ads only with marketing consent.
  */
-export function loadGoogleTag(ids: TrackingIds): void {
+export function loadGoogleTag(
+  ids: TrackingIds,
+  consent: GoogleTagConsent,
+): void {
   if (typeof document === "undefined") return;
-  const primaryId = ids.gaMeasurementId || ids.googleAdsId;
-  if (!primaryId) return;
+
+  const wantsGa = consent.statistics && hasGaConfigured(ids);
+  const wantsAds = consent.marketing && Boolean(ids.googleAdsId);
+  if (!wantsGa && !wantsAds) return;
 
   warnMissingGoogleAdsConfig(ids);
+  ensureGtagStub();
 
+  const loaderId = resolveGtagLoaderId(ids, consent);
   const scriptAlreadyPresent = Boolean(document.getElementById(GTAG_SCRIPT_ID));
-  if (!scriptAlreadyPresent) {
-    ensureGtagStub();
+  if (!scriptAlreadyPresent && loaderId) {
     const script = document.createElement("script");
     script.id = GTAG_SCRIPT_ID;
     script.async = true;
-    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(primaryId)}`;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(loaderId)}`;
     document.head.appendChild(script);
   }
-
-  ensureGtagStub();
 
   if (!googleTagBootstrapped) {
     window.gtag?.("js", new Date());
     googleTagBootstrapped = true;
   }
 
-  if (hasGaConfigured(ids) && !gaConfigApplied) {
+  if (wantsGa && !gaConfigApplied) {
     window.gtag?.("config", ids.gaMeasurementId, { anonymize_ip: true });
     gaConfigApplied = true;
   }
-  if (ids.googleAdsId && !googleAdsConfigApplied) {
+  if (wantsAds && !googleAdsConfigApplied) {
     window.gtag?.("config", ids.googleAdsId);
     googleAdsConfigApplied = true;
   }
@@ -134,23 +176,31 @@ export function loadMetaPixel(ids: TrackingIds): void {
   window.fbq?.("track", "PageView");
 }
 
+export function resetOptionalTrackingState(): void {
+  googleTagBootstrapped = false;
+  googleAdsConfigApplied = false;
+  gaConfigApplied = false;
+  missingAdsConfigWarned = false;
+  firedLeadConversionKeys.clear();
+}
+
 export function removeOptionalMarketingScripts(): void {
   if (typeof document !== "undefined") {
     document.getElementById(GTAG_SCRIPT_ID)?.remove();
     document.getElementById(META_SCRIPT_ID)?.remove();
   }
-  googleTagBootstrapped = false;
-  googleAdsConfigApplied = false;
-  gaConfigApplied = false;
+  resetOptionalTrackingState();
   // Keep gtag stub for consent updates if scripts are re-enabled later.
 }
 
 /**
- * Fires a Google Ads lead conversion exactly once per call.
- * Payload is only `send_to` — never form fields or other PII.
- * Returns true when the conversion event was dispatched.
+ * Fires a Google Ads lead conversion at most once per send_to (+ transaction_id).
+ * Payload is send_to, value, currency, and optional server transaction_id — never form PII.
  */
-export function trackLeadConversion(ids: TrackingIds): boolean {
+export function trackLeadConversion(
+  ids: TrackingIds,
+  options: LeadConversionOptions = {},
+): boolean {
   if (typeof window === "undefined") return false;
 
   warnMissingGoogleAdsConfig(ids);
@@ -174,7 +224,26 @@ export function trackLeadConversion(ids: TrackingIds): boolean {
   }
 
   const sendTo = `${ids.googleAdsId}/${ids.googleAdsConversionLabel}`;
-  window.gtag("event", "conversion", { send_to: sendTo });
+  const transactionId = readTransactionId(options.transactionId);
+  const dedupeKey = leadConversionDedupeKey(sendTo, transactionId);
+  if (firedLeadConversionKeys.has(dedupeKey)) return false;
+  firedLeadConversionKeys.add(dedupeKey);
+
+  const payload: {
+    send_to: string;
+    value: number;
+    currency: string;
+    transaction_id?: string;
+  } = {
+    send_to: sendTo,
+    value: LEAD_CONVERSION_VALUE,
+    currency: LEAD_CONVERSION_CURRENCY,
+  };
+  if (transactionId) {
+    payload.transaction_id = transactionId;
+  }
+
+  window.gtag("event", "conversion", payload);
   return true;
 }
 
@@ -187,7 +256,7 @@ export function dispatchPlatformEvent(
   name: AnalyticsEventName,
   props: AnalyticsEventProps,
   ids: TrackingIds,
-  consent: { statistics: boolean; marketing: boolean },
+  consent: GoogleTagConsent,
 ): void {
   const safe = sanitizeAnalyticsProps(props);
 
@@ -207,6 +276,8 @@ export function dispatchPlatformEvent(
   }
 
   if (consent.marketing && LEAD_CONVERSION_EVENTS.has(name)) {
-    trackLeadConversion(ids);
+    trackLeadConversion(ids, {
+      transactionId: readTransactionId(safe.transaction_id),
+    });
   }
 }

@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type { AnalyticsEventName, AnalyticsEventProps } from "../types/analytics";
 import {
   budgetBandFromId,
@@ -10,6 +10,7 @@ import {
 } from "../utils/funnelTracking";
 import {
   dispatchPlatformEvent,
+  resetOptionalTrackingState,
   trackLeadConversion,
 } from "../utils/optionalTracking";
 import {
@@ -127,6 +128,11 @@ describe("website funnel analytics payloads", () => {
 });
 
 describe("submit success / error conversion rules", () => {
+  afterEach(() => {
+    resetOptionalTrackingState();
+    vi.unstubAllGlobals();
+  });
+
   it("fires one Ads conversion on success and none on error/validation", () => {
     const gtag = vi.fn();
     vi.stubGlobal("window", { gtag, dataLayer: [] });
@@ -165,15 +171,11 @@ describe("submit success / error conversion rules", () => {
       ),
     ).toHaveLength(1);
 
-    // Simulated double-click / second dispatch of success still creates a second
-    // conversion at the platform helper level; ContactFunnel guards with
-    // conversionFired + loading. Explicit single-call API:
+    // Repeated success callbacks / double-clicks share the same send_to and
+    // must not emit a second conversion without a new server transaction_id.
     gtag.mockClear();
-    expect(trackLeadConversion(ids)).toBe(true);
-    expect(gtag).toHaveBeenCalledTimes(1);
-    expect(gtag).toHaveBeenCalledWith("event", "conversion", {
-      send_to: "AW-18143702036/DRh7CMf3tpMdEJTYy8tD",
-    });
+    expect(trackLeadConversion(ids)).toBe(false);
+    expect(gtag).not.toHaveBeenCalled();
 
     gtag.mockClear();
     dispatchPlatformEvent(

@@ -13,6 +13,7 @@ import {
   dispatchPlatformEvent,
   loadGoogleTag,
   removeOptionalMarketingScripts,
+  resetOptionalTrackingState,
   trackLeadConversion,
 } from "../utils/optionalTracking";
 
@@ -60,6 +61,7 @@ describe("analytics config", () => {
         location: "hero",
         project_type: "website",
         step_name: "needs",
+        transaction_id: "re_123",
         empty: "",
       }),
     ).toEqual({
@@ -67,6 +69,7 @@ describe("analytics config", () => {
       location: "hero",
       project_type: "website",
       step_name: "needs",
+      transaction_id: "re_123",
     });
   });
 });
@@ -86,6 +89,7 @@ describe("optional tracking dispatch without IDs", () => {
 
 describe("Google Ads lead conversion", () => {
   afterEach(() => {
+    resetOptionalTrackingState();
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });
@@ -100,7 +104,7 @@ describe("Google Ads lead conversion", () => {
     );
   });
 
-  it("fires conversion exactly once with send_to only (no form PII)", () => {
+  it("fires conversion exactly once with send_to, value, and currency (no form PII)", () => {
     const gtag = vi.fn();
     vi.stubGlobal("window", {
       gtag,
@@ -116,6 +120,8 @@ describe("Google Ads lead conversion", () => {
     expect(gtag).toHaveBeenCalledTimes(1);
     expect(gtag).toHaveBeenCalledWith("event", "conversion", {
       send_to: "AW-999/leadLabel",
+      value: 1.0,
+      currency: "EUR",
     });
 
     const payload = gtag.mock.calls[0][2] as Record<string, unknown>;
@@ -123,7 +129,7 @@ describe("Google Ads lead conversion", () => {
     expect(payload).not.toHaveProperty("name");
     expect(payload).not.toHaveProperty("phone");
     expect(payload).not.toHaveProperty("message");
-    expect(Object.keys(payload)).toEqual(["send_to"]);
+    expect(Object.keys(payload)).toEqual(["send_to", "value", "currency"]);
   });
 
   it("does not fire when IDs are incomplete", () => {
@@ -195,7 +201,11 @@ describe("Google Ads lead conversion", () => {
       (call) => call[0] === "event" && call[1] === "conversion",
     );
     expect(conversionCalls).toHaveLength(1);
-    expect(conversionCalls[0][2]).toEqual({ send_to: "AW-999/leadLabel" });
+    expect(conversionCalls[0][2]).toEqual({
+      send_to: "AW-999/leadLabel",
+      value: 1.0,
+      currency: "EUR",
+    });
   });
 
   it("does not fire conversion without marketing consent", () => {
@@ -258,8 +268,8 @@ describe("Google Ads lead conversion", () => {
       googleAdsConversionLabel: "lbl",
     });
 
-    loadGoogleTag(ids);
-    loadGoogleTag(ids);
+    loadGoogleTag(ids, { statistics: false, marketing: true });
+    loadGoogleTag(ids, { statistics: false, marketing: true });
 
     expect(created).toHaveLength(1);
     expect(created[0]?.id).toBe("optional-gtag-js");

@@ -287,7 +287,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const resend = new Resend(resendApiKey);
-    const { error } = await resend.emails.send({
+    const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: toEmail,
       replyTo: email,
@@ -305,7 +305,9 @@ export default defineEventHandler(async (event) => {
     }
 
     recordRateLimit(ip);
-    return { ok: true };
+    const requestId =
+      data && typeof data.id === "string" && data.id.trim() ? data.id.trim() : undefined;
+    return requestId ? { ok: true, requestId } : { ok: true };
   } catch (err) {
     if (err && typeof err === "object" && "statusCode" in err) {
       throw err;

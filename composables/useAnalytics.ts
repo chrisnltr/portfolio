@@ -6,6 +6,7 @@ import { readMarketingAttribution } from "~/utils/marketingAttribution";
 import {
   dispatchPlatformEvent,
   trackLeadConversion as dispatchLeadConversion,
+  type LeadConversionOptions,
 } from "~/utils/optionalTracking";
 
 /** Events that may carry first-touch Ads/UTM attribution (no PII). */
@@ -73,15 +74,15 @@ export function useAnalytics() {
   /**
    * Google Ads lead conversion after a successful server-accepted inquiry.
    * Requires marketing consent and configured Ads ID + conversion label.
-   * Sends only `{ send_to }` — never form PII.
+   * Sends send_to, value, currency, and optional server transaction_id — never form PII.
    */
-  function trackLeadConversion(): boolean {
+  function trackLeadConversion(options: LeadConversionOptions = {}): boolean {
     if (!import.meta.client) return false;
     if (!hasMarketingConsent.value) return false;
 
     const ids = readTrackingIds(config.public);
     try {
-      return dispatchLeadConversion(ids);
+      return dispatchLeadConversion(ids, options);
     } catch {
       return false;
     }
